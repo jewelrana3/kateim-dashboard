@@ -53,7 +53,13 @@ export const sidebarMenu = [
     icon: Shield,
     path: "/support",
   },
-  { id: 12, label: "Log Out", icon: LogOut, path: "#" },
+  {
+    id: 12,
+    label: "Verify Request",
+    icon: Shield,
+    path: "/verify-request",
+  },
+  { id: 13, label: "Log Out", icon: LogOut, path: "#" },
 ];
 
 export default function Sidebar() {
