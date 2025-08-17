@@ -30,7 +30,7 @@ export const sidebarMenu = [
     icon: User,
     path: "/all-worker",
   },
-  { id: 4, label: "All Category", icon: List, path: "#" },
+  { id: 4, label: "All Category", icon: List, path: "/all-category" },
   { id: 5, label: "Home Landing Page", icon: Home, path: "#" },
   { id: 6, label: "About Us Landing Page", icon: Store, path: "#" },
   {
