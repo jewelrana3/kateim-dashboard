@@ -16,7 +16,7 @@ export default function UserDetails({
     contact: "01333327633",
     location: "Dhaka Bangladesh",
     role: "Employer",
-    image: "/avatar.jpg", // Replace with actual image path
+    image: "https://i.ibb.co.com/xNXnsd1/Ellipse-7.png", // Replace with actual image path
   };
 
   return (
@@ -34,7 +34,9 @@ export default function UserDetails({
           <Image
             src={user.image}
             alt={user.name}
-            className="w-40 h-40 rounded-full object-cover"
+            width={200}
+            height={200}
+            className=" rounded-full object-cover"
           />
 
           {/* Info */}
@@ -56,19 +58,21 @@ export default function UserDetails({
             </p>
 
             {/* Warning note */}
-            <p className="text-sm text-gray-500 mt-4">
-              If you feel the user is fake in any way, you can block or delete
-              the user from here.
-            </p>
 
             {/* Action buttons */}
-            <div className="mt-2 flex gap-3">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                Block
-              </Button>
-              <Button className="bg-red-600 hover:bg-red-700 text-white">
-                Delete
-              </Button>
+            <div className="mt-2 flex justify-between gap-3">
+              <p className="text-sm text-gray-500 w-[50%]">
+                If you feel the user is fake in any way, you can block or delete
+                the user from here.
+              </p>
+              <div>
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white mr-4">
+                  Block
+                </Button>
+                <Button className="bg-red-600 hover:bg-red-700 text-white">
+                  Delete
+                </Button>
+              </div>
             </div>
           </div>
         </div>
