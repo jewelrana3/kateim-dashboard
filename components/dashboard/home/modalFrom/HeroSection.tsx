@@ -1,15 +1,6 @@
 "use client";
 
 import { Upload } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 import {
   Dialog,
@@ -21,41 +12,34 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import { Input } from "@/components/ui/input";
+type HeroSectionProps = {
+  trigger: React.ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+};
 
-const title = [
-  { id: 1, value: "Hero Section" },
-  { id: 2, value: "how it work(employer)" },
-  { id: 3, value: "how it work(worker)" },
-  { id: 4, value: "why instant labour" },
-  //   { id: 5, value: "Why Chose Instantlabour" },
-  //   { id: 6, value: "Our Vision" },
-];
-
-export default function HomeEdit({ trigger }: { trigger: React.ReactNode }) {
+export default function HeroSection({
+  trigger,
+  open,
+  onOpenChange,
+}: HeroSectionProps) {
   const [status, setStatus] = useState("description");
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
 
       <DialogContent className="min-w-5xl">
         <div className="bg-white p-6 rounded-md  w-full text-black">
           <form className="space-y-4 mt-6">
-            <label className="block mb-1">Title</label>
-            <Select>
-              <SelectTrigger className="w-full cursor-pointer">
-                <SelectValue placeholder="Select Title" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {title.map((item) => (
-                    <SelectItem key={item.id} value={item.value}>
-                      {item.value}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            {/* 
+            {/* Headline */}
+            <div>
+              <Input
+                type="text"
+                placeholder="Type your headline here..."
+                className="w-full border border-gray-300 px-3 py-2 rounded-md outline-none"
+              />
+            </div>
             <section className="flex justify-between items-center mt-7">
               <p> Description</p>
               <div>
@@ -82,6 +66,7 @@ export default function HomeEdit({ trigger }: { trigger: React.ReactNode }) {
               </div>
             </section>
 
+            {/* Sub Headline */}
             <div>
               <Textarea
                 placeholder="Type..."
@@ -89,6 +74,7 @@ export default function HomeEdit({ trigger }: { trigger: React.ReactNode }) {
               />
             </div>
 
+            {/* Upload Image */}
             <div>
               <label className="block mb-1">Upload Image</label>
               <div className="w-full border border-gray-300 px-3 py-4 flex justify-center items-center rounded-md cursor-pointer hover:bg-gray-100">
@@ -101,7 +87,7 @@ export default function HomeEdit({ trigger }: { trigger: React.ReactNode }) {
                 <Button variant="outline">Cancel</Button>
               </DialogClose>
               <Button type="submit">Submit</Button>
-            </DialogFooter> */}
+            </DialogFooter>
           </form>
         </div>
       </DialogContent>
