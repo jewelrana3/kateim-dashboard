@@ -11,13 +11,12 @@ import {
   Key,
   Shield,
   LogOut,
-  Icon,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export const sidebarMenu = [
-  { id: 1, label: "Overview", icon: LayoutGrid, path: "/" },
+  { id: 1, label: "Overview", icon: LayoutGrid, path: "" },
   {
     id: 2,
     label: "All Employer List",
@@ -31,8 +30,8 @@ export const sidebarMenu = [
     path: "/all-worker",
   },
   { id: 4, label: "All Category", icon: List, path: "/all-category" },
-  { id: 5, label: "Home Landing Page", icon: Home, path: "#" },
-  { id: 6, label: "About Us Landing Page", icon: Store, path: "#" },
+  { id: 5, label: "Home Landing Page", icon: Home, path: "/home-page" },
+  { id: 6, label: "About Us Landing Page", icon: Store, path: "/about-us" },
   {
     id: 7,
     label: "Contact Us Landing Page",
@@ -48,10 +47,22 @@ export const sidebarMenu = [
     path: "/terms-condition",
   },
   {
+    id: 17,
+    label: "Our Clients",
+    icon: Shield,
+    path: "/our-clients",
+  },
+  {
     id: 11,
     label: "Contact & Support",
     icon: Shield,
     path: "/support",
+  },
+  {
+    id: 15,
+    label: "FAQ",
+    icon: Shield,
+    path: "/faq",
   },
   {
     id: 12,
@@ -73,7 +84,7 @@ export default function Sidebar() {
         return (
           <Link key={index} href={item.path}>
             <div
-              className={`flex items-center gap-3 px-4 my-4 py-2 cursor-pointer  ${
+              className={`flex items-center gap-3 px-4 my-2 py-2 cursor-pointer  ${
                 isActive ? "bg-blue-600 text-white" : "text-black"
               }`}
             >

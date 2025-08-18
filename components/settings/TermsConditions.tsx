@@ -1,12 +1,11 @@
 "use client";
 
 import { useRef, useState } from "react";
-import JoditEditor from "jodit-react";
 import Button from "./Button";
+import { JoditEditor } from "../JodiClient";
 
 export default function TermsCondition() {
   const editor = useRef(null);
-  const [select, setSelect] = useState("customer");
 
   const [content, setContent] = useState("");
 
