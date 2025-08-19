@@ -52,9 +52,6 @@ export default function HowWorker({
             </div>
 
             <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </DialogClose>
               <Button type="submit">Submit</Button>
             </DialogFooter>
           </form>

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 type HeroSectionProps = {
   trigger: React.ReactNode;
@@ -25,7 +25,25 @@ export default function HeroSection({
   open,
   onOpenChange,
 }: HeroSectionProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  console.log(imageUrl);
   const [status, setStatus] = useState("description");
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files?.[0];
+    if (files) {
+      const url = URL.createObjectURL(files);
+      setImageUrl(url);
+    }
+  };
+
+  const handleClick = () => {
+    if (inputRef?.current) {
+      inputRef.current?.click();
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       {/* <DialogTrigger asChild>{trigger}</DialogTrigger> */}
@@ -44,31 +62,6 @@ export default function HeroSection({
                 className="w-full border border-gray-300 px-3 py-2 rounded-md outline-none"
               />
             </div>
-            {/* <section className="flex justify-between items-center mt-7">
-              <p> Description</p>
-              <div>
-                <span
-                  className={`border border-gray-500 rounded px-3 py-1 cursor-pointer ${
-                    status === "description"
-                      ? "bg-blue-500 text-white border-none"
-                      : ""
-                  }`}
-                  onClick={() => setStatus("description")}
-                >
-                  List
-                </span>
-                <span
-                  className={`border border-gray-500 rounded px-3 py-1 ml-3 cursor-pointer ${
-                    status === "status"
-                      ? "bg-blue-500 text-white border-none"
-                      : ""
-                  }`}
-                  onClick={() => setStatus("status")}
-                >
-                  Description
-                </span>
-              </div>
-            </section> */}
 
             {/* Sub Headline */}
             <div>
@@ -84,15 +77,34 @@ export default function HeroSection({
             {/* Upload Image */}
             <div>
               <label className="block mb-1">Upload Image</label>
-              <div className="w-full border border-gray-300 px-3 py-4 flex justify-center items-center rounded-md cursor-pointer hover:bg-gray-100">
-                <Upload className="w-5 h-5 text-gray-500" />
+              <div
+                className="w-full h-40 border border-gray-300 px-3 py-4 flex justify-center items-center rounded-md cursor-pointer hover:bg-gray-100"
+                onClick={handleClick}
+              >
+                <section>
+                  <input
+                    ref={inputRef}
+                    id="upload"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImageUpload}
+                  />
+                </section>
+
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt="Preview"
+                    className="w-40 h-40 object-cover rounded border"
+                  />
+                ) : (
+                  <span>Upload Image</span>
+                )}
               </div>
             </div>
 
             <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </DialogClose>
               <Button type="submit">Submit</Button>
             </DialogFooter>
           </form>
