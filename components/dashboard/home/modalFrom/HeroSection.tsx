@@ -7,6 +7,7 @@ import {
   DialogClose,
   DialogContent,
   DialogFooter,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -27,20 +28,23 @@ export default function HeroSection({
   const [status, setStatus] = useState("description");
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      {/* <DialogTrigger asChild>{trigger}</DialogTrigger> */}
 
-      <DialogContent className="min-w-5xl">
+      <DialogContent className="min-w-2xl">
         <div className="bg-white p-6 rounded-md  w-full text-black">
+          <DialogTitle>Hero Section</DialogTitle>
           <form className="space-y-4 mt-6">
-            {/* Headline */}
             <div>
+              <label className="mb-2" htmlFor="headline">
+                HeadLine
+              </label>
               <Input
                 type="text"
                 placeholder="Type your headline here..."
                 className="w-full border border-gray-300 px-3 py-2 rounded-md outline-none"
               />
             </div>
-            <section className="flex justify-between items-center mt-7">
+            {/* <section className="flex justify-between items-center mt-7">
               <p> Description</p>
               <div>
                 <span
@@ -64,10 +68,13 @@ export default function HeroSection({
                   Description
                 </span>
               </div>
-            </section>
+            </section> */}
 
             {/* Sub Headline */}
             <div>
+              <label className="mb-2" htmlFor="description">
+                description
+              </label>
               <Textarea
                 placeholder="Type..."
                 className="w-full border border-gray-300 px-3 py-2 rounded-md outline-none"

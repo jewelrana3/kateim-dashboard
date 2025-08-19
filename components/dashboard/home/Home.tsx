@@ -15,6 +15,9 @@ import React, { useEffect, useState } from "react";
 import HomeEdit from "./HomeEdit";
 import HeroSection from "./modalFrom/HeroSection";
 import { Span } from "next/dist/trace";
+import Labour from "./modalFrom/Labour";
+import HowWork from "./modalFrom/HowWork";
+import HowWorker from "./modalFrom/HowWorker";
 
 const title = [
   { id: 1, value: "Hero Section" },
@@ -32,6 +35,12 @@ export default function Home() {
   // Open dialog automatically when Hero Section is selected
   useEffect(() => {
     if (selectedValue === "Hero Section") {
+      setIsHeroOpen(true);
+    } else if (selectedValue === "how it work(employer)") {
+      setIsHeroOpen(true);
+    } else if (selectedValue === "how it work(worker)") {
+      setIsHeroOpen(true);
+    } else if (selectedValue === "why instant labour") {
       setIsHeroOpen(true);
     }
   }, [selectedValue]);
@@ -71,7 +80,28 @@ export default function Home() {
         <HeroSection
           open={isHeroOpen}
           onOpenChange={setIsHeroOpen}
-          trigger={<span />} // Not needed since you're using `open` manually
+          trigger={<span className="text-xl">Hero Section</span>} // Not needed since you're using `open` manually
+        />
+      )}
+      {selectedValue === "how it work(employer)" && (
+        <HowWork
+          open={isHeroOpen}
+          onOpenChange={setIsHeroOpen}
+          trigger={<span className="text-xl"></span>} // Not needed since you're using `open` manually
+        />
+      )}
+      {selectedValue === "how it work(worker)" && (
+        <HowWorker
+          open={isHeroOpen}
+          onOpenChange={setIsHeroOpen}
+          trigger={<span className="text-xl"></span>} // Not needed since you're using `open` manually
+        />
+      )}
+      {selectedValue === "why instant labour" && (
+        <Labour
+          open={isHeroOpen}
+          onOpenChange={setIsHeroOpen}
+          trigger={<span className="text-xl"></span>} // Not needed since you're using `open` manually
         />
       )}
     </>

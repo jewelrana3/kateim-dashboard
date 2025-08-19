@@ -37,7 +37,7 @@ export default function HomeEdit({ trigger }: { trigger: React.ReactNode }) {
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
 
-      <DialogContent className="min-w-5xl">
+      <DialogContent className="min-w-2xl">
         <div className="bg-white p-6 rounded-md  w-full text-black">
           <form className="space-y-4 mt-6">
             <label className="block mb-1">Title</label>

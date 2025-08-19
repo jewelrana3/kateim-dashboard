@@ -16,7 +16,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export const sidebarMenu = [
-  { id: 1, label: "Overview", icon: LayoutGrid, path: "" },
+  { id: 1, label: "Overview", icon: LayoutGrid, path: "/" },
   {
     id: 2,
     label: "All Employer List",
