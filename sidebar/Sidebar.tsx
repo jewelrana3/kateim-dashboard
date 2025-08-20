@@ -74,14 +74,14 @@ export const sidebarMenu = [
     icon: CheckCheck,
     path: "/verify-request",
   },
-  { id: 13, label: "Log Out", icon: LogOut, path: "#" },
+  { id: 13, label: "Log Out", icon: LogOut, path: "/login" },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className=" bg-white h-screen p-4 space-y-1 text-sm">
+    <aside className=" bg-white p-4 space-y-1 text-sm">
       {sidebarMenu.map((item, index) => {
         const isActive = pathname === item.path;
         const Icon = item.icon;
