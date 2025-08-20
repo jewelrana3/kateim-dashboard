@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 
 import { useRouter } from "next/navigation";
+import { DialogDemo } from "./Message";
 
 const employers = [
   {
@@ -136,13 +137,14 @@ export default function Support() {
                   </Badge>
                 </TableCell>
                 <TableCell className="flex gap-2">
-                  <span
-                    className="bg-blue-600 p-1 rounded cursor-pointer"
-                    onClick={() => router.push("/worker-details")}
-                  >
-                    <Eye className=" text-white" />
-                  </span>
-
+                  {/* <Message
+                    trigger={
+                      <span className="bg-blue-600 p-1 rounded cursor-pointer">
+                        <Eye className=" text-white" />
+                      </span>
+                    }
+                  /> */}
+                  <DialogDemo />
                   <span className="bg-red-600 p-1 rounded cursor-pointer">
                     <Trash2 className=" text-white" />
                   </span>

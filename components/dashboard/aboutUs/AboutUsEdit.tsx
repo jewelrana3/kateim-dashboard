@@ -103,7 +103,7 @@ export default function AboutUsEdit({ trigger }: { trigger: React.ReactNode }) {
             <div>
               <Textarea
                 placeholder="Type..."
-                className="w-full border border-gray-300 px-3 py-2 rounded-md outline-none"
+                className="w-[600px] border border-gray-300 px-3 py-2 rounded-md outline-none"
               />
             </div>
 

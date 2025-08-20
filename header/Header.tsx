@@ -11,7 +11,6 @@ const auth = [
 
 export default function Header() {
   const pathname = usePathname();
-  console.log(pathname);
   const isAuthPage = auth.some((item) => item.path === pathname);
   return (
     <>

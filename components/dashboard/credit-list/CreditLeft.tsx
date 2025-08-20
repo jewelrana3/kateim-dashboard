@@ -1,4 +1,5 @@
 import React from "react";
+import EditPrice from "./EditPrice";
 const creditPackages = [
   { credits: 10, price: "£5" },
   { credits: 25, price: "£10" },
@@ -17,9 +18,7 @@ export default function CreditLeft() {
           <div className="text-sm font-semibold">
             {item.credits} Credits <span className="ml-2">{item.price}</span>
           </div>
-          <button className="bg-yellow-400 hover:bg-yellow-500 text-sm font-medium px-3 py-1 rounded-md text-black">
-            Edit Now
-          </button>
+          <EditPrice />
         </div>
       ))}
     </div>

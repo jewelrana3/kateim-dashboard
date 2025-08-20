@@ -46,10 +46,8 @@ export default function HeroSection({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      {/* <DialogTrigger asChild>{trigger}</DialogTrigger> */}
-
-      <DialogContent className="min-w-2xl">
-        <div className="bg-white p-6 rounded-md  w-full text-black">
+      <DialogContent className="max-w-2xl">
+        <div className="  rounded-md text-black">
           <DialogTitle>Hero Section</DialogTitle>
           <form className="space-y-4 mt-6">
             <div>
@@ -70,7 +68,7 @@ export default function HeroSection({
               </label>
               <Textarea
                 placeholder="Type..."
-                className="w-full border border-gray-300 px-3 py-2 rounded-md outline-none"
+                className="w-[460px] border border-gray-300 px-3 py-2 rounded-md outline-none"
               />
             </div>
 

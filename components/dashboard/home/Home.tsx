@@ -46,7 +46,7 @@ export default function Home() {
   }, [selectedValue]);
   return (
     <>
-      <div className="flex items-center justify-between bg-[#F6F6F6] p-4 rounded-md">
+      {/* <div className="flex items-center justify-between bg-[#F6F6F6] p-4 rounded-md">
         <h2 className="text-base font-medium text-gray-800">
           Home Us Landing Page
         </h2>
@@ -74,7 +74,7 @@ export default function Home() {
             </SelectContent>
           </Select>
         </div>
-      </div>
+      </div> */}
       {/* Modal rendered when selected */};
       {selectedValue === "Hero Section" && (
         <HeroSection

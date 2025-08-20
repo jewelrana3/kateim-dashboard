@@ -11,7 +11,7 @@ export default function VerifyDetailsModal({
 }) {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="bg-white p-6 rounded-md shadow-md max-w-3xl mx-auto my-9">
+      <div className="bg-white p-6 rounded-md  max-w-3xl mx-auto my-9">
         <div className="grid md:grid-cols-2 gap-6 items-start">
           {/* Profile Picture */}
           <div className="flex flex-col items-center gap-4">
