@@ -49,7 +49,7 @@ export function CategoryEdit({
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit">Save changes</Button>
+            <Button type="submit">Submit</Button>
           </DialogFooter>
         </DialogContent>
       </form>

@@ -5,7 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Edit2Icon } from "lucide-react";
+import { DeleteIcon, Edit2Icon, Trash2 } from "lucide-react";
 import FaqEdit from "./FaqEdit";
 const data = [
   {
@@ -46,13 +46,18 @@ export function Faq() {
             <AccordionContent className="flex flex-col gap-4 text-balance ">
               <p>{item.answer}</p>
               <section className="flex justify-end">
-                <FaqEdit
-                  trigger={
-                    <span className="cursor-pointer">
-                      <Edit2Icon size={20} />
-                    </span>
-                  }
-                />
+                <div className="flex items-center gap-3">
+                  <FaqEdit
+                    trigger={
+                      <span className="cursor-pointer">
+                        <Edit2Icon size={20} />
+                      </span>
+                    }
+                  />
+                  <span className="cursor-pointer">
+                    <Trash2 size={20} />
+                  </span>
+                </div>
               </section>
             </AccordionContent>
           </AccordionItem>

@@ -1,6 +1,5 @@
 "use client";
 
-import { Upload } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -13,14 +12,13 @@ import {
 
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const title = [
   { id: 1, value: "Hero Section" },
@@ -33,6 +31,24 @@ const title = [
 
 export default function AboutUsEdit({ trigger }: { trigger: React.ReactNode }) {
   const [status, setStatus] = useState("description");
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files?.[0];
+    if (files) {
+      const url = URL.createObjectURL(files);
+      setImageUrl(url);
+    }
+  };
+
+  const handleClick = () => {
+    if (inputRef?.current) {
+      inputRef.current?.click();
+    }
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -94,15 +110,34 @@ export default function AboutUsEdit({ trigger }: { trigger: React.ReactNode }) {
             {/* Upload Image */}
             <div>
               <label className="block mb-1">Upload Image</label>
-              <div className="w-full border border-gray-300 px-3 py-4 flex justify-center items-center rounded-md cursor-pointer hover:bg-gray-100">
-                <Upload className="w-5 h-5 text-gray-500" />
+              <div
+                className="w-full h-40 border border-gray-300 px-3 py-4 flex justify-center items-center rounded-md cursor-pointer hover:bg-gray-100"
+                onClick={handleClick}
+              >
+                <section>
+                  <input
+                    ref={inputRef}
+                    id="upload"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImageUpload}
+                  />
+                </section>
+
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt="Preview"
+                    className="w-40 h-40 object-cover rounded border"
+                  />
+                ) : (
+                  <span>Upload Image</span>
+                )}
               </div>
             </div>
 
             <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </DialogClose>
               <Button type="submit">Submit</Button>
             </DialogFooter>
           </form>

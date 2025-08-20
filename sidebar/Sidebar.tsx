@@ -11,6 +11,10 @@ import {
   Key,
   Shield,
   LogOut,
+  Users,
+  Phone,
+  FileQuestion,
+  CheckCheck,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -49,25 +53,25 @@ export const sidebarMenu = [
   {
     id: 17,
     label: "Our Clients",
-    icon: Shield,
+    icon: Users,
     path: "/our-clients",
   },
   {
     id: 11,
     label: "Contact & Support",
-    icon: Shield,
+    icon: Phone,
     path: "/support",
   },
   {
     id: 15,
     label: "FAQ",
-    icon: Shield,
+    icon: FileQuestion,
     path: "/faq",
   },
   {
     id: 12,
     label: "Verify Request",
-    icon: Shield,
+    icon: CheckCheck,
     path: "/verify-request",
   },
   { id: 13, label: "Log Out", icon: LogOut, path: "#" },
