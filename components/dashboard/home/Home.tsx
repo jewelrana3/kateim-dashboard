@@ -5,7 +5,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -46,15 +45,15 @@ export default function Home() {
   }, [selectedValue]);
   return (
     <>
-      {/* <div className="flex items-center justify-between bg-[#F6F6F6] p-4 rounded-md">
+      <div className="flex items-center justify-between bg-[#F6F6F6] p-4 rounded-md">
         <h2 className="text-base font-medium text-gray-800">
           Home Us Landing Page
         </h2>
 
         <div className="flex items-center space-x-5">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2 cursor-pointer">
+          {/* <button className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2 cursor-pointer">
             <Edit className="w-4 h-4" />
-          </button>
+          </button> */}
 
           <Select
             onValueChange={(value) => setSelectedValue(value)}
@@ -74,8 +73,8 @@ export default function Home() {
             </SelectContent>
           </Select>
         </div>
-      </div> */}
-      {/* Modal rendered when selected */};
+      </div>
+      {/* Modal rendered when selected */}
       {selectedValue === "Hero Section" && (
         <HeroSection
           open={isHeroOpen}

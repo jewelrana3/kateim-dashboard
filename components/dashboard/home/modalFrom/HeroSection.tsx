@@ -27,7 +27,7 @@ export default function HeroSection({
 }: HeroSectionProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  console.log(imageUrl);
+
   const [status, setStatus] = useState("description");
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {

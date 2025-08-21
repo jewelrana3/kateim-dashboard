@@ -1,6 +1,8 @@
 // components/Testimonials.tsx
 
+import { Edit } from "lucide-react";
 import Image from "next/image";
+import { EditClientSection } from "./Edit";
 
 const testimonials = [
   {
@@ -30,7 +32,7 @@ export default function OurClients() {
   return (
     <section className="my-5 p-4 bg-white text-center max-w-7xl mx-auto rounded-md ">
       <h2 className="text-3xl font-semibold mb-12 ">What Our Clients Say</h2>
-      <div className="flex flex-col md:flex-row justify-center items-center gap-8  px-4">
+      <div className="flex flex-col md:flex-row  items-center gap-8  px-4">
         {testimonials.map((t, index) => (
           <div
             key={index}
@@ -46,8 +48,13 @@ export default function OurClients() {
                 objectFit="cover"
               />
             </div>
-            <h3 className="text-lg font-semibold">{t.name}</h3>
-            <p className="text-sm text-gray-600 mb-4">{t.title}</p>
+            <section className="flex justify-between mb-5">
+              <div>
+                <h3 className="text-lg font-semibold">{t.name}</h3>
+                <p className="text-sm text-gray-600">{t.title}</p>
+              </div>
+              <EditClientSection />
+            </section>
             <p className="text-sm text-gray-700 mb-4">{t.testimonial}</p>
             <div className="flex justify-center">
               {Array(5)

@@ -1,5 +1,7 @@
 "use client";
 
+import Swal from "sweetalert2";
+
 import {
   Table,
   TableBody,
@@ -81,6 +83,26 @@ const employers = [
 
 export default function AllEmployeList() {
   const [showDetails, setShowDetails] = useState(false);
+
+  const handleClick = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to be delete this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+        });
+      }
+    });
+  };
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
@@ -146,7 +168,10 @@ export default function AllEmployeList() {
                     <Lock size={24} className=" text-red-600" />
                   </span>
 
-                  <span className="bg-red-600 p-1 rounded cursor-pointer">
+                  <span
+                    className="bg-red-600 p-1 rounded cursor-pointer"
+                    onClick={handleClick}
+                  >
                     <Trash2 className=" text-white" />
                   </span>
                 </TableCell>

@@ -73,7 +73,7 @@ export function CategoryEdit({
               <Input id="name-1" name="name" defaultValue="Pedro Duarte" />
             </div>
             {/* Upload Image */}
-            <div>
+            {/* <div>
               <label className="block mb-1">Add Icon</label>
               <div
                 className="w-full h-20 border border-gray-300 px-3 flex justify-center items-center rounded-md cursor-pointer hover:bg-gray-100"
@@ -100,7 +100,7 @@ export function CategoryEdit({
                   <span>Upload Icon</span>
                 )}
               </div>
-            </div>
+            </div> */}
 
             <div className="grid gap-3">
               <Label htmlFor="username-1">Sub Category</Label>

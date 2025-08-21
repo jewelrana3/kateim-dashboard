@@ -64,7 +64,7 @@ export default function ChangePassword() {
         ))}
 
         {/* Confirm Button */}
-        <button className="w-full bg-yellow-400  text-black font-semibold py-2 rounded">
+        <button className="w-full bg-yellow-400  text-black font-semibold py-2 rounded cursor-pointer">
           Confirm
         </button>
       </div>

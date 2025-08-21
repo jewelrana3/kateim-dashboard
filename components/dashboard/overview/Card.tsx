@@ -25,7 +25,7 @@ export const statCards = [
 
 export default function Card() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-2">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-2 z">
       {statCards.map((item, index) => {
         const Icon = item.icon;
         return (

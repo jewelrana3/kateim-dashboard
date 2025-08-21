@@ -13,22 +13,24 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export default function AddPromotional() {
+export default function AddPromotional({
+  trigger,
+  title,
+}: {
+  title: string;
+  trigger: React.ReactNode;
+}) {
   return (
     <>
       <Dialog>
         <form>
           <div className="flex justify-between">
-            <h2 className="text-sm font-medium">Credit List</h2>
-            <DialogTrigger asChild>
-              <Button variant="outline" className="bg-[#0057DC] text-white">
-                Add Promotional Offers
-              </Button>
-            </DialogTrigger>
+            <h2 className="text-sm font-medium"></h2>
+            <DialogTrigger asChild>{trigger}</DialogTrigger>
           </div>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Add Offers</DialogTitle>
+              <DialogTitle>{title}</DialogTitle>
             </DialogHeader>
             <div className="grid gap-4">
               <div className="grid gap-3">

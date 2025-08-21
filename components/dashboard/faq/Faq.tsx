@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Accordion,
   AccordionContent,
@@ -7,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { DeleteIcon, Edit2Icon, Trash2 } from "lucide-react";
 import FaqEdit from "./FaqEdit";
+import Swal from "sweetalert2";
 const data = [
   {
     id: 1,
@@ -29,6 +32,26 @@ const data = [
 ];
 
 export function Faq() {
+  const handleClick = () => {
+    console.log("clcik");
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to be delete this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+        });
+      }
+    });
+  };
   return (
     <Accordion
       type="single"
@@ -54,7 +77,7 @@ export function Faq() {
                       </span>
                     }
                   />
-                  <span className="cursor-pointer">
+                  <span className="cursor-pointer" onClick={handleClick}>
                     <Trash2 size={20} />
                   </span>
                 </div>

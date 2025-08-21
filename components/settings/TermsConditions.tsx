@@ -9,9 +9,7 @@ export default function TermsCondition() {
 
   const [content, setContent] = useState("");
 
-  const handleOnSave = (value: string) => {
-    console.log(value);
-  };
+  const handleOnSave = (value: string) => {};
   return (
     <section className="p-3">
       <div className="">

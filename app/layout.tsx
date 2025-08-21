@@ -23,14 +23,18 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.variable}>
       <body className="">
-        <div>
-          <Header />
-        </div>
-        <section className="grid grid-cols-[240px_1fr] h-screen">
+        <section className="flex h-screen">
           <aside className="bg-white ">
             <Sidebar />
           </aside>
-          <main className="main bg-[#F6F6F6]">{children}</main>
+          <main className="main flex-1 h-screen bg-[#F6F6F6]">
+            <div>
+              <Header />
+            </div>
+            <div className="h-[90vh] overflow-y-scroll no-scrollbar">
+              {children}
+            </div>
+          </main>
         </section>
       </body>
     </html>

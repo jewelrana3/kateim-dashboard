@@ -22,6 +22,7 @@ import {
 
 import { useRouter } from "next/navigation";
 import { DialogDemo } from "./Message";
+import Swal from "sweetalert2";
 
 const employers = [
   {
@@ -82,6 +83,26 @@ const employers = [
 
 export default function Support() {
   const router = useRouter();
+
+  const handleClick = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to be delete this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+        });
+      }
+    });
+  };
 
   return (
     <>
@@ -145,7 +166,10 @@ export default function Support() {
                     }
                   /> */}
                   <DialogDemo />
-                  <span className="bg-red-600 p-1 rounded cursor-pointer">
+                  <span
+                    className="bg-red-600 p-1 rounded cursor-pointer"
+                    onClick={handleClick}
+                  >
                     <Trash2 className=" text-white" />
                   </span>
                 </TableCell>
