@@ -27,7 +27,7 @@ export default function HowWorker({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="min-w-2xl">
         <div className="bg-white p-6 rounded-md  w-full text-black">
-          <DialogTitle>how it work(worker)</DialogTitle>
+          <DialogTitle>How it work(worker)</DialogTitle>
           <form className="space-y-4 mt-6">
             {/* Headline */}
             <div className="">

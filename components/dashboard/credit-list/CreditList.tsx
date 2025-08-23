@@ -5,6 +5,7 @@ import AddPromotional from "./AddPromotional";
 import { useState } from "react";
 import CreditPrice from "./CreditPrice";
 import CreditLeft from "./CreditLeft";
+import Offer from "./Offer";
 
 export default function CreditList() {
   const [show, setShow] = useState(false);
@@ -38,7 +39,8 @@ export default function CreditList() {
           {/* Right side: Credit packages */}
           <CreditLeft />
         </div>
-        {/* modal show */}
+
+        <Offer />
       </section>
     </>
   );

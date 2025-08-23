@@ -9,17 +9,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Edit } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import HomeEdit from "./HomeEdit";
 import HeroSection from "./modalFrom/HeroSection";
-import { Span } from "next/dist/trace";
 import Labour from "./modalFrom/Labour";
 import HowWork from "./modalFrom/HowWork";
 import HowWorker from "./modalFrom/HowWorker";
 
 const title = [
-  { id: 1, value: "Hero Section" },
+  { id: 1, value: "hero Section" },
   { id: 2, value: "how it work(employer)" },
   { id: 3, value: "how it work(worker)" },
   { id: 4, value: "why instant labour" },
