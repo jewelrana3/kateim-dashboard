@@ -33,7 +33,6 @@ const data = [
 
 export function Faq() {
   const handleClick = () => {
-    console.log("clcik");
     Swal.fire({
       title: "Are you sure?",
       text: "You want to be delete this!",
@@ -71,6 +70,7 @@ export function Faq() {
               <section className="flex justify-end">
                 <div className="flex items-center gap-3">
                   <FaqEdit
+                    title="Edit Faq"
                     trigger={
                       <span className="cursor-pointer">
                         <Edit2Icon size={20} />

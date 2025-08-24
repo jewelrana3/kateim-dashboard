@@ -49,7 +49,6 @@ export default function Labour({
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    console.log(inputFields);
   };
 
   return (

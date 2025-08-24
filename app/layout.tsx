@@ -31,9 +31,7 @@ export default function RootLayout({
             <div>
               <Header />
             </div>
-            <div className="h-[90vh] overflow-y-scroll no-scrollbar">
-              {children}
-            </div>
+            <div className=" overflow-y-scroll no-scrollbar">{children}</div>
           </main>
         </section>
       </body>

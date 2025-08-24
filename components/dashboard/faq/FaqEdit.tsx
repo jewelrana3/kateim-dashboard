@@ -13,13 +13,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export default function FaqEdit({ trigger }: { trigger: React.ReactNode }) {
+export default function FaqEdit({
+  trigger,
+  title,
+}: {
+  trigger: React.ReactNode;
+  title: string;
+}) {
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
 
       <DialogContent>
-        <DialogTitle>Faq Edit</DialogTitle>
+        <DialogTitle>{title}</DialogTitle>
         <div className="bg-white rounded-md  w-full min-w-md text-black">
           <form className="space-y-4 mt-6">
             {/* Headline */}

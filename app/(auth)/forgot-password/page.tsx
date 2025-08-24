@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
 
 export default function page() {
-  const [password, setPassword] = useState(false);
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+  };
   return (
     <div className="relative min-h-screen bg-gray-50 flex items-center justify-center">
       {/* Background shapes */}
@@ -24,12 +25,12 @@ export default function page() {
         <h3 className="text-center font-medium text-3xl mb-4">
           Forgot Password
         </h3>
-        <p className="text-gray-300">
+        <p className="text-gray-500">
           Enter your email address to get a verification code for resetting your
           password.
         </p>
 
-        <form className="space-y-5 mt-6">
+        <form className="space-y-5 mt-6" onSubmit={handleSubmit}>
           <div>
             <Label htmlFor="email" className="block text-md mb-1">
               Email
@@ -42,12 +43,14 @@ export default function page() {
             />
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-[#FFC823] text-black font-semibold py-2 cursor-pointer"
-          >
-            Continue
-          </button>
+          <Link href="/new-password">
+            <button
+              type="submit"
+              className="w-full bg-[#FFC823] text-black font-semibold py-2 cursor-pointer"
+            >
+              Continue
+            </button>
+          </Link>
         </form>
       </div>
     </div>

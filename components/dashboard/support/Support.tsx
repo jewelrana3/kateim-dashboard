@@ -108,7 +108,7 @@ export default function Support() {
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold">All Worker</h2>
+          <h2 className="text-lg font-semibold">Support</h2>
           <div>
             <Select>
               <SelectTrigger className="w-full">

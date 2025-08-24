@@ -8,7 +8,7 @@ import React, { useState } from "react";
 export default function page() {
   const [password, setPassword] = useState(false);
   return (
-    <div className="relative h-full bg-gray-50 flex items-center justify-center">
+    <div className="relative min-h-screen flex items-center justify-center">
       {/* Background shapes */}
       <div
         className="absolute top-0 right-0 w-40 h-40 bg-purple-200 rounded-bl-full opacity-30 pointer-events-none"
