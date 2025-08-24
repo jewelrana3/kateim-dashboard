@@ -1,11 +1,11 @@
 import { Pencil } from "lucide-react";
-import CategoryHeader from "./CategoryHeader";
-import { CategoryEdit } from "./CategoryEdit";
+import CategoryHeader from "../CategoryHeader";
+import { SubCategoryEdit } from "./SubCategoryEdit";
 
 const jobCategories = [
   {
     id: 1,
-    title: "1. Construction",
+    title: "Construction",
     jobs: [
       "Bricklaying",
       "Carpentry & Joinery",
@@ -16,7 +16,7 @@ const jobCategories = [
   },
   {
     id: 2,
-    title: "1. Construction",
+    title: "Construction",
     jobs: [
       "Bricklaying",
       "Carpentry & Joinery",
@@ -27,7 +27,7 @@ const jobCategories = [
   },
   {
     id: 3,
-    title: "1. Construction",
+    title: "Construction",
     jobs: [
       "Bricklaying",
       "Carpentry & Joinery",
@@ -38,7 +38,7 @@ const jobCategories = [
   },
   {
     id: 4,
-    title: "1. Construction",
+    title: "Construction",
     jobs: [
       "Bricklaying",
       "Carpentry & Joinery",
@@ -49,10 +49,10 @@ const jobCategories = [
   },
 ];
 
-export default function AllCategory() {
+export default function SubCategory({}) {
   return (
     <>
-      <CategoryHeader />
+      <CategoryHeader title="sub" />
       <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-3 ">
         {jobCategories.map((category, index) => (
           <div key={index} className="border p-4 rounded-md">
@@ -60,8 +60,8 @@ export default function AllCategory() {
             <div className="flex items-center justify-between border-b pb-1 mb-2">
               <h2 className="font-semibold text-base">{category.title}</h2>
               <div>
-                <CategoryEdit
-                  title={false}
+                <SubCategoryEdit
+                  title="Edit Sub Category"
                   trigger={
                     <button className="ml-2 text-blue-600 cursor-pointer">
                       <Pencil className="w-4 h-4" />

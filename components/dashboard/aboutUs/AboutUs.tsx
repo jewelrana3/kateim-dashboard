@@ -6,7 +6,7 @@ export default function AboutUs() {
   return (
     <>
       <AboutUsHeader />
-      {/* <section className="grid grid-cols-2 gap-14 p-4  bg-white rounded-lg shadow-md">
+      <section className="grid grid-cols-2 gap-14 p-4  bg-white rounded-lg shadow-md">
         <div>
           <h1 className="font-semibold text-5xl my-3 leading-16">
             Connecting Talent with <br /> Opportunity, Seamlessly
@@ -16,9 +16,9 @@ export default function AboutUs() {
             connect, collaborate, and complete projects — all in one trusted
             platform
           </p>
-          <button className="bg-[#FFC823] rounded py-1 px-5 mt-6 text-xl cursor-pointer">
+          {/* <button className="bg-[#FFC823] rounded py-1 px-5 mt-6 text-xl cursor-pointer">
             Contact
-          </button>
+          </button> */}
         </div>
         <div>
           <Image
@@ -28,7 +28,7 @@ export default function AboutUs() {
             height={400}
           />
         </div>
-      </section> */}
+      </section>
     </>
   );
 }

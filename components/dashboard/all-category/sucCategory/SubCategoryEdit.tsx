@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 
@@ -18,11 +19,11 @@ type InputField = {
   value: string;
 };
 
-export function CategoryEdit({
+export function SubCategoryEdit({
   title,
   trigger,
 }: {
-  title?: boolean;
+  title?: string;
   trigger: React.ReactNode;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -41,6 +42,11 @@ export function CategoryEdit({
     const newInputValues = [...inputFields];
     newInputValues[index].value = event.target.value;
     setInputFields(newInputValues);
+  };
+
+  const removeInput = (index: number) => {
+    const filteredFields = inputFields.filter((_, i) => i !== index);
+    setInputFields(filteredFields);
   };
 
   const handleUploadIcon = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,66 +69,50 @@ export function CategoryEdit({
         <DialogTrigger asChild>{trigger}</DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>
-              {title ? "Add Category" : "Edit Category"}
-            </DialogTitle>
+            <DialogTitle>{title}</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4">
             <div className="grid gap-3">
               <Label htmlFor="name-1">Category Name</Label>
-              <Input id="name-1" name="name" defaultValue="Pedro Duarte" />
+              <Input disabled name="name" defaultValue="Pedro Duarte" />
             </div>
-            {/* Upload Image */}
-            {/* <div>
-              <label className="block mb-1">Add Icon</label>
-              <div
-                className="w-full h-20 border border-gray-300 px-3 flex justify-center items-center rounded-md cursor-pointer hover:bg-gray-100"
-                onClick={handleClick}
-              >
-                <section>
-                  <input
-                    ref={inputRef}
-                    id="upload"
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleUploadIcon}
-                  />
-                </section>
+            {title && (
+              <>
+                <div className="grid gap-3">
+                  <section className="flex justify-between">
+                    <Label htmlFor="name-1">Sub Category </Label>
+                    <span onClick={handleAddInput}>
+                      <Plus />
+                    </span>
+                  </section>
+                  <section className="flex flex-col gap-2">
+                    {inputFields.map((field, index) => (
+                      <section className="flex items-center gap-2" key={index}>
+                        {/* Minus icon on the left */}
 
-                {icon ? (
-                  <img
-                    src={icon}
-                    alt="Preview"
-                    className="w-20 h-20 object-cover rounded border"
-                  />
-                ) : (
-                  <span>Upload Icon</span>
-                )}
-              </div>
-            </div> */}
+                        {/* Input on the right */}
+                        <Input
+                          type="text"
+                          value={field.value}
+                          onChange={(e) => handleInputChange(index, e)}
+                          className="flex-1"
+                        />
 
-            <div className="grid gap-3">
-              <Label htmlFor="username-1">Sub Category</Label>
-              {inputFields.map((field, index) => (
-                <Input
-                  className=""
-                  key={index} // Use a more stable key if possible (e.g., unique ID)
-                  type="text"
-                  value={field.value}
-                  onChange={(e) => handleInputChange(index, e)}
-                />
-              ))}
-            </div>
+                        <span
+                          onClick={() => removeInput(index)}
+                          className="cursor-pointer text-red-500 hover:text-red-700"
+                        >
+                          <Minus />
+                        </span>
+                      </section>
+                    ))}
+                  </section>
+                </div>
+              </>
+            )}
           </div>
 
           <section className="flex justify-between items-center mt-6">
-            <button
-              className="bg-cyan-700 py-1 px-3 cursor-pointer text-white rounded"
-              onClick={handleAddInput}
-            >
-              Add Input
-            </button>
             <DialogFooter className="mt-1">
               <Button type="submit">Submit</Button>
             </DialogFooter>
