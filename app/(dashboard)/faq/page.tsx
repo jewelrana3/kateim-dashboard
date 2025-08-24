@@ -10,7 +10,7 @@ export default function FaqPage() {
         <FaqEdit
           title="Add Faq"
           trigger={
-            <button className="cursor-pointer bg-blue-400 py-1 px-2 rounded">
+            <button className="cursor-pointer bg-blue-400 py-1 px-2 rounded text-white font-medium">
               Add Faq
             </button>
           }
