@@ -74,7 +74,6 @@ export default function AboutUsEdit({ trigger }: { trigger: React.ReactNode }) {
 
             {/* Headline */}
             <section className="flex justify-between items-center mt-7">
-              <p> Description</p>
               <div>
                 <span
                   className={`border border-gray-500 rounded px-3 py-1 cursor-pointer ${
@@ -94,7 +93,7 @@ export default function AboutUsEdit({ trigger }: { trigger: React.ReactNode }) {
                   }`}
                   onClick={() => setStatus("status")}
                 >
-                  Description
+                  Text
                 </span>
               </div>
             </section>

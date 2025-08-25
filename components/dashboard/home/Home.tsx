@@ -10,10 +10,11 @@ import {
 } from "@/components/ui/select";
 
 import React, { useEffect, useState } from "react";
-import HeroSection from "./modalFrom/HeroSection";
-import Labour from "./modalFrom/Labour";
-import HowWork from "./modalFrom/HowWork";
-import HowWorker from "./modalFrom/HowWorker";
+import HeroSection from "./selectPage/HeroSection";
+import Labour from "./selectPage/Labour";
+
+import HowWorker from "./selectPage/HowWorker";
+import HowWorkEmployee from "./selectPage/HowWorkEmployee";
 
 const title = [
   { id: 1, value: "hero Section" },
@@ -30,7 +31,7 @@ export default function Home() {
 
   // Open dialog automatically when Hero Section is selected
   useEffect(() => {
-    if (selectedValue === "Hero Section") {
+    if (selectedValue === "hero Section") {
       setIsHeroOpen(true);
     } else if (selectedValue === "how it work(employer)") {
       setIsHeroOpen(true);
@@ -41,8 +42,8 @@ export default function Home() {
     }
   }, [selectedValue]);
   return (
-    <>
-      <div className="flex items-center justify-between bg-[#F6F6F6] p-4 rounded-md">
+    <section className="max-w-7xl mx-auto">
+      <div className="flex items-center justify-between bg-[#F6F6F6] py-5 rounded-md">
         <h2 className="text-base font-medium text-gray-800">
           Home Us Landing Page
         </h2>
@@ -72,34 +73,10 @@ export default function Home() {
         </div>
       </div>
       {/* Modal rendered when selected */}
-      {selectedValue === "Hero Section" && (
-        <HeroSection
-          open={isHeroOpen}
-          onOpenChange={setIsHeroOpen}
-          trigger={<span className="text-xl">Hero Section</span>} // Not needed since you're using `open` manually
-        />
-      )}
-      {selectedValue === "how it work(employer)" && (
-        <HowWork
-          open={isHeroOpen}
-          onOpenChange={setIsHeroOpen}
-          trigger={<span className="text-xl"></span>} // Not needed since you're using `open` manually
-        />
-      )}
-      {selectedValue === "how it work(worker)" && (
-        <HowWorker
-          open={isHeroOpen}
-          onOpenChange={setIsHeroOpen}
-          trigger={<span className="text-xl"></span>} // Not needed since you're using `open` manually
-        />
-      )}
-      {selectedValue === "why instant labour" && (
-        <Labour
-          open={isHeroOpen}
-          onOpenChange={setIsHeroOpen}
-          trigger={<span className="text-xl"></span>} // Not needed since you're using `open` manually
-        />
-      )}
-    </>
+      {selectedValue === "hero Section" && <HeroSection />}
+      {selectedValue === "how it work(employer)" && <HowWorkEmployee />}
+      {selectedValue === "how it work(worker)" && <HowWorker />}
+      {selectedValue === "why instant labour" && <Labour />}
+    </section>
   );
 }

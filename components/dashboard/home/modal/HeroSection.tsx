@@ -1,10 +1,7 @@
 "use client";
 
-import { Upload } from "lucide-react";
-
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogTitle,
@@ -14,21 +11,16 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
+import { Edit } from "lucide-react";
 type HeroSectionProps = {
   trigger: React.ReactNode;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
 
-export default function HeroSection({
-  trigger,
-  open,
-  onOpenChange,
-}: HeroSectionProps) {
+export default function HeroSectionModal() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-
-  const [status, setStatus] = useState("description");
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files?.[0];
@@ -45,10 +37,14 @@ export default function HeroSection({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog>
+      <DialogTrigger>
+        <Edit className="w-4 h-4 cursor-pointer" />
+      </DialogTrigger>
       <DialogContent className="max-w-2xl">
         <div className="  rounded-md text-black">
           <DialogTitle>Hero Section</DialogTitle>
+
           <form className="space-y-4 mt-6">
             <div>
               <label className="mb-2" htmlFor="headline">

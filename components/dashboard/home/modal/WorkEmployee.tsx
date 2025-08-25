@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
+import { Edit } from "lucide-react";
 
 type HeroSectionProps = {
   trigger: React.ReactNode;
@@ -18,13 +19,12 @@ type HeroSectionProps = {
   onOpenChange?: (open: boolean) => void;
 };
 
-export default function HowWork({
-  trigger,
-  open,
-  onOpenChange,
-}: HeroSectionProps) {
+export default function WorkEmployee() {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog>
+      <DialogTrigger>
+        <Edit className="w-4 h-4 cursor-pointer" />
+      </DialogTrigger>
       <DialogContent className="min-w-2xl">
         <div className="bg-white p-6 rounded-md  w-full text-black">
           <DialogTitle>How it work(employer)</DialogTitle>
