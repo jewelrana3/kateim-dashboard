@@ -5,7 +5,7 @@ import RevenueChart from "@/components/dashboard/overview/RevenueChart";
 import Header from "@/header/Header";
 export default function Home() {
   return (
-    <section className="px-5 text-[#333333] py-5">
+    <section className="px-5 text-[#333333] py-1">
       <Card />
       <div>
         <RevenueChart />

@@ -85,7 +85,7 @@ export default function Chart() {
         </select>
       </div>
 
-      <ResponsiveContainer width="100%" height={260}>
+      <ResponsiveContainer width="100%" height={250}>
         <BarChart
           data={data}
           margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
