@@ -84,7 +84,7 @@ export default function AllWorker() {
   const router = useRouter();
   const [showDetails, setShowDetails] = useState(false);
 
-  const handleClick = () => {
+  const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
       text: "You want to be delete this!",
@@ -170,7 +170,7 @@ export default function AllWorker() {
 
                   <span
                     className="bg-red-600 p-1 rounded cursor-pointer"
-                    onClick={handleClick}
+                    onClick={handleDelete}
                   >
                     <Trash2 className=" text-white" />
                   </span>

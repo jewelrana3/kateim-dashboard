@@ -27,7 +27,7 @@ export default function TermsCondition() {
       <Button
         onClick={() => handleOnSave(content)}
         htmlType="submit"
-        className="bg-yellow-400 font-bold text-lg px-6  rounded-full transform transition-all duration-300 ease-in-out 0.5s ease  w-full mt-4 text-white"
+        className="bg-yellow-400 font-bold text-lg px-6  rounded-full transform transition-all duration-300 ease-in-out 0.5s ease  mt-4 text-white"
       >
         Save
       </Button>
