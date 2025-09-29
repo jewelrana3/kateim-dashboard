@@ -7,7 +7,6 @@ import {
   Home,
   Store,
   Calendar,
-  CreditCard,
   Key,
   Shield,
   LogOut,
@@ -15,6 +14,7 @@ import {
   Phone,
   FileQuestion,
   CheckCheck,
+  Podcast,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -36,13 +36,15 @@ export const sidebarMenu = [
   { id: 4, label: "All Category", icon: List, path: "/all-category" },
   { id: 5, label: "Home Landing Page", icon: Home, path: "/home-page" },
   { id: 6, label: "About Us Landing Page", icon: Store, path: "/about-us" },
+
   {
     id: 7,
     label: "Contact Us Landing Page",
     icon: Calendar,
     path: "/contact-us",
   },
-  { id: 8, label: "Credit List", icon: CreditCard, path: "/credit-list" },
+  { id: 22, label: "Subscription", icon: Podcast, path: "/subscriptions" },
+  // { id: 8, label: "Credit List", icon: CreditCard, path: "/credit-list" },
   { id: 9, label: "Change Password", icon: Key, path: "/change-password" },
   {
     id: 10,

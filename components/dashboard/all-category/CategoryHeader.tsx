@@ -7,7 +7,7 @@ export default function CategoryHeader({ title }: { title: string }) {
     <>
       <div className="flex items-center justify-between my-6">
         <h1 className="text-base font-semibold text-gray-800">
-          {title === "category" ? "All Category" : "Sub Category"}
+          {title === "category" ? "All Category" : "All Category"}
         </h1>
 
         <div className="flex items-center gap-4">
@@ -26,12 +26,12 @@ export default function CategoryHeader({ title }: { title: string }) {
             />
           ) : (
             <SubCategoryEdit
-              title="Sub Category"
+              title="All Category"
               trigger={
                 <button className="flex items-center gap-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition cursor-pointer">
                   <PlusCircle className="w-4 h-4" />
                   <span className="text-sm">
-                    {title === "category" ? "All Category" : "Sub Category"}
+                    {title === "category" ? "All Category" : "All Category"}
                   </span>
                 </button>
               }

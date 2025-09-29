@@ -11,9 +11,30 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
+
+const categories = [
+  "Contraction",
+  "Cleaning",
+  "Event & Hospitality",
+  "Security",
+  "Removals",
+  "Drivers",
+  "Warehouse & Logistics",
+  "Dj & Entertainment",
+  "Landscaping & Ground Maintenance",
+  "Handyman",
+];
 
 type InputField = {
   value: string;
@@ -74,7 +95,20 @@ export function SubCategoryEdit({
           <div className="grid gap-4">
             <div className="grid gap-3">
               <Label htmlFor="name-1">Category Name</Label>
-              <Input disabled name="name" defaultValue="Pedro Duarte" />
+              <Select>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {categories.map((item) => (
+                      <SelectItem key={item} value={item}>
+                        {item}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
             {title && (
               <>
@@ -113,9 +147,9 @@ export function SubCategoryEdit({
           </div>
 
           <section className="flex justify-between items-center mt-6">
-            <DialogFooter className="mt-1">
-              <Button type="submit">Submit</Button>
-            </DialogFooter>
+            <Button className="!w-full" type="submit">
+              Confirm
+            </Button>
           </section>
         </DialogContent>
       </form>
