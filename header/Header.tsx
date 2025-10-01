@@ -36,8 +36,8 @@ export default function Header() {
   return (
     <>
       {!isAuthPage && (
-        <section className="flex items-center justify-between bg-white text-black p-4 z-50">
-          <p>{activePath?.label}</p>
+        <section className="flex items-center justify-end bg-white text-black p-4 z-50">
+          {/* <p>{activePath?.label}</p> */}
           <div className="flex items-center gap-4">
             <div className="relative bg-gray-100 p-2 rounded-full">
               <Link href="/notification">

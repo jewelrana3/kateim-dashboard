@@ -23,15 +23,20 @@ export default function DashboardLayout({
   return (
     <html lang="en" className={poppins.variable}>
       <body className="">
-        <section className="flex h-screen">
+        <section className="flex ">
           <aside className="bg-white ">
             <Sidebar />
           </aside>
           <main className="main flex-1 h-screen bg-[#F6F6F6]">
-            <div>
+            <div className="sticky top-0 z-50">
               <Header />
             </div>
-            <div className=" overflow-y-scroll no-scrollbar">{children}</div>
+            <div
+              className="overflow-y-auto scroll-smooth p-4 hide-scrollbar"
+              style={{ height: "calc(100vh - 68px)" }}
+            >
+              {children}
+            </div>
           </main>
         </section>
       </body>

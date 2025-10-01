@@ -83,11 +83,14 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="h-screen overflow-y-scroll no-scrollbar">
-      <h1 className="text-[#0057DC] text-xl font-semibold text-center my-5">
+    <div className="">
+      <h1 className="text-[#0057DC] text-xl font-semibold text-center my-5 sticky top-0">
         Instantlabour
       </h1>{" "}
-      <aside className=" bg-white p-4 space-y-1 text-sm">
+      <aside
+        className=" bg-white p-4 space-y-1  overflow-y-scroll  text-sm hide-scrollbar"
+        style={{ height: "calc(100vh-30px)" }}
+      >
         {sidebarMenu.map((item, index) => {
           const isActive = pathname === item.path;
           const Icon = item.icon;
