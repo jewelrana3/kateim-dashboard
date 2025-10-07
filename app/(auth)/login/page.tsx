@@ -62,12 +62,14 @@ export default function page() {
             </Link>
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-[#FFC823] text-black font-semibold py-2 cursor-pointer"
-          >
-            Log In
-          </button>
+          <Link href="/">
+            <button
+              type="submit"
+              className="w-full bg-[#FFC823] text-black font-semibold py-2 cursor-pointer"
+            >
+              Log In
+            </button>
+          </Link>
         </form>
       </div>
     </div>

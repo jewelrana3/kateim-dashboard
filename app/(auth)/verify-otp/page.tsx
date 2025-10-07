@@ -4,6 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
 
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+import Link from "next/link";
+
 export default function OtpVerification() {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(59);
@@ -46,31 +54,31 @@ export default function OtpVerification() {
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg text-center">
         <h2 className="text-2xl font-semibold">Verify Your Account</h2>
         <p className="text-sm text-[#545454] my-2">
-          We’ve sent a One-Time Password (OTP) to your email/phone. Please enter
-          the code below to continue.
+          We’ve sent a One-Time Password (OTP) to your email. Please enter the
+          code below to continue.
         </p>
         <div className="flex justify-center gap-2">
-          {otp.map((num, idx) => (
-            <input
-              key={idx}
-              id={`otp-${idx}`}
-              type="text"
-              inputMode="numeric"
-              maxLength={1}
-              className="w-10 h-12 text-center text-lg font-medium bg-[#FEF6E7]"
-              value={num}
-              onChange={(e) => handleChange(e, idx)}
-            />
-          ))}
+          <InputOTP maxLength={6} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
+            <InputOTPGroup>
+              <InputOTPSlot index={0} />
+              <InputOTPSlot index={1} />
+              <InputOTPSlot index={2} />
+              <InputOTPSlot index={3} />
+              <InputOTPSlot index={4} />
+              <InputOTPSlot index={5} />
+            </InputOTPGroup>
+          </InputOTP>
         </div>
 
         <p className="text-sm text-gray-700 my-4">
           Resent in 0:{timer < 10 ? `0${timer}` : timer}
         </p>
 
-        <Button className="w-full bg-yellow-400 hover:bg-yellow-500 text-black">
-          Continue
-        </Button>
+        <Link href="new-password">
+          <Button className="w-full bg-yellow-400 hover:bg-yellow-500 text-black">
+            Continue
+          </Button>
+        </Link>
       </div>
     </div>
   );

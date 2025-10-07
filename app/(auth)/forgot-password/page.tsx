@@ -43,7 +43,7 @@ export default function page() {
             />
           </div>
 
-          <Link href="/new-password">
+          <Link href="/verify-otp">
             <button
               type="submit"
               className="w-full bg-[#FFC823] text-black font-semibold py-2 cursor-pointer"

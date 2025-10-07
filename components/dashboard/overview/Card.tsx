@@ -1,25 +1,27 @@
-import { User, CreditCard, DollarSign } from "lucide-react";
+import { DollarSign } from "lucide-react";
+import profile from "../../../public/card/profile.svg";
+import Image from "next/image";
 
 export const statCards = [
   {
     title: "Total Employer",
     value: "2000",
-    icon: User,
+    icon: profile,
   },
   {
     title: "Total Worker",
     value: "3000",
-    icon: User,
+    icon: profile,
   },
   {
     title: "Total Credit Sales",
     value: "5000+",
-    icon: CreditCard,
+    icon: profile,
   },
   {
     title: "Total Revenue",
     value: "$2562",
-    icon: DollarSign,
+    icon: profile,
   },
 ];
 
@@ -35,12 +37,12 @@ export default function Card() {
           >
             {/* Header with Icon and title */}
             <div className="flex items-center justify-center gap-2 text-sm text-gray-600 mt-5">
-              <Icon className="w-4 h-4" />
+              <Image src={item.icon} alt="icon" width={20} height={20} />
               <span className="text-xl font-medium">{item.title}</span>
             </div>
 
             {/* Value */}
-            <div className="text-2xl font-semibold text-black mb-4 p-2">
+            <div className="text-2xl font-semibold text-[#333333] mb-4 p-2">
               {item.value}
             </div>
 

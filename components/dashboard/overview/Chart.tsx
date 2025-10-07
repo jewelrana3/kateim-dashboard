@@ -60,6 +60,15 @@ const months = [
   "Dec 2025",
 ];
 
+const maxValue = Math.max(...data.map((data) => data.pv));
+
+const result = data.map((item) => {
+  return {
+    ...item,
+    pv: Math.round((item.pv / maxValue) * 100),
+  };
+});
+
 export default function Chart() {
   const [selectedMonth, setSelectedMonth] = useState("Jan 2025");
 
@@ -71,7 +80,9 @@ export default function Chart() {
   return (
     <section className="shadow-md rounded-lg px-3 text-textGray bg-[#FFFFFF] p-4">
       <div className="flex items-center justify-between mb-4">
-        <h1 className=" text-xl">Total credit sales monthly</h1>
+        <h1 className=" text-xl capitalize text-gray-700 font-medium">
+          Total credit sales monthly
+        </h1>
         <select
           value={selectedMonth}
           onChange={handleMonthChange}
@@ -87,12 +98,12 @@ export default function Chart() {
 
       <ResponsiveContainer width="100%" height={250}>
         <BarChart
-          data={data}
+          data={result}
           margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
+          <XAxis dataKey="name" tickLine={false} axisLine={false} />
+          <YAxis tickLine={false} axisLine={false} />
           <Tooltip />
           <Bar dataKey="pv" fill="#0057DC" radius={[10, 10, 0, 0]} />
         </BarChart>

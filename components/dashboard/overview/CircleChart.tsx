@@ -15,7 +15,7 @@ export default function CircleChart() {
   return (
     <div className="h-full p-4 bg-[#FFFFFF] shadow-md rounded-lg">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Total Employer</h2>
+        <h2 className="text-lg font-medium">Total Employer</h2>
         <select
           value={selectedYear}
           onChange={(e) => setSelectedYear(e.target.value)}

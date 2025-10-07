@@ -3,6 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
 import React, { useState } from "react";
 
 export default function page() {
@@ -59,13 +60,14 @@ export default function page() {
               {confirmPassword ? <EyeOff /> : <Eye />}
             </span>
           </div>
-
-          <button
-            type="submit"
-            className="w-full bg-[#FFC823] text-black font-semibold py-2 cursor-pointer"
-          >
-            Confirm
-          </button>
+          <Link href="/login">
+            <button
+              type="submit"
+              className="w-full bg-[#FFC823] text-black font-semibold py-2 cursor-pointer"
+            >
+              Confirm
+            </button>
+          </Link>
         </form>
       </div>
     </div>

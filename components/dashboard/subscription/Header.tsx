@@ -15,7 +15,7 @@ export default function Header() {
       <div className="flex items-center gap-5">
         <OfferModal
           trigger={
-            <div className="capitalize font-semibold bg-[#FFC823] text-black rounded-md px-2 py-3 flex">
+            <div className="capitalize font-semibold bg-[#FFC823] text-black rounded-md px-2 py-3 cursor-pointer flex">
               <Plus />
               promotional offer
             </div>
