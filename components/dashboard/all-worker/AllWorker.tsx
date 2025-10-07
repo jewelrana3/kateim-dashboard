@@ -111,11 +111,12 @@ export default function AllWorker() {
           <h2 className="text-lg font-semibold">All Worker</h2>
           <div>
             <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select item" />
+              <SelectTrigger className="w-[100px]">
+                <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
+                  <SelectItem value="all">All</SelectItem>
                   <SelectItem value="block">Block</SelectItem>
                   <SelectItem value="active">Active</SelectItem>
                 </SelectGroup>

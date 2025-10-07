@@ -94,12 +94,16 @@ export default function Sidebar() {
       >
         {sidebarMenu.map((item, index) => {
           const isActive = pathname === item.path;
+          const dubleActive =
+            item.path === "/all-worker" && pathname === "/worker-details";
           const Icon = item.icon;
           return (
             <Link key={index} href={item.path} className="">
               <div
                 className={`flex items-center gap-3 px-4 my-2 py-2 cursor-pointer ${
-                  isActive ? "bg-blue-600 text-white" : "text-black"
+                  isActive || dubleActive
+                    ? "bg-blue-600 text-white"
+                    : "text-black"
                 }`}
               >
                 <Icon className="w-5 h-5 shrink-0" />

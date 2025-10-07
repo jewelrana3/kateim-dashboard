@@ -21,8 +21,6 @@ const title = [
   { id: 2, value: "how it work(employer)" },
   { id: 3, value: "how it work(worker)" },
   { id: 4, value: "why instant labour" },
-  //   { id: 5, value: "Why Chose Instantlabour" },
-  //   { id: 6, value: "Our Vision" },
 ];
 
 export default function Home() {

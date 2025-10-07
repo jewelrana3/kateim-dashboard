@@ -20,11 +20,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import VerifyDetails from "@/modal/VerifyDetailsModal";
-import VerifyDetailsModal from "@/modal/VerifyDetailsModal";
 import Swal from "sweetalert2";
+import VerifyDetailsModal from "@/modal/VerifyDetailsModal";
 
 const employers = [
   {
@@ -82,10 +79,7 @@ const employers = [
     avatar: "/avatar.jpg", // Replace with your actual path
   },
 ];
-
 export default function VerifyReuest() {
-  const [show, setShow] = useState(false);
-
   const handleClick = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -156,12 +150,13 @@ export default function VerifyReuest() {
                   </Badge>
                 </TableCell>
                 <TableCell className="flex gap-2">
-                  <span
-                    className="bg-blue-600 p-1 rounded cursor-pointer"
-                    onClick={() => setShow(true)}
-                  >
-                    <Eye className=" text-white" />
-                  </span>
+                  <VerifyDetailsModal
+                    trigger={
+                      <span className="bg-blue-600 p-1 rounded cursor-pointer">
+                        <Eye className=" text-white" />
+                      </span>
+                    }
+                  />
 
                   <span
                     className="bg-red-600 p-1 rounded cursor-pointer"
@@ -175,11 +170,6 @@ export default function VerifyReuest() {
           </TableBody>
         </Table>
       </div>
-
-      {/* modal */}
-      {show && (
-        <VerifyDetailsModal isOpen={show} onClose={() => setShow(false)} />
-      )}
     </>
   );
 }

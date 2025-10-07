@@ -1,33 +1,48 @@
-import { Edit } from "lucide-react";
-import Image from "next/image";
-import React from "react";
-import WorkEmployee from "../modal/WorkEmployee";
+import WorkEdit from "../modal/WorkEdit";
+
+const data = [
+  {
+    id: 1,
+    title: "Post A Shift",
+    subTitle: "Describe Your Job – It Takes Under 1 Minute",
+  },
+  {
+    id: 2,
+    title: "Get Matched Instantly",
+    subTitle: "Get Connected with Qualified Professionals",
+  },
+  {
+    id: 3,
+    title: "Get Paid",
+    subTitle: "Get Paid for Your Work",
+  },
+];
 
 export default function HowWorkEmployee() {
   return (
-    <section className="grid grid-cols-2 gap-14 p-4 bg-white rounded-lg shadow-md relative">
-      <div className="absolute top-4 right-4 flex items-center justify-center bg-blue-600 h-10 w-10 text-white rounded-full cursor-pointer">
-        <WorkEmployee />
+    <div className="bg-white py-12 px-6 md:px-16 relative">
+      <div className="absolute top-4 right-4 flex items-center justify-center bg-blue-600 h-8 w-8 text-white rounded-full cursor-pointer">
+        <WorkEdit />
       </div>
 
-      <div>
-        <h1 className="font-semibold text-5xl my-3 leading-16">
-          Connecting Talent with <br /> Opportunity, Seamlessly
-        </h1>
-        <p className="text-[#545454] mt-6">
-          We make it simple for employers and skilled professionals to connect,
-          collaborate, and complete projects — all in one trusted platform
-        </p>
+      <h2 className="text-3xl font-semibold text-center mb-12 text-gray-700">
+        How It Works(Employee)
+      </h2>
+      <div className="grid md:grid-cols-3 gap-8 text-center">
+        {data.map((item) => (
+          <div className="flex items-start gap-3">
+            <div className="bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center text-lg font-bold mb-4">
+              {item.id}
+            </div>
+            <div className="text-left">
+              <h3 className="text-xl font-semibold mb-2 text-gray-700">
+                {item.title}
+              </h3>
+              <p className="text-gray-600">{item.subTitle}</p>
+            </div>
+          </div>
+        ))}
       </div>
-
-      <div>
-        <Image
-          src="https://i.ibb.co.com/5gVyCyh3/Frame-2147227772.png"
-          alt="upload image"
-          width={400}
-          height={400}
-        />
-      </div>
-    </section>
+    </div>
   );
 }

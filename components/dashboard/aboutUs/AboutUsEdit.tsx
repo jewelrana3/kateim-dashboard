@@ -19,17 +19,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useRef, useState } from "react";
+import { Input } from "@/components/ui/input";
 
-const title = [
-  { id: 1, value: "Hero Section" },
-  { id: 2, value: "Who We Are" },
-  { id: 3, value: "Our Mission" },
-  { id: 4, value: "What We Do" },
-  { id: 5, value: "Why Chose Instantlabour" },
-  { id: 6, value: "Our Vision" },
-];
-
-export default function AboutUsEdit({ trigger }: { trigger: React.ReactNode }) {
+export default function AboutUsEdit({
+  trigger,
+}: {
+  trigger?: React.ReactNode;
+}) {
   const [status, setStatus] = useState("description");
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -54,27 +50,17 @@ export default function AboutUsEdit({ trigger }: { trigger: React.ReactNode }) {
       <DialogTrigger asChild>{trigger}</DialogTrigger>
 
       <DialogContent className="min-w-2xl">
-        <div className="bg-white p-6 rounded-md  w-full text-black">
+        <div className="bg-white p-6 rounded-md  w-full text-gray-700">
           <form className="space-y-4 mt-6">
-            <label className="block mb-1">Title</label>
-            <Select>
-              <SelectTrigger className="w-full cursor-pointer">
-                <SelectValue placeholder="Select Title" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {title.map((item) => (
-                    <SelectItem key={item.id} value={item.value}>
-                      {item.value}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-
+            <label className="block mb-1 font-medium">HeadLine</label>
+            <Input
+              type="text"
+              placeholder="headline here..."
+              className="w-full border border-gray-300 px-3 py-2 rounded-md outline-none"
+            />
             {/* Headline */}
             <section className="flex justify-between items-center mt-7">
-              <div>
+              {/* <div>
                 <span
                   className={`border border-gray-500 rounded px-3 py-1 cursor-pointer ${
                     status === "description"
@@ -95,10 +81,11 @@ export default function AboutUsEdit({ trigger }: { trigger: React.ReactNode }) {
                 >
                   Text
                 </span>
-              </div>
+              </div> */}
             </section>
 
             {/* Sub Headline */}
+            <label className="font-medium">Sub Body Text</label>
             <div>
               <Textarea
                 placeholder="Type..."
@@ -108,7 +95,7 @@ export default function AboutUsEdit({ trigger }: { trigger: React.ReactNode }) {
 
             {/* Upload Image */}
             <div>
-              <label className="block mb-1">Upload Image</label>
+              <label className="block mb-1 font-medium">Upload Image</label>
               <div
                 className="w-full h-40 border border-gray-300 px-3 py-4 flex justify-center items-center rounded-md cursor-pointer hover:bg-gray-100"
                 onClick={handleClick}
@@ -137,7 +124,7 @@ export default function AboutUsEdit({ trigger }: { trigger: React.ReactNode }) {
             </div>
 
             <DialogFooter>
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Publish</Button>
             </DialogFooter>
           </form>
         </div>

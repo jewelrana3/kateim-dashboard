@@ -1,6 +1,7 @@
 import { Pencil } from "lucide-react";
 import CategoryHeader from "../CategoryHeader";
 import { SubCategoryEdit } from "./SubCategoryEdit";
+import CategoryDelete from "./CategoryDelete";
 
 const jobCategories = [
   {
@@ -59,15 +60,21 @@ export default function SubCategory({}) {
             {/* Title with edit icon */}
             <div className="flex items-center justify-between border-b pb-1 mb-2">
               <h2 className="font-semibold text-base">{category.title}</h2>
-              <div>
-                <SubCategoryEdit
-                  title="Edit Sub Category"
-                  trigger={
-                    <button className="ml-2 text-blue-600 cursor-pointer">
-                      <Pencil className="w-4 h-4" />
-                    </button>
-                  }
-                />
+              <div className="flex items-center justify-center gap-2">
+                <div>
+                  <SubCategoryEdit
+                    title="Edit Sub Category"
+                    trigger={
+                      <button className=" text-blue-600 cursor-pointer">
+                        <Pencil className="w-5 h-5" />
+                      </button>
+                    }
+                  />
+                </div>
+
+                <div>
+                  <CategoryDelete />
+                </div>
               </div>
             </div>
 

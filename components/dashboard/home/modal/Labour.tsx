@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Edit } from "lucide-react";
+import { Edit, Plus } from "lucide-react";
 
 export default function LabourModal() {
   const [inputs, setInputs] = useState([{ value: "" }]);
@@ -41,7 +41,18 @@ export default function LabourModal() {
         </DialogHeader>
 
         <div className="space-y-2">
-          <p className="font-medium">HeadLine</p>
+          {/* header */}
+          <div className="flex justify-between">
+            <p className="font-medium">HeadLine</p>
+            <div>
+              <span
+                onClick={handleAddInput}
+                className="bg-cyan-700 hover:bg-cyan-800"
+              >
+                <Plus />
+              </span>
+            </div>
+          </div>
           {inputs.map((values, index) => (
             <Input
               key={index}
@@ -53,18 +64,11 @@ export default function LabourModal() {
 
           <div className="flex justify-between pt-3">
             <Button
-              variant="default"
-              onClick={handleAddInput}
-              className="bg-cyan-700 hover:bg-cyan-800"
-            >
-              Add Input
-            </Button>
-            <Button
               variant="secondary"
               onClick={handleSubmit}
-              className="bg-black text-white hover:bg-zinc-800"
+              className="bg-[#FFC823] text-[#333333] w-full"
             >
-              Submit
+              Publish
             </Button>
           </div>
         </div>
