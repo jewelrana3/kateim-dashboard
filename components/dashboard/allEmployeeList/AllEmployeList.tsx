@@ -21,8 +21,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
 import UserDetails from "@/modal/EmployeDetails";
+import Image from "next/image";
 
 const employers = [
   {
@@ -82,8 +82,6 @@ const employers = [
 ];
 
 export default function AllEmployeList() {
-  const [showDetails, setShowDetails] = useState(false);
-
   const handleClick = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -141,10 +139,13 @@ export default function AllEmployeList() {
                 <TableCell className="font-medium">0{index + 1}</TableCell>
 
                 <TableCell className="flex items-center gap-2">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={employer.avatar} alt={employer.name} />
-                    <AvatarFallback>{employer.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
+                  <Image
+                    src="https://i.ibb.co.com/xNXnsd1/Ellipse-7.png"
+                    alt="name"
+                    width={30}
+                    height={30}
+                    className=" rounded-full object-cover"
+                  />
                   {employer.name}
                 </TableCell>
 
@@ -157,12 +158,13 @@ export default function AllEmployeList() {
                   </Badge>
                 </TableCell>
                 <TableCell className="flex gap-2">
-                  <span
-                    className="bg-blue-600 p-1 rounded cursor-pointer"
-                    onClick={() => setShowDetails(true)}
-                  >
-                    <Eye className=" text-white" />
-                  </span>
+                  <UserDetails
+                    trigger={
+                      <span className="bg-blue-600 p-1 rounded cursor-pointer">
+                        <Eye className=" text-white" />
+                      </span>
+                    }
+                  />
 
                   <span className="bg-[#E6E6E6] p-1 rounded cursor-pointer">
                     <Lock size={24} className=" text-red-600" />
@@ -180,14 +182,6 @@ export default function AllEmployeList() {
           </TableBody>
         </Table>
       </div>
-
-      {/* user details show */}
-      {showDetails && (
-        <UserDetails
-          isOpen={showDetails}
-          onClose={() => setShowDetails(false)}
-        />
-      )}
     </>
   );
 }

@@ -6,8 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { DeleteIcon, Edit2Icon, Trash2 } from "lucide-react";
+import { Edit2Icon, Trash2 } from "lucide-react";
 import FaqEdit from "./FaqEdit";
 import Swal from "sweetalert2";
 const data = [

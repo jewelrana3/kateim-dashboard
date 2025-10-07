@@ -15,7 +15,7 @@ export default function TermsCondition() {
       <div className="">
         <div className="">
           <JoditEditor
-            className="border-none "
+            className="border-none break-all"
             ref={editor}
             value={content}
             config={{ height: 550, theme: "", readonly: false }}

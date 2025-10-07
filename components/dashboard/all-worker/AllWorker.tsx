@@ -22,6 +22,7 @@ import {
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import Image from "next/image";
 
 const employers = [
   {
@@ -141,10 +142,13 @@ export default function AllWorker() {
                 <TableCell className="font-medium">0{index + 1}</TableCell>
 
                 <TableCell className="flex items-center gap-2">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={employer.avatar} alt={employer.name} />
-                    <AvatarFallback>{employer.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
+                  <Image
+                    src="https://i.ibb.co.com/xNXnsd1/Ellipse-7.png"
+                    alt="name"
+                    width={30}
+                    height={30}
+                    className=" rounded-full object-cover"
+                  />
                   {employer.name}
                 </TableCell>
 

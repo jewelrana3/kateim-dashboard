@@ -15,6 +15,7 @@ import {
   FileQuestion,
   CheckCheck,
   Podcast,
+  CircleUserRound,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -24,13 +25,13 @@ export const sidebarMenu = [
   {
     id: 2,
     label: "All Employer List",
-    icon: User,
+    icon: CircleUserRound,
     path: "/all-employe-list",
   },
   {
     id: 3,
     label: "All Worker List",
-    icon: User,
+    icon: CircleUserRound,
     path: "/all-worker",
   },
   { id: 4, label: "All Category", icon: List, path: "/all-category" },

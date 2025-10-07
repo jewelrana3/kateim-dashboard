@@ -62,12 +62,10 @@ const months = [
 
 const maxValue = Math.max(...data.map((data) => data.pv));
 
-const result = data.map((item) => {
-  return {
-    ...item,
-    pv: Math.round((item.pv / maxValue) * 100),
-  };
-});
+const result = data.map((item) => ({
+  name: item.name,
+  pv: Math.round((item.pv / maxValue) * 100),
+}));
 
 export default function Chart() {
   const [selectedMonth, setSelectedMonth] = useState("Jan 2025");

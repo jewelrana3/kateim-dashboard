@@ -144,10 +144,6 @@ export default function VerifyReuest() {
                 <TableCell className="font-medium">0{index + 1}</TableCell>
 
                 <TableCell className="flex items-center gap-2">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={employer.avatar} alt={employer.name} />
-                    <AvatarFallback>{employer.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
                   {employer.name}
                 </TableCell>
 

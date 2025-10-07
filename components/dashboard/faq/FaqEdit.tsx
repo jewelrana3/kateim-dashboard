@@ -49,9 +49,6 @@ export default function FaqEdit({
             </div>
 
             <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </DialogClose>
               <Button className="bg-[#FFC823] text-black" type="submit">
                 Submit
               </Button>
