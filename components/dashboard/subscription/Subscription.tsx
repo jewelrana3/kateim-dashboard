@@ -44,7 +44,7 @@ const pricingPlans = [
 export default function Subscription() {
   return (
     <section>
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-10 mt-4 px-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 gap-10 mt-4 px-6">
         {pricingPlans.map((plan, index) => (
           <section key={index} className="flex flex-col items-center">
             {/* header */}
@@ -57,10 +57,14 @@ export default function Subscription() {
             >
               {/* bussiness name & price */}
               <div className="bg-[#E6EEFC] py-6  rounded-2xl text-center">
-                <h1 className="text-2xl font-medium">{plan.name}</h1>
+                <h1 className="text-xl 2xl:text-2xl font-medium">
+                  {plan.name}
+                </h1>
                 {/* price & month */}
                 <div className="flex items-center justify-center">
-                  <h1 className="text-3xl font-bold">{plan.price}</h1>
+                  <h1 className="text-2xl 2xl:text-3xl font-bold">
+                    {plan.price}
+                  </h1>
                   <p>{plan.month}</p>
                 </div>
               </div>

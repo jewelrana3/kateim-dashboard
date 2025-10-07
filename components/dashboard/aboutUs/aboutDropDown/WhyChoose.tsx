@@ -19,7 +19,7 @@ export default function WhyChoose() {
 
       {/* Content Section */}
       <div className="">
-        <h1 className="font-semibold text-4xl my-3 leading-16">
+        <h1 className="font-semibold text-3xl 2xl:text-4xl my-3 leading-10 2xl:leading-16">
           Why Choose InstantLabour
         </h1>
         <ul className="list-disc list-inside space-y-2 text-gray-700">

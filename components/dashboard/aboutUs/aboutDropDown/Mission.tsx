@@ -14,7 +14,9 @@ export default function Mission() {
         <Image src={hero} alt="upload image" width={400} height={400} />
       </div>
       <div>
-        <h1 className="font-semibold text-5xl my-3 leading-16">Our Mission</h1>
+        <h1 className="font-semibold text-3xl 2xl:text-5xl my-3 leading-16">
+          Our Mission
+        </h1>
         <p className="text-[#545454] mt-6">
           We are a dedicated employment marketplace built to connect talent with
           opportunity. Our platform brings together job seekers, employers, and

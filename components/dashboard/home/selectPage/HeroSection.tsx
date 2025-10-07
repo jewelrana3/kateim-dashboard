@@ -11,7 +11,7 @@ export default function HeroSection() {
       </div>
 
       <div>
-        <h1 className="font-semibold text-4xl my-3 leading-12">
+        <h1 className="font-semibold text-3xl 2xl:text-4xl my-3 leading-12">
           Employment marketplace find trusted labour in minutes no phone calls
           needed.
         </h1>

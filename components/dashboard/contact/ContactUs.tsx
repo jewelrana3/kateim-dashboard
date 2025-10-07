@@ -13,16 +13,17 @@ export default function ContactUs() {
         <ContactEdit />
 
         <section className="grid grid-cols-2 gap-14 p-4 bg-white rounded-lg shadow-md relative">
-          <button
-            className="absolute top-4 right-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2 cursor-pointer"
-            onClick={() => setShow(true)}
-          >
-            <Edit className="w-4 h-4" />
-          </button>
+          <ContactUsForm
+            trigger={
+              <button className="absolute top-4 right-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2 cursor-pointer">
+                <Edit className="w-4 h-4" />
+              </button>
+            }
+          />
 
           <div>
-            <h1 className="font-semibold text-5xl my-3 leading-16">
-              Connecting Talent with <br /> Opportunity, Seamlessly
+            <h1 className="font-semibold text-3xl 2xl:text-5xl my-3 leading-10 2xl:leading-16">
+              Let’s Connect and Build Something Great.
             </h1>
             <p className="text-[#545454] mt-6">
               We make it simple for employers and skilled professionals to
@@ -41,8 +42,6 @@ export default function ContactUs() {
           </div>
         </section>
       </section>
-
-      {show && <ContactUsForm isOpen={show} onClose={() => setShow(false)} />}
     </>
   );
 }

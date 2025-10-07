@@ -1,6 +1,7 @@
 import { BadgeCheck, ArrowLeft, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button"; // If you're using ShadCN
 import Image from "next/image";
+import Link from "next/link";
 
 const worker = {
   name: "Md Kamran Khan",
@@ -57,10 +58,12 @@ export default function WorkerDetails() {
   return (
     <div className="p-4 space-y-4">
       {/* Header */}
-      <div className="flex items-center gap-2 font-medium">
-        <ArrowLeft className="w-4 h-4" />
-        View Details
-      </div>
+      <Link href="/all-worker">
+        <div className="flex items-center gap-2 font-medium">
+          <ArrowLeft className="w-4 h-4" />
+          View Details
+        </div>
+      </Link>
 
       {/* Card */}
       <div className="bg-white p-6 shadow rounded-md">

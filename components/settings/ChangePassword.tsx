@@ -14,7 +14,10 @@ export default function ChangePassword() {
   const toggleVisibility = () => setShowPassword(!showPassword);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F6F6F6] px-4 mb-5">
+    <div
+      className=" flex items-center justify-center bg-[#F6F6F6] px-4 mb-5"
+      style={{ height: "calc(100vh - 120px)" }}
+    >
       <div className="min-w-md w-[50%] mx-auto bg-white p-8 rounded-md shadow-md space-y-6 ">
         <h2 className="text-center text-2xl font-semibold">Change Password</h2>
 

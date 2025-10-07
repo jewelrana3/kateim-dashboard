@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Eye, Link, Lock, Trash2 } from "lucide-react";
+import { Eye, Link, Lock, LockOpen, Trash2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -82,8 +82,8 @@ const employers = [
 ];
 
 export default function AllWorker() {
+  const [lock, setLock] = useState<{ [key: number]: boolean }>({});
   const router = useRouter();
-  const [showDetails, setShowDetails] = useState(false);
 
   const handleDelete = () => {
     Swal.fire({
@@ -103,6 +103,13 @@ export default function AllWorker() {
         });
       }
     });
+  };
+
+  const handleLock = (id: number) => {
+    setLock((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
   };
   return (
     <>
@@ -169,8 +176,15 @@ export default function AllWorker() {
                     <Eye className=" text-white" />
                   </span>
 
-                  <span className="bg-[#E6E6E6] p-1 rounded cursor-pointer">
-                    <Lock size={24} className=" text-red-600" />
+                  <span
+                    className="bg-[#E6E6E6] p-1 rounded cursor-pointer"
+                    onClick={() => handleLock(employer.id)}
+                  >
+                    {lock[employer.id] ? (
+                      <LockOpen size={24} className=" text-green-600" />
+                    ) : (
+                      <Lock size={24} className=" text-red-600" />
+                    )}
                   </span>
 
                   <span

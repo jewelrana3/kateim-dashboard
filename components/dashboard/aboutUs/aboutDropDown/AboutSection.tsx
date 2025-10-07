@@ -11,8 +11,8 @@ export default function AboutSection() {
         <AboutUsEdit trigger={<Edit className="w-4 h-4 cursor-pointer" />} />
       </div>
       <div>
-        <h1 className="font-semibold text-5xl my-3 leading-16">
-          Connecting Talent with <br /> Opportunity, Seamlessly
+        <h1 className="font-semibold text-4xl  2xl:text-5xl my-3 leading-12">
+          Connecting Talent with Opportunity, Seamlessly
         </h1>
         <p className="text-[#545454] mt-6">
           We make it simple for employers and skilled professionals to connect,

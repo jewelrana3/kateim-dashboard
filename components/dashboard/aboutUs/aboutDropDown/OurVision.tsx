@@ -11,7 +11,9 @@ export default function OurVision() {
         <AboutUsEdit trigger={<Edit className="w-4 h-4 cursor-pointer" />} />
       </div>
       <div>
-        <h1 className="font-semibold text-5xl my-3 leading-16">Our Vision</h1>
+        <h1 className="font-semibold text-3xl 2xl:text-5xl my-3 leading-16">
+          Our Vision
+        </h1>
         <p className="text-[#545454] mt-6">
           Our vision is a world where everyone has equal access to meaningful
           work and every business can easily find the talent it needs to thrive.
