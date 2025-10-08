@@ -5,7 +5,6 @@ import SubCategory from "@/components/dashboard/all-category/sucCategory/SubCate
 export default function Allcategory() {
   return (
     <div className="mx-auto max-w-7xl">
-      {/* <Category /> */}
       <SubCategory />
     </div>
   );

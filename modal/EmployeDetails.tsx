@@ -66,18 +66,18 @@ export default function EmployeDetails({
           </div>
 
           {/* footer */}
-          <div className="mt-2 flex  gap-3">
+          <div className="mt-2 flex justify-between gap-3">
             <p className="text-sm text-gray-500 w-[50%] mt-2">
               If you feel the user is fake in any way, you can block or delete
               the user from here.
             </p>
-            <div className="flex">
+            <div className="">
               <Button className="bg-blue-600 hover:bg-blue-700 text-white mr-4">
                 Block
               </Button>
-              <Button className="bg-red-600 hover:bg-red-700 text-white">
+              {/* <Button className="bg-red-600 hover:bg-red-700 text-white">
                 Delete
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>

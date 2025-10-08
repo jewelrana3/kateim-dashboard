@@ -165,7 +165,7 @@ export default function WorkerDetails() {
           >
             Block
           </Button>
-          <Button variant="destructive">Delete</Button>
+          {/* <Button variant="destructive">Delete</Button> */}
         </div>
       </section>
     </div>

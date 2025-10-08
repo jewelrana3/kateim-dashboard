@@ -63,7 +63,7 @@ export default function SubCategory({}) {
               <div className="flex items-center justify-center gap-2">
                 <div>
                   <SubCategoryEdit
-                    title="Edit Sub Category"
+                    title="Edit Category"
                     trigger={
                       <button className=" text-blue-600 cursor-pointer">
                         <Pencil className="w-5 h-5" />
