@@ -6,19 +6,19 @@ import hero from "../../../../public/about-us/hero.png";
 
 export default function AboutSection() {
   return (
-    <section className="grid grid-cols-2 gap-14 p-4  bg-white rounded-lg shadow-md relative">
+    <section className="grid grid-cols-[auto_40%] gap-14 p-4  bg-white rounded-lg shadow-md relative">
       <div className="absolute top-4 right-4 flex items-center justify-center bg-blue-600 h-8 w-8 text-white rounded-full cursor-pointer">
         <AboutUsEdit trigger={<Edit className="w-4 h-4 cursor-pointer" />} />
       </div>
       <div>
-        <h1 className="font-semibold text-4xl  2xl:text-5xl my-3 leading-12">
+        <h1 className="font-semibold text-4xl  2xl:text-5xl my-3 leading-12 2xl:leading-16">
           Connecting Talent with Opportunity, Seamlessly
         </h1>
         <p className="text-[#545454] mt-6">
           We make it simple for employers and skilled professionals to connect,
           collaborate, and complete projects — all in one trusted platform
         </p>
-        <button className="bg-[#FFC823] text-[#333333] rounded py-3 px-9 mt-6 text-xl cursor-pointer">
+        <button className="bg-[#FFC823] text-[#333333] rounded py-3 px-6 w-[220px] mt-6 text-xl cursor-pointer">
           Contact
         </button>
       </div>

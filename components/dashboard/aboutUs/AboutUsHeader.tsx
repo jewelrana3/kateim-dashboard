@@ -28,7 +28,6 @@ const title = [
 
 export default function AboutUsHeader() {
   const [selectedValue, setSelectedValue] = useState<string>("");
-  const [isHeroOpen, setIsHeroOpen] = useState(false);
   return (
     <>
       <section className="max-w-7xl mx-auto">

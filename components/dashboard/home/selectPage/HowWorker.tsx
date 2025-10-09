@@ -3,18 +3,18 @@ import WorkEdit from "../modal/WorkEdit";
 const data = [
   {
     id: 1,
-    title: "Post A Shift",
+    title: "Create Worker Profile",
     subTitle: "Describe Your Job – It Takes Under 1 Minute",
   },
   {
     id: 2,
-    title: "Get Matched Instantly",
-    subTitle: "Get Connected with Qualified Professionals",
+    title: "Get Matched With Jobs Instantly",
+    subTitle: "our ai sends it to the best local work",
   },
   {
     id: 3,
-    title: "Get Paid",
-    subTitle: "Get Paid for Your Work",
+    title: "Go To Work!",
+    subTitle: "your worker confirm an shows up.done.",
   },
 ];
 
@@ -38,7 +38,7 @@ export default function HowWorker() {
               <h3 className="text-xl font-semibold mb-2 text-gray-700">
                 {item.title}
               </h3>
-              <p className="text-gray-600">{item.subTitle}</p>
+              <p className="text-gray-600 capitalize">{item.subTitle}</p>
             </div>
           </div>
         ))}

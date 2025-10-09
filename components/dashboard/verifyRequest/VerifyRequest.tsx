@@ -149,7 +149,7 @@ export default function VerifyReuest() {
                     {employer.status}
                   </Badge>
                 </TableCell>
-                <TableCell className="flex gap-2">
+                <TableCell className="flex gap-2 pl-10">
                   <VerifyDetailsModal
                     trigger={
                       <span className="bg-blue-600 p-1 rounded cursor-pointer">
@@ -158,12 +158,12 @@ export default function VerifyReuest() {
                     }
                   />
 
-                  <span
+                  {/* <span
                     className="bg-red-600 p-1 rounded cursor-pointer"
                     onClick={handleClick}
                   >
                     <Trash2 className=" text-white" />
-                  </span>
+                  </span> */}
                 </TableCell>
               </TableRow>
             ))}

@@ -9,12 +9,12 @@ const data = [
   {
     id: 2,
     title: "Get Matched Instantly",
-    subTitle: "Get Connected with Qualified Professionals",
+    subTitle: "our ai sends it to the best local work",
   },
   {
     id: 3,
     title: "Get Paid",
-    subTitle: "Get Paid for Your Work",
+    subTitle: "your worker confirm an shows up.done.",
   },
 ];
 
@@ -38,7 +38,7 @@ export default function HowWorkEmployee() {
               <h3 className="text-xl font-semibold mb-2 text-gray-700">
                 {item.title}
               </h3>
-              <p className="text-gray-600">{item.subTitle}</p>
+              <p className="text-gray-600 capitalize">{item.subTitle}</p>
             </div>
           </div>
         ))}

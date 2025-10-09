@@ -6,14 +6,14 @@ import { Edit } from "lucide-react";
 
 export default function WhyChoose() {
   return (
-    <section className="grid grid-cols-2 gap-14 p-4  bg-white rounded-lg shadow-md relative">
+    <section className="grid grid-cols-[auto_55%] gap-14 p-4  bg-white rounded-lg shadow-md relative">
       <div className="absolute top-4 right-4 flex items-center justify-center bg-blue-600 h-8 w-8 text-white rounded-full cursor-pointer">
         <AboutUsEdit trigger={<Edit className="w-4 h-4 cursor-pointer" />} />
       </div>
       {/* Image Section */}
       <div className="md:flex-shrink-0">
         <div>
-          <Image src={hero} alt="upload image" width={400} height={400} />
+          <Image src={hero} alt="upload image" width={500} height={500} />
         </div>
       </div>
 
@@ -24,15 +24,15 @@ export default function WhyChoose() {
         </h1>
         <ul className="list-disc list-inside space-y-2 text-gray-700">
           <li>
-            <strong>All-In-One Platform</strong>: Post, Hire, Communicate, And
+            <strong>All-In-One Platform : </strong> Post, Hire, Communicate, And
             Pay — In One Place.
           </li>
           <li>
-            <strong>Trusted Network</strong>: Verified Professionals And
+            <strong>Trusted Network : </strong> Verified Professionals And
             Businesses.
           </li>
           <li>
-            <strong>24/7 Support</strong>: We’re Here Whenever You Need Help.
+            <strong>24/7 Support : </strong> We’re Here Whenever You Need Help.
           </li>
         </ul>
       </div>

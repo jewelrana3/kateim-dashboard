@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import Button from "./Button";
 import { JoditEditor } from "../JodiClient";
 
-export default function TermsCondition() {
+export default function PrivacyPolicy() {
   const editor = useRef(null);
 
   const [content, setContent] = useState("");

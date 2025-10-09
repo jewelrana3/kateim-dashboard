@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Eye, Lock, Trash2 } from "lucide-react";
+import { Eye, Lock, LockOpen, Trash2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import UserDetails from "@/modal/EmployeDetails";
 import Image from "next/image";
+import { useState } from "react";
 
 const employers = [
   {
@@ -82,24 +83,33 @@ const employers = [
 ];
 
 export default function AllEmployeList() {
-  const handleClick = () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You want to be delete this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
-        });
-      }
-    });
+  const [lock, setLock] = useState<{ [key: number]: boolean }>({});
+  // const handleClick = () => {
+  //   Swal.fire({
+  //     title: "Are you sure?",
+  //     text: "You want to be delete this!",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#3085d6",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Yes, delete it!",
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       Swal.fire({
+  //         title: "Deleted!",
+  //         text: "Your file has been deleted.",
+  //         icon: "success",
+  //       });
+  //     }
+  //   });
+  // };
+
+  const handleLock = (id: number) => {
+    const toggle = !lock[id];
+    setLock((prev) => ({
+      ...prev,
+      [id]: toggle,
+    }));
   };
   return (
     <>
@@ -154,11 +164,15 @@ export default function AllEmployeList() {
                 <TableCell>{employer.contact}</TableCell>
                 <TableCell>{employer.location}</TableCell>
                 <TableCell>
-                  <Badge className="bg-green-500 text-white">
+                  <Badge
+                    className={`${
+                      lock[employer?.id] ? "bg-green-500 " : "bg-[#E02121]"
+                    } w-20 text-white`}
+                  >
                     {employer.status}
                   </Badge>
                 </TableCell>
-                <TableCell className="flex gap-2">
+                <TableCell className="flex gap-2 ml-2">
                   <UserDetails
                     trigger={
                       <span className="bg-blue-600 p-1 rounded cursor-pointer">
@@ -167,16 +181,23 @@ export default function AllEmployeList() {
                     }
                   />
 
-                  <span className="bg-[#E6E6E6] p-1 rounded cursor-pointer">
-                    <Lock size={24} className=" text-red-600" />
+                  <span
+                    className="bg-[#E6E6E6] p-1 rounded cursor-pointer"
+                    onClick={() => handleLock(employer.id)}
+                  >
+                    {lock[employer.id] ? (
+                      <LockOpen size={24} className=" text-green-600" />
+                    ) : (
+                      <Lock size={24} className=" text-red-600" />
+                    )}
                   </span>
 
-                  <span
+                  {/* <span
                     className="bg-red-600 p-1 rounded cursor-pointer"
                     onClick={handleClick}
                   >
                     <Trash2 className=" text-white" />
-                  </span>
+                  </span> */}
                 </TableCell>
               </TableRow>
             ))}

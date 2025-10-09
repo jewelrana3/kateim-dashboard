@@ -6,12 +6,12 @@ import hero from "../../../../public/about-us/mission.png";
 
 export default function Mission() {
   return (
-    <section className="grid grid-cols-2 gap-14 p-4  bg-white rounded-lg shadow-md relative">
+    <section className="grid grid-cols-[40%_auto] gap-14 p-4  bg-white rounded-lg shadow-md relative">
       <div className="absolute top-4 right-4 flex items-center justify-center bg-blue-600 h-8 w-8 text-white rounded-full cursor-pointer">
         <AboutUsEdit trigger={<Edit className="w-4 h-4 cursor-pointer" />} />
       </div>
       <div>
-        <Image src={hero} alt="upload image" width={400} height={400} />
+        <Image src={hero} alt="upload image" width={500} height={500} />
       </div>
       <div>
         <h1 className="font-semibold text-3xl 2xl:text-5xl my-3 leading-16">

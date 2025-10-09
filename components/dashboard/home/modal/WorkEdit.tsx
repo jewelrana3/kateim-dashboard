@@ -18,7 +18,7 @@ export default function WorkEdit() {
       </DialogTrigger>
       <DialogContent className="max-w-2xl">
         <div className="  rounded-md text-black">
-          <DialogTitle>Hero Section</DialogTitle>
+          {/* <DialogTitle>Hero Section</DialogTitle> */}
 
           <div className="max-w-md mx-auto bg-white p-6 space-y-3">
             {/* Main Headline */}

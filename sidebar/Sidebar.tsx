@@ -16,6 +16,7 @@ import {
   CheckCheck,
   Podcast,
   CircleUserRound,
+  FolderKey,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -47,6 +48,12 @@ export const sidebarMenu = [
   { id: 22, label: "Subscription", icon: Podcast, path: "/subscriptions" },
   // { id: 8, label: "Credit List", icon: CreditCard, path: "/credit-list" },
   { id: 9, label: "Change Password", icon: Key, path: "/change-password" },
+  {
+    id: 19,
+    label: "Privacy Policy",
+    icon: FolderKey,
+    path: "/privacy-policy",
+  },
   {
     id: 10,
     label: "Terms And Condition",

@@ -164,11 +164,16 @@ export default function AllWorker() {
                 <TableCell>{employer.contact}</TableCell>
                 <TableCell>{employer.location}</TableCell>
                 <TableCell>
-                  <Badge className="bg-green-500 text-white">
-                    {employer.status}
+                  <Badge
+                    className={`${
+                      lock[employer?.id] ? "bg-green-500 " : "bg-[#E02121]"
+                    } w-20 text-white`}
+                  >
+                    {/* {employer.status} */}
+                    {lock[employer.id] ? "Active" : "Block"}
                   </Badge>
                 </TableCell>
-                <TableCell className="flex gap-2">
+                <TableCell className="flex gap-2 ml-3">
                   <span
                     className="bg-blue-600 p-1 rounded cursor-pointer"
                     onClick={() => router.push("/worker-details")}
@@ -187,12 +192,12 @@ export default function AllWorker() {
                     )}
                   </span>
 
-                  <span
+                  {/* <span
                     className="bg-red-600 p-1 rounded cursor-pointer"
                     onClick={handleDelete}
                   >
                     <Trash2 className=" text-white" />
-                  </span>
+                  </span> */}
                 </TableCell>
               </TableRow>
             ))}

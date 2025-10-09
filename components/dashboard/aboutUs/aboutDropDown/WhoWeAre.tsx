@@ -6,7 +6,7 @@ import hero from "../../../../public/about-us/who.png";
 
 export default function WhoWeAre() {
   return (
-    <section className="grid grid-cols-2 gap-14 p-4  bg-white rounded-lg shadow-md relative">
+    <section className="grid grid-cols-[auto_40%] gap-14 p-4  bg-white rounded-lg shadow-md relative">
       <div className="absolute top-4 right-4 flex items-center justify-center bg-blue-600 h-8 w-8 text-white rounded-full cursor-pointer">
         <AboutUsEdit trigger={<Edit className="w-4 h-4 cursor-pointer" />} />
       </div>
