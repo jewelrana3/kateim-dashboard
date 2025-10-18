@@ -28,14 +28,14 @@ export default function HowWorker() {
       <h2 className="text-3xl font-semibold text-center mb-12 text-gray-700">
         How It Works(Worker)
       </h2>
-      <div className="grid md:grid-cols-3 gap-8 text-center">
+      <div className="grid md:grid-cols-3 gap-5 text-center">
         {data.map((item) => (
           <div className="flex items-start gap-3">
-            <div className="bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center text-lg font-bold mb-4">
+            <div className="bg-blue-600 text-white rounded-full w-13 h-7 2xl:w-10 2xl:h-10 flex items-center justify-center text- font-medium mb-4">
               {item.id}
             </div>
             <div className="text-left">
-              <h3 className="text-xl font-semibold mb-2 text-gray-700">
+              <h3 className="text-[18px] font-semibold mb-2 text-gray-700">
                 {item.title}
               </h3>
               <p className="text-gray-600 capitalize">{item.subTitle}</p>

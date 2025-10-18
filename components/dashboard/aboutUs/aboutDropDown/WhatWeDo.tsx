@@ -11,8 +11,8 @@ export default function WhatWeDo() {
         <AboutUsEdit trigger={<Edit className="w-4 h-4 cursor-pointer" />} />
       </div>
       <div>
-        <h1 className="font-semibold text-3xl 2xl:text-5xl my-3 leading-16">
-          What We Do
+        <h1 className="font-semibold text-3xl 2xl:text-5xl my-3 leading-16 capitalize">
+          Where We Operate
         </h1>
         <p className="text-[#545454] mt-6">
           We connect job seekers with employers through a smart, easy-to-use

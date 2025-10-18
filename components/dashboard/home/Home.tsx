@@ -15,12 +15,14 @@ import Labour from "./selectPage/Labour";
 
 import HowWorker from "./selectPage/HowWorker";
 import HowWorkEmployee from "./selectPage/HowWorkEmployee";
+import JobResponses from "./selectPage/JobResponses";
 
 const title = [
-  { id: 1, value: "hero Section" },
-  { id: 2, value: "how it work(employer)" },
-  { id: 3, value: "how it work(worker)" },
-  { id: 4, value: "why instant labour" },
+  { id: 1, value: "Hero Section" },
+  { id: 2, value: "How it work(employer)" },
+  { id: 3, value: "How it work(worker)" },
+  { id: 4, value: "Why instant labour" },
+  { id: 5, value: "Job Responses" },
 ];
 
 export default function Home() {
@@ -29,13 +31,15 @@ export default function Home() {
 
   // Open dialog automatically when Hero Section is selected
   useEffect(() => {
-    if (selectedValue === "hero Section") {
+    if (selectedValue === "Hero Section") {
       setIsHeroOpen(true);
-    } else if (selectedValue === "how it work(employer)") {
+    } else if (selectedValue === "How it work(employer)") {
       setIsHeroOpen(true);
-    } else if (selectedValue === "how it work(worker)") {
+    } else if (selectedValue === "How it work(worker)") {
       setIsHeroOpen(true);
-    } else if (selectedValue === "why instant labour") {
+    } else if (selectedValue === "Why instant labour") {
+      setIsHeroOpen(true);
+    } else if (selectedValue === "Job Responses") {
       setIsHeroOpen(true);
     }
   }, [selectedValue]);
@@ -71,10 +75,11 @@ export default function Home() {
         </div>
       </div>
       {/* Modal rendered when selected */}
-      {selectedValue === "hero Section" && <HeroSection />}
-      {selectedValue === "how it work(employer)" && <HowWorkEmployee />}
-      {selectedValue === "how it work(worker)" && <HowWorker />}
-      {selectedValue === "why instant labour" && <Labour />}
+      {selectedValue === "Hero Section" && <HeroSection />}
+      {selectedValue === "How it work(employer)" && <HowWorkEmployee />}
+      {selectedValue === "How it work(worker)" && <HowWorker />}
+      {selectedValue === "Why instant labour" && <Labour />}
+      {selectedValue === "Job Responses" && <JobResponses />}
     </section>
   );
 }

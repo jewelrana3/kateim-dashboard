@@ -92,9 +92,11 @@ export default function Sidebar() {
 
   return (
     <div className="">
-      <h1 className="text-[#0057DC] text-xl font-semibold text-center my-5 sticky top-0">
-        Instantlabour
-      </h1>{" "}
+      <Link href="/">
+        <h1 className="text-[#0057DC] text-xl font-semibold text-center my-5 sticky top-0">
+          Instantlabour
+        </h1>
+      </Link>
       <aside
         className=" bg-white p-4 space-y-1  overflow-y-scroll  text-sm hide-scrollbar"
         style={{ height: "calc(100vh-30px)" }}

@@ -21,7 +21,7 @@ const title = [
   { id: 1, value: "Hero Section" },
   { id: 2, value: "Who We Are" },
   { id: 3, value: "Our Mission" },
-  { id: 4, value: "What We Do" },
+  { id: 4, value: "Where We Operate" },
   { id: 5, value: "Why Chose Instantlabour" },
   { id: 6, value: "Our Vision" },
 ];
@@ -60,7 +60,7 @@ export default function AboutUsHeader() {
         {selectedValue === "Hero Section" && <AboutSection />}
         {selectedValue === "Who We Are" && <WhoWeAre />}
         {selectedValue === "Our Mission" && <Mission />}
-        {selectedValue === "What We Do" && <WhatWeDo />}
+        {selectedValue === "Where We Operate" && <WhatWeDo />}
         {selectedValue === "Why Chose Instantlabour" && <WhyChoose />}
         {selectedValue === "Our Vision" && <OurVision />}
       </section>

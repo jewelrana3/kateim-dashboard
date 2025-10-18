@@ -169,7 +169,7 @@ export default function AllEmployeList() {
                       lock[employer?.id] ? "bg-green-500 " : "bg-[#E02121]"
                     } w-20 text-white`}
                   >
-                    {employer.status}
+                    {lock[employer?.id] ? "Active" : "Block"}
                   </Badge>
                 </TableCell>
                 <TableCell className="flex gap-2 ml-2">

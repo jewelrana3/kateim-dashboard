@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Edit, Plus } from "lucide-react";
+import { Edit, Minus, Plus } from "lucide-react";
 
 export default function LabourModal() {
   const [inputs, setInputs] = useState([{ value: "" }]);
@@ -26,6 +26,11 @@ export default function LabourModal() {
   const handleSubmit = () => {
     console.log("Submitted data:", inputs);
     // submit logic here
+  };
+
+  const handleRemove = (index: number) => {
+    const item = inputs.filter((_, i) => i !== index);
+    setInputs(item);
   };
 
   return (
@@ -54,12 +59,17 @@ export default function LabourModal() {
             </div>
           </div>
           {inputs.map((values, index) => (
-            <Input
-              key={index}
-              value={values.value}
-              onChange={(e) => handleChange(index, e.target.value)}
-              placeholder=""
-            />
+            <div className="flex items-center">
+              <Input
+                key={index}
+                value={values.value}
+                onChange={(e) => handleChange(index, e.target.value)}
+                placeholder=""
+              />
+              <span onClick={() => handleRemove(index)}>
+                <Minus className="text-red-500" />
+              </span>
+            </div>
           ))}
 
           <div className="flex justify-between pt-3">
