@@ -2,6 +2,14 @@
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { useState } from "react";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 const COLORS = ["#0056e0", "#b7d5f8"]; // Primary and secondary segment colors
 
 const data = [
@@ -9,22 +17,40 @@ const data = [
   { name: "Remaining", value: 80 },
 ];
 
+const months = [
+  "Jan 2025",
+  "Feb 2025",
+  "Mar 2025",
+  "Apr 2025",
+  "May 2025",
+  "Jun 2025",
+  "Jul 2025",
+  "Aug 2025",
+  "Sep 2025",
+  "Oct 2025",
+  "Nov 2025",
+  "Dec 2025",
+];
+
 export default function CircleChart() {
-  const [selectedYear, setSelectedYear] = useState("2025");
+  const [selectedYear, setSelectedYear] = useState("Jan 2025");
 
   return (
     <div className="h-full p-4 bg-[#FFFFFF] shadow-md rounded-lg">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-medium">Total Employer</h2>
-        <select
-          value={selectedYear}
-          onChange={(e) => setSelectedYear(e.target.value)}
-          className="border border-gray-400 rounded px-2 py-1 text-sm"
-        >
-          <option value="2025">2025</option>
-          <option value="2024">2024</option>
-          <option value="2023">2023</option>
-        </select>
+        <Select value={selectedYear} onValueChange={setSelectedYear}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select a year" />
+          </SelectTrigger>
+          <SelectContent>
+            {months.map((year) => (
+              <SelectItem key={year} value={year}>
+                {year}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="relative w-full h-60">

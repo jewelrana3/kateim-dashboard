@@ -1,4 +1,25 @@
-const years = ["July 2023", "July 2024", "July 2025"];
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const months = [
+  "Jan 2025",
+  "Feb 2025",
+  "Mar 2025",
+  "Apr 2025",
+  "May 2025",
+  "Jun 2025",
+  "Jul 2025",
+  "Aug 2025",
+  "Sep 2025",
+  "Oct 2025",
+  "Nov 2025",
+  "Dec 2025",
+];
 interface Props {
   selectedYear: string;
   onChange: React.Dispatch<React.SetStateAction<string>>;
@@ -7,17 +28,18 @@ interface Props {
 export default function YearDropdown({ selectedYear, onChange }: Props) {
   return (
     <div className="inline-block relative">
-      <select
-        className="appearance-none bg-gray-100 border border-gray-300 rounded-md py-2 px-4 pr-8 text-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent"
-        value={selectedYear}
-        onChange={(e) => onChange(e.target.value)}
-      >
-        {years.map((year) => (
-          <option key={year} value={year}>
-            {year}
-          </option>
-        ))}
-      </select>
+      <Select value={selectedYear} onValueChange={onChange}>
+        <SelectTrigger>
+          <SelectValue placeholder="Select a year" />
+        </SelectTrigger>
+        <SelectContent>
+          {months.map((year) => (
+            <SelectItem key={year} value={year}>
+              {year}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
       {/* Arrow */}
       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">

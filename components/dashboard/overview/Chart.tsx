@@ -10,6 +10,13 @@ import {
   YAxis,
 } from "recharts";
 import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const data = [
   { name: "01", pv: 11 },
@@ -81,17 +88,18 @@ export default function Chart() {
         <h1 className=" text-xl capitalize text-gray-700 font-medium">
           Total credit sales monthly
         </h1>
-        <select
-          value={selectedMonth}
-          onChange={handleMonthChange}
-          className="w-32 h-[33px] border border-[#0A6F77] rounded-md"
-        >
-          {months.map((month) => (
-            <option key={month} value={month}>
-              {month}
-            </option>
-          ))}
-        </select>
+        <Select value={selectedMonth} onValueChange={setSelectedMonth}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select a year" />
+          </SelectTrigger>
+          <SelectContent>
+            {months.map((year) => (
+              <SelectItem key={year} value={year}>
+                {year}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <ResponsiveContainer width="100%" height={250}>
