@@ -51,7 +51,7 @@ export default function Header() {
             <Link href="/profile">
               <div className="flex items-center gap-2">
                 <img
-                  src="https://i.ibb.co.com/xJdQCTG/download.jpgg"
+                  src="https://i.ibb.co.com/xJdQCTG/download.jpg"
                   alt="User Avatar"
                   className="w-8 h-8 rounded-full object-cover"
                 />

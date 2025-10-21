@@ -5,7 +5,10 @@ import { Edit2Icon } from "lucide-react";
 
 export default function Profile() {
   const inputFileRef = useRef<HTMLInputElement | null>(null);
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string | null>(
+    "https://i.ibb.co.com/xJdQCTG/download.jpg"
+  );
+  const [file, setFile] = useState<File | null>(null);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -13,11 +16,12 @@ export default function Profile() {
       if (file) {
         const url = URL.createObjectURL(file);
         setImage(url);
+        setFile(file);
       }
     }
   };
 
-  const openFileDialog = () => {
+  const handleClick = () => {
     inputFileRef.current?.click();
   };
 
@@ -45,7 +49,7 @@ export default function Profile() {
           {/* Edit icon (click করলে ফাইল ইনপুট খুলবে) */}
           <div
             className="absolute bottom-0 right-1 bg-white rounded-full p-1 shadow-md cursor-pointer hover:bg-gray-100"
-            onClick={openFileDialog}
+            onClick={handleClick}
             title="Change Profile Image"
           >
             <Edit2Icon className="w-5 h-5 text-gray-600" />
