@@ -19,6 +19,18 @@ const months = [
   "Oct 2025",
   "Nov 2025",
   "Dec 2025",
+  "Jan 2026",
+  "Feb 2026",
+  "Mar 2026",
+  "Apr 2026",
+  "May 2026",
+  "Jun 2026",
+  "Jul 2026",
+  "Aug 2026",
+  "Sep 2026",
+  "Oct 2026",
+  "Nov 2026",
+  "Dec 2026",
 ];
 interface Props {
   selectedYear: string;
