@@ -46,7 +46,7 @@ export default function Category() {
                   }
                 />
 
-                <CategoryDelete />
+                {/* <CategoryDelete _id={category._id} /> */}
               </div>
             </div>
           </div>

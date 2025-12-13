@@ -2,6 +2,8 @@
 
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useCreateSection, useUpdateSection } from "@/lib/query/hooks/dashboard/pageContent";
+import { PAGE_SLUGS, SECTION_TYPES } from "@/types/others";
 import { Edit, Plus } from "lucide-react";
 import React, { useState } from "react";
 
@@ -9,6 +11,7 @@ import React, { useState } from "react";
 type JobResponseEditProps = {
   mode: "create" | "edit";
   initialData?: {
+    _id: string;
     text: string;
   };
 };
@@ -16,19 +19,23 @@ type JobResponseEditProps = {
 export default function JobResponseEdit({ mode = "create", initialData }: JobResponseEditProps) {
   const isEdit = mode === "edit";
   
-  const [text, setText] = useState(initialData?.text || "All Applicants guaranteed a response within 7-14 days");
+  const [text, setText] = useState(initialData?.text);
   
   // API mutations
-  // const createMutation = useCreatePageContent();
-  // const updateMutation = useUpdatePageContent();
+    const {mutateAsync: createMutation, isPending: createIsPending} = useCreateSection(SECTION_TYPES.JOB_RESPONSE);
+    const {mutateAsync: updateMutation, isPending: updateIsPending} = useUpdateSection(SECTION_TYPES.JOB_RESPONSE);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     const payload = {
-      slug: "job-responses",
-      text: text
+      pageSlug: PAGE_SLUGS.HOME,
+      sectionType: SECTION_TYPES.JOB_RESPONSE,
+      title: text
     };
+
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(payload));
 
     try {
       if (isEdit && initialData) {
@@ -36,8 +43,15 @@ export default function JobResponseEdit({ mode = "create", initialData }: JobRes
         //   slug: "job-responses",
         //   data: payload
         // });
+        await updateMutation({
+          id: initialData._id,
+          data: formData
+        });
       } else {
-        // await createMutation.mutateAsync(payload);
+        // await createMutation.mutateAsync(formData);
+        await createMutation({
+          data: formData
+        });
       }
       
       // Close dialog on success
@@ -75,11 +89,11 @@ export default function JobResponseEdit({ mode = "create", initialData }: JobRes
           <button
             type="submit"
             className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            // disabled={createMutation.isPending || updateMutation.isPending}
+            disabled={createIsPending || updateIsPending}
           >
-            {/* {createMutation.isPending || updateMutation.isPending 
+            {createIsPending || updateIsPending 
               ? "Saving..." 
-              : isEdit ? "Update" : "Publish"} */}
+              : isEdit ? "Update" : "Publish"}
           </button>
         </form>
       </DialogContent>

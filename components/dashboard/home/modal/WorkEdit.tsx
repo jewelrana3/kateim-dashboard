@@ -9,38 +9,45 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useCreateSection, useUpdateSection } from "@/lib/query/hooks/dashboard/pageContent";
+import { ISection, SECTION_TYPES } from "@/types/others";
 import { Edit, Plus } from "lucide-react";
 import React, { useState } from "react";
 
 
 type WorkEditProps = {
   mode: "create" | "edit";
-  initialData?: {
-    headline: string;
-    steps: Array<{
-      id?: number;
-      title: string;
-      subTitle: string;
-    }>;
-  };
+  section?: ISection; // Optional for create mode
+  pageSlug: string; // Add pageSlug to know which page this belongs to
+  sectionType?: string; // Add section type
 };
 
-export default function WorkEdit({ mode = "create", initialData }: WorkEditProps) {
+type Step = {
+  id: number;
+  title: string;
+  subTitle: string;
+};
+
+export default function WorkEdit({ mode = "create", section, pageSlug, sectionType = SECTION_TYPES.HOW_IT_WORKS }: WorkEditProps) {
   const isEdit = mode === "edit";
   
-  // Initialize form data with initialData or defaults
+  // Extract content from section or use defaults
+  const sectionContent = section?.content || { steps: [] };
+  const stepsData = sectionContent.steps || [];
+  
+  // Initialize form data
   const [formData, setFormData] = useState({
-    headline: initialData?.headline || "How It Works(Employee)",
-    steps: initialData?.steps || [
+    headline: section?.title || "How It Works(Employee)",
+    steps: stepsData.length > 0 ? stepsData : [
       { id: 1, title: "", subTitle: "" },
       { id: 2, title: "", subTitle: "" },
       { id: 3, title: "", subTitle: "" },
-    ]
+    ] as Step[]
   });
 
-  // API mutations
-  // const createMutation = useCreatePageContent();
-  // const updateMutation = useUpdatePageContent();
+  // API mutations for sections
+  const { mutateAsync: createMutation, isPending: createIsPending } = useCreateSection(sectionType);
+  const { mutateAsync: updateMutation, isPending: updateIsPending } = useUpdateSection(sectionType);
 
   const handleInputChange = (
     index: number,
@@ -62,27 +69,46 @@ export default function WorkEdit({ mode = "create", initialData }: WorkEditProps
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const payload = {
-      slug: "how-it-works-employee",
-      headline: formData.headline,
-      steps: formData.steps.map((step, index) => ({
-        ...step,
-        id: step.id || index + 1
+    // Prepare content object according to ISection interface
+    const content = {
+      steps: formData.steps.map((step: Step, index: number) => ({
+        id: step.id || index + 1,
+        title: step.title,
+        subTitle: step.subTitle
       }))
     };
 
+    const payload = {
+      pageSlug: pageSlug, 
+      sectionType: sectionType, 
+      title: formData.headline,
+      content: content,
+      order: section?.order || 0, 
+      description: "", 
+    };
+
+
+    const formDataPayload = new FormData();
+    formDataPayload.append("data", JSON.stringify(payload));
+
     try {
-      if (isEdit && initialData) {
-
+      if (isEdit && section) {
+        // Update existing section
+        await updateMutation({
+          id: section._id,
+          data: formDataPayload
+        });
       } else {
-
+        // Create new section
+        await createMutation({
+          data: formDataPayload
+        });
       }
       
-      // Close dialog on success (you might need to handle dialog state)
-      // You can add a success toast here
+
     } catch (error) {
       console.error("Failed to save:", error);
-      // Handle error - show error toast
+
     }
   };
 
@@ -186,15 +212,15 @@ export default function WorkEdit({ mode = "create", initialData }: WorkEditProps
             </div>
 
             {/* Submit Button */}
-            <Button 
+            <button 
               type="submit" 
-              className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold"
-              // disabled={isSubmitting}
+              className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 px-4 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={updateIsPending }
             >
-              {/* {isSubmitting 
+              {updateIsPending 
                 ? "Saving..." 
-                : isEdit ? "Update" : "Publish"} */}
-            </Button>
+                : isEdit ? "Update" : "Publish"}
+            </button>
           </div>
         </form>
       </DialogContent>

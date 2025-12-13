@@ -1,7 +1,8 @@
 import { Check, Edit } from "lucide-react";
 import React from "react";
 import LabourModal from "../modal/Labour";
-import { useGetPageContent } from "@/lib/query/hooks/dashboard/pageContent";
+import { useGetSection } from "@/lib/query/hooks/dashboard/pageContent";
+import { SECTION_TYPES } from "@/types/others";
 
 // Default texts
 const defaultTexts = [
@@ -14,14 +15,14 @@ const defaultTexts = [
 ];
 
 export default function Labour() {
-  const { data: pageContent, isLoading } =
-    useGetPageContent("why-instant-labour");
+  
+  const { data: section, isLoading } = useGetSection(SECTION_TYPES.WHY_US);
 
-  // Extract data from pageContent or use defaults
-  const headline = pageContent?.headline || "Why Instant Labour?";
-  const texts = pageContent?.texts || defaultTexts;
+  // Extract data from section or use defaults
+  const headline = section?.title || "Why Instant Labour?";
+  const texts = section?.content?.texts || defaultTexts;
 
-  const hasData = pageContent && (pageContent.headline || pageContent.texts);
+  const hasData = section && (section.title || section.content?.texts);
 
   if (isLoading) {
     return (
@@ -45,10 +46,7 @@ export default function Labour() {
           <div className="flex items-center justify-center bg-blue-600 h-8 w-8 text-white rounded-full cursor-pointer hover:bg-blue-700 transition-colors">
             <LabourModal
               mode="edit"
-              initialData={{
-                headline,
-                texts,
-              }}
+              content={section}
             />
           </div>
         )}
@@ -80,10 +78,7 @@ export default function Labour() {
           <div>
             <LabourModal
               mode="create"
-              initialData={{
-                headline: "Why Instant Labour?",
-                texts: defaultTexts,
-              }}
+              content={section}
             />
           </div>
         </div>

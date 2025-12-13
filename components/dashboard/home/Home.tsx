@@ -46,8 +46,8 @@ export default function Home() {
   return (
     <section className="max-w-7xl mx-auto">
       <div className="flex items-center justify-between bg-[#F6F6F6] py-5 rounded-md">
-        <h2 className="text-base font-medium text-gray-800">
-          Home Us Landing Page
+        <h2 className="text-3xl font-medium text-gray-800">
+          Please select a title to edit or create
         </h2>
 
         <div className="flex items-center space-x-5">

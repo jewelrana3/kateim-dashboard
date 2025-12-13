@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
 
   images: {
-    domains: ["i.ibb.co.com"],
+    domains: ["i.ibb.co.com","10.10.7.50"],
   },
 };
 

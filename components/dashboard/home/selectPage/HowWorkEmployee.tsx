@@ -1,33 +1,17 @@
+import { PAGE_SLUGS, SECTION_TYPES } from "@/types/others";
 import WorkEdit from "../modal/WorkEdit";
-import { useGetPageContent } from "@/lib/query/hooks/dashboard/pageContent";
+import { useGetSection } from "@/lib/query/hooks/dashboard/pageContent";
 
-// Default data structure
-const defaultData = [
-  {
-    id: 1,
-    title: "Post A Shift",
-    subTitle: "Describe Your Job – It Takes Under 1 Minute",
-  },
-  {
-    id: 2,
-    title: "Get Matched Instantly",
-    subTitle: "our ai sends it to the best local work",
-  },
-  {
-    id: 3,
-    title: "Get Paid",
-    subTitle: "your worker confirm an shows up.done.",
-  },
-];
+
 
 export default function HowWorkEmployee() {
-  const { data: pageContent, isLoading } = useGetPageContent("how-it-works-employee");
+  const { data: section, isLoading } = useGetSection(SECTION_TYPES.HOW_IT_WORKS);
 
   // Extract data from pageContent or use default
-  const headline = pageContent?.headline || "How It Works(Employee)";
-  const steps = pageContent?.steps || defaultData;
+  const headline = section?.title || "How It Works(Employee)";
+  const steps = section?.content?.steps || [];
   
-  const hasData = pageContent && pageContent.headline;
+
 
   if (isLoading) {
     return (
@@ -40,19 +24,18 @@ export default function HowWorkEmployee() {
   return (
     <div className="bg-white py-12 px-6 md:px-16 relative min-h-[400px]">
       {/* Edit button - only show when data exists */}
-      {hasData && (
+      {section && (
         <div className="absolute top-4 right-4 flex items-center justify-center bg-blue-600 h-8 w-8 text-white rounded-full cursor-pointer hover:bg-blue-700 transition-colors">
           <WorkEdit 
             mode="edit" 
-            initialData={{
-              headline,
-              steps
-            }}
+            section={section}
+            pageSlug={PAGE_SLUGS.HOME}
+            sectionType={SECTION_TYPES.HOW_IT_WORKS}
           />
         </div>
       )}
 
-      {hasData ? (
+      {section ? (
         <>
           <h2 className="text-3xl font-semibold text-center mb-12 text-gray-700">
             {headline}
@@ -84,10 +67,8 @@ export default function HowWorkEmployee() {
          <div>
            <WorkEdit 
             mode="create"
-            initialData={{
-              headline: "How It Works(Employee)",
-              steps: defaultData
-            }}
+            pageSlug={PAGE_SLUGS.HOME}
+            sectionType={SECTION_TYPES.HOW_IT_WORKS}
           />
          </div>
         </div>

@@ -1,23 +1,34 @@
 import Image from "next/image";
 import HeroSectionModal from "../modal/HeroSection";
-import { useGetPageContent } from "@/lib/query/hooks/dashboard/pageContent";
 import { getImageUrl } from "@/utils/image";
+import { useGetSection } from "@/lib/query/hooks/dashboard/pageContent";
+import { SECTION_TYPES } from "@/types/others";
 
 export default function HeroSection() {
-  const { data: pageContent } = useGetPageContent("hero-section");
+  const { data: section, isLoading } = useGetSection(SECTION_TYPES.HERO);
 
-  const title = pageContent?.title;
-  const description = pageContent?.description;
-  const image = pageContent?.image;
+  const {title, description,images = []} = section || {};
+  console.log(title, description,images
+  );
+  const hasHeroData = Boolean(title && description);
 
-  const hasHeroData = Boolean(title && description && image);
+  if (isLoading) {
+    return (
+      <section className="relative p-4 bg-white rounded-lg shadow-md min-h-[400px] flex items-center justify-center">
+        <div className="text-gray-500">Loading...</div>
+      </section>
+    );
+  }
 
   return (
     <section className="relative p-4 bg-white rounded-lg shadow-md min-h-[400px]">
       {/* Action button - Only show when there's data */}
       {hasHeroData && (
         <div className="absolute top-4 right-4">
-          <HeroSectionModal mode="edit" />
+          <HeroSectionModal 
+            mode="edit" 
+            contents={section}
+          />
         </div>
       )}
 
@@ -34,7 +45,7 @@ export default function HeroSection() {
 
           <div>
             <Image
-              src={getImageUrl(image)}
+              src={getImageUrl(images[0])}
               alt="Hero image"
               width={300}
               height={300}
@@ -52,9 +63,12 @@ export default function HeroSection() {
             Click below to create the hero section
           </p>
 
-         <div>
-           <HeroSectionModal mode="create" />
-         </div>
+          <div>
+            <HeroSectionModal 
+              mode="create"
+              contents={section}
+            />
+          </div>
         </div>
       )}
     </section>

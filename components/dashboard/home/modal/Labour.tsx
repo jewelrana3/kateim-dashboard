@@ -11,28 +11,36 @@ import {
 import { Input } from "@/components/ui/input";
 import { Edit, Minus, Plus, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
+import { PAGE_SLUGS, SECTION_TYPES } from "@/types/others";
+import {
+  useCreateSection,
+  useUpdateSection,
+} from "@/lib/query/hooks/dashboard/pageContent";
 
 type LabourModalProps = {
   mode: "create" | "edit";
-  initialData?: {
-    headline: string;
-    texts: string[];
-  };
+  content?: any;
 };
 
-export default function LabourModal({ mode = "create", initialData }: LabourModalProps) {
+export default function LabourModal({
+  mode = "create",
+  content,
+}: LabourModalProps) {
   const isEdit = mode === "edit";
-  
+
   // Initialize form data with initialData or defaults
-  const [headline, setHeadline] = useState(initialData?.headline || "Why Instant Labour?");
+  const [headline, setHeadline] = useState(
+    content?.title || "Why Instant Labour?"
+  );
   const [texts, setTexts] = useState<string[]>(
-    initialData?.texts || ["", "", "", "", "", ""]
+    content?.content?.texts || ["", "", "", "", "", ""]
   );
 
   // API mutations
-  // const createMutation = useCreatePageContent();
-  // const updateMutation = useUpdatePageContent();
+  const { mutateAsync: createMutation, isPending: createPending } =
+    useCreateSection(SECTION_TYPES.WHY_US);
+  const { mutateAsync: updateMutation, isPending: updatePending } =
+    useUpdateSection(SECTION_TYPES.WHY_US);
 
   const handleAddInput = () => {
     setTexts([...texts, ""]);
@@ -53,23 +61,31 @@ export default function LabourModal({ mode = "create", initialData }: LabourModa
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const payload = {
-      slug: "why-instant-labour",
-      headline: headline,
-      texts: texts.filter(text => text.trim() !== "") // Remove empty texts
+      pageSlug: PAGE_SLUGS.HOME,
+      sectionType: SECTION_TYPES.WHY_US,
+      title: headline,
+      content: {
+        texts: texts.filter((text) => text.trim() !== ""), 
+      },
     };
 
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(payload));
+
     try {
-      if (isEdit && initialData) {
-        // await updateMutation.mutateAsync({
-        //   slug: "why-instant-labour",
-        //   data: payload
-        // });
+      if (isEdit && content) {
+        await updateMutation({
+          id: content._id,
+          data: formData
+        });
       } else {
-        // await createMutation.mutateAsync(payload);
+        await createMutation({
+          data: formData
+        });
       }
-      
+
       // Close dialog on success
       // You might need to handle dialog state here
     } catch (error) {
@@ -120,7 +136,7 @@ export default function LabourModal({ mode = "create", initialData }: LabourModa
                 <Plus className="w-4 h-4" />
               </button>
             </div>
-            
+
             {texts.map((text, index) => (
               <div className="flex items-center gap-2" key={index}>
                 <div className="bg-teal-600 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0">

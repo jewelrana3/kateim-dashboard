@@ -1,5 +1,6 @@
+import { PAGE_SLUGS, SECTION_TYPES } from "@/types/others";
 import WorkEdit from "../modal/WorkEdit";
-import { useGetPageContent } from "@/lib/query/hooks/dashboard/pageContent";
+import { useGetSection } from "@/lib/query/hooks/dashboard/pageContent";
 
 // Default data structure
 const defaultData = [
@@ -21,15 +22,17 @@ const defaultData = [
 ];
 
 export default function HowWorker() {
-  const { data: pageContent, isLoading } = useGetPageContent(
-    "how-it-works-worker"
+  const { data: section, isLoading } = useGetSection(
+    SECTION_TYPES.HOW_IT_WORKS_WORKER
   );
 
-  // Extract data from pageContent or use default
-  const headline = pageContent?.headline || "How It Works(Worker)";
-  const steps = pageContent?.steps || defaultData;
 
-  const hasData = pageContent && pageContent.headline;
+
+  // Extract data from section or use default
+  const headline = section?.title || "How It Works(Worker)";
+  const steps = section?.content?.steps || defaultData;
+
+  const hasData = section && section.title;
 
   if (isLoading) {
     return (
@@ -46,10 +49,9 @@ export default function HowWorker() {
         <div className="absolute top-4 right-4 flex items-center justify-center bg-blue-600 h-8 w-8 text-white rounded-full cursor-pointer hover:bg-blue-700 transition-colors">
           <WorkEdit
             mode="edit"
-            initialData={{
-              headline,
-              steps,
-            }}
+            section={section}
+            pageSlug={PAGE_SLUGS.HOME}
+            sectionType={SECTION_TYPES.HOW_IT_WORKS_WORKER}
           />
         </div>
       )}
@@ -81,16 +83,13 @@ export default function HowWorker() {
             How It Works section is not created yet
           </h2>
           <p className="text-sm text-gray-500 mb-6">
-            Click below to create the how it works section
+            Click below to create the how it works worker section
           </p>
           <div>
             <WorkEdit
               mode="create"
-              // slug="how-it-works-worker"
-              initialData={{
-                headline: "How It Works(Worker)",
-                steps: defaultData,
-              }}
+              pageSlug={PAGE_SLUGS.HOME}
+              sectionType={SECTION_TYPES.HOW_IT_WORKS_WORKER}
             />
           </div>
         </div>

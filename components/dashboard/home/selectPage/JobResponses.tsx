@@ -1,12 +1,13 @@
 import React from "react";
 import JobResponseEdit from "../modal/JobResponse";
-import { useGetPageContent } from "@/lib/query/hooks/dashboard/pageContent";
+import { useGetSection } from "@/lib/query/hooks/dashboard/pageContent";
+import { SECTION_TYPES } from "@/types/others";
 
 export default function JobResponses() {
-  const { data: pageContent, isLoading } = useGetPageContent("job-responses");
+  const { data: section, isLoading } = useGetSection(SECTION_TYPES.JOB_RESPONSE);
   
-  const text = pageContent?.text || "All Applicants guaranteed a response within 7-14 days";
-  const hasData = pageContent && pageContent.text;
+  const text = section?.title ;
+  console.log(text);
 
   if (isLoading) {
     return (
@@ -19,16 +20,16 @@ export default function JobResponses() {
   return (
     <div className="bg-[#FFC823] text-xl font-semibold p-5 relative rounded-md min-h-[100px] flex items-center">
       {/* Edit button - only show when data exists */}
-      {hasData && (
+      {text && (
         <div className="absolute top-4 right-4 flex items-center justify-center bg-blue-600 h-8 w-8 text-white rounded-full cursor-pointer hover:bg-blue-700 transition-colors">
           <JobResponseEdit 
             mode="edit"
-            initialData={{ text }}
+            initialData={{ _id: section?._id, text: section?.title }}
           />
         </div>
       )}
 
-      {hasData ? (
+      {text ? (
         <div className="w-full text-center">
           {text}
         </div>
@@ -38,7 +39,7 @@ export default function JobResponses() {
           <div className="flex justify-center">
             <JobResponseEdit 
               mode="create"
-              initialData={{ text: "All Applicants guaranteed a response within 7-14 days" }}
+              initialData={{ _id: section?._id, text: section?.title || "" }}
             />
           </div>
         </div>
