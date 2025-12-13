@@ -1,12 +1,24 @@
 "use client";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
-import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
+import { useLogin } from "@/lib/query/hooks";
 
-export default function page() {
-  const [password, setPassword] = useState(false);
+export default function LoginPage() {
+  const [showPassword, setShowPassword] = useState(false);
+  const { mutate: login, isPending } = useLogin();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    login({ email, password });
+  };
+
   return (
     <div className="relative min-h-screen flex items-center justify-center">
       {/* Background shapes */}
@@ -26,7 +38,7 @@ export default function page() {
         </h2>
         <h3 className="text-center font-medium text-3xl mb-6">Log In</h3>
 
-        <form className="space-y-5">
+        <form className="space-y-5" onSubmit={handleSubmit}>
           <div>
             <Label htmlFor="email" className="block text-md mb-1">
               Email
@@ -36,40 +48,47 @@ export default function page() {
               type="email"
               placeholder="Enter Your Email"
               className="w-full rounded-md px-3 h-11 bg-[#FEF6E7] border-none"
+              required
             />
           </div>
 
-          <Label htmlFor="password" className="block text-md mb-1">
-            Password
-          </Label>
-          <div className="relative">
-            <Input
-              id="password"
-              type={password ? "password" : "text"}
-              placeholder="Enter Your Password"
-              className="w-full rounded-md px-3 h-11  bg-[#FEF6E7] border-none"
-            />
-            <span
-              className="absolute top-3 right-4 cursor-pointer"
-              onClick={() => setPassword(!password)}
-            >
-              {password ? <EyeOff /> : <Eye />}
-            </span>
+          <div>
+            <Label htmlFor="password" className="block text-md mb-1">
+              Password
+            </Label>
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter Your Password"
+                className="w-full rounded-md px-3 h-11 bg-[#FEF6E7] border-none"
+                required
+              />
+              <span
+                className="absolute top-3 right-4 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
+              </span>
+            </div>
           </div>
+
           <div className="text-right mt-1">
-            <Link href="/forgot-password" className="text-sm hover:underline">
+            <a
+              href="/forgot-password"
+              className="text-sm hover:underline"
+            >
               Forgot Password
-            </Link>
+            </a>
           </div>
 
-          <Link href="/">
-            <button
-              type="submit"
-              className="w-full bg-[#FFC823] text-black font-semibold py-2 cursor-pointer"
-            >
-              Log In
-            </button>
-          </Link>
+          <button
+            type="submit"
+            disabled={isPending}
+            className="w-full bg-[#FFC823] text-black font-semibold py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isPending ? "Logging in..." : "Log In"}
+          </button>
         </form>
       </div>
     </div>

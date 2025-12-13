@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AreaChart,
   Area,
@@ -11,35 +11,18 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import YearDropdown from "./YearDropDown";
+import { useSearchParams, useRouter } from "next/navigation";
+import MonthDropdown from "./MonthDropdown";
+import { usePlatformRevenue } from "@/lib/query/hooks";
 
-const data = [
-  { name: "Jan", uv: 4500 },
-  { name: "Feb", uv: 4000 },
-  { name: "Mar", uv: 5000 },
-  { name: "Apr", uv: 5500 },
-  { name: "May", uv: 5500 },
-  { name: "Jun", uv: 4000 },
-  { name: "Jul", uv: 6000 },
-  { name: "Aug", uv: 5200 },
-  { name: "Sep", uv: 5000 },
-  { name: "Oct", uv: 6000 },
-  { name: "Nov", uv: 4000 },
-  { name: "Dec", uv: 6000 },
-];
+type RevenueData = {
+  month: string;
+  value: number;
+};
 
-const dataRow = Math.max(...data.map((data) => data.uv));
-
-const result = data.map((item) => {
-  return {
-    name: item.name,
-    uv: (item.uv / dataRow) * 100,
-  };
-});
-
-// Custom Tooltip Function
 const renderCustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
-    const { uv } = payload[0].payload; // Access the specific data point
+    const { uv } = payload[0].payload;
     return (
       <div
         style={{
@@ -50,7 +33,7 @@ const renderCustomTooltip = ({ active, payload }: any) => {
           fontSize: "14px",
           width: "100px",
           maxWidth: "200px",
-          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // Optional: Adds a subtle shadow
+          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
         }}
       >
         <p className="font-semibold">$ {uv.toFixed(2)}</p>
@@ -61,31 +44,90 @@ const renderCustomTooltip = ({ active, payload }: any) => {
 };
 
 export default function GreenAreaChart() {
-  const [year, setYear] = useState("");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const year = Number(searchParams.get("year")) || new Date().getFullYear();
+  const month = Number(searchParams.get("month")) || 12;
+
+  // Use TanStack Query hook
+  const { data: revenueData = [], isLoading } = usePlatformRevenue({ year, month });
+
+  const handleYearChange = (selectedYear: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("year", selectedYear);
+    router.replace(`?${params.toString()}`);
+  };
+
+  const handleMonthChange = (selectedMonth: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("month", selectedMonth.toString());
+    router.replace(`?${params.toString()}`);
+  };
+
+  // Transform data for chart
+  const chartData = revenueData.map((item: any) => ({
+    month: item.month,
+    value: item.revenue || item.value || 0,
+  }));
+
+  // Normalize data for chart
+  const maxValue = Math.max(...chartData.map((d: RevenueData) => d.value), 1);
+  const normalizedData = chartData.map((item: RevenueData) => ({
+    name: item.month,
+    uv: item.value,
+  }));
+
+  if (isLoading) {
+    return (
+      <section className="my-2 bg-white rounded-md text-gray-700">
+        <div className="flex justify-between pt-4 px-8 gap-4">
+          <h3 className="mb-4 text-[18px] font-medium text-gray-700">
+            Total Revenue Monthly
+          </h3>
+          <div className="flex gap-2">
+            <YearDropdown
+              selectedYear={year.toString()}
+              onChange={handleYearChange}
+            />
+            <MonthDropdown selectedMonth={month} onChange={handleMonthChange} />
+          </div>
+        </div>
+        <div className="w-full h-[200px] lg:h-[220px] xl:h-[260px] flex items-center justify-center">
+          <div className="animate-pulse text-gray-400">Loading...</div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="my-2 bg-white rounded-md text-gray-700">
-      <div className="flex justify-between pt-4 px-8">
+      <div className="flex justify-between pt-4 px-8 gap-4">
         <h3 className="mb-4 text-[18px] font-medium text-gray-700">
           Total Revenue Monthly
-        </h3>{" "}
-        <div>
-          <YearDropdown selectedYear={year} onChange={setYear} />{" "}
+        </h3>
+        <div className="flex gap-2">
+          <YearDropdown
+            selectedYear={year.toString()}
+            onChange={handleYearChange}
+          />
+          <MonthDropdown selectedMonth={month} onChange={handleMonthChange} />
         </div>
       </div>
+
       <div className="w-full h-[200px] lg:h-[220px] xl:h-[260px]">
         <ResponsiveContainer>
           <AreaChart
-            data={result}
+            data={normalizedData}
             margin={{ top: 10, right: 30, left: 20, bottom: 20 }}
           >
             <defs>
               <linearGradient id="colorGreen" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="40%" stopColor="#0057DC" stopOpacity={5} />
-                <stop offset="100%" stopColor="#FFFFFF" stopOpacity={3} />
+                <stop offset="40%" stopColor="#0057DC" stopOpacity={0.5} />
+                <stop offset="100%" stopColor="#FFFFFF" stopOpacity={0.3} />
               </linearGradient>
             </defs>
 
-            <CartesianGrid strokeDasharray="3 3" stroke="" />
+            <CartesianGrid strokeDasharray="3 3" />
             <XAxis
               dataKey="name"
               tick={{ fontSize: 15 }}
@@ -94,15 +136,14 @@ export default function GreenAreaChart() {
               tickMargin={10}
             />
             <YAxis
-              domain={[10, 100]}
-              ticks={[10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
-              tickFormatter={(v) => `${v}%`}
+              domain={[0, 100]}
+              // ticks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
+              // tickFormatter={(v) => `${v}%`}
               tick={{ fontSize: 15 }}
               tickLine={false}
               axisLine={false}
               tickMargin={12}
             />
-            {/* <Tooltip /> */}
             <Tooltip content={renderCustomTooltip} />
             <Area
               type="monotone"

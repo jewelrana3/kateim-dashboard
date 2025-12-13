@@ -82,7 +82,7 @@ const employers = [
 ];
 
 export default function Support() {
-  const router = useRouter();
+
 
   const handleClick = () => {
     Swal.fire({

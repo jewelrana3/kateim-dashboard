@@ -1,10 +1,14 @@
 "use client";
 
+import { useDeleteCategory } from "@/lib/query/hooks/dashboard/category";
 import { Trash2 } from "lucide-react";
 import React from "react";
 import Swal from "sweetalert2";
 
-export default function CategoryDelete() {
+export default function CategoryDelete({ _id }: { _id: string }) {
+
+  const { data: deleteCategoryData, mutate: deleteCategory } = useDeleteCategory();
+
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -16,10 +20,14 @@ export default function CategoryDelete() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
+        deleteCategory({ _id: _id }, {
+          onSuccess: () => {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+            });
+          },
         });
       }
     });

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Select,
   SelectContent,
@@ -6,38 +8,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const months = [
-  "Jan 2025",
-  "Feb 2025",
-  "Mar 2025",
-  "Apr 2025",
-  "May 2025",
-  "Jun 2025",
-  "Jul 2025",
-  "Aug 2025",
-  "Sep 2025",
-  "Oct 2025",
-  "Nov 2025",
-  "Dec 2025",
-  "Jan 2026",
-  "Feb 2026",
-  "Mar 2026",
-  "Apr 2026",
-  "May 2026",
-  "Jun 2026",
-  "Jul 2026",
-  "Aug 2026",
-  "Sep 2026",
-  "Oct 2026",
-  "Nov 2026",
-  "Dec 2026",
-];
 interface Props {
   selectedYear: string;
-  onChange: React.Dispatch<React.SetStateAction<string>>;
+  onChange: (value: string) => void;
 }
 
 export default function YearDropdown({ selectedYear, onChange }: Props) {
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 10 }, (_, i) => (currentYear - i).toString());
+
   return (
     <div className="inline-block relative">
       <Select value={selectedYear} onValueChange={onChange}>
@@ -45,7 +24,7 @@ export default function YearDropdown({ selectedYear, onChange }: Props) {
           <SelectValue placeholder="Select a year" />
         </SelectTrigger>
         <SelectContent>
-          {months.map((year) => (
+          {years.map((year) => (
             <SelectItem key={year} value={year}>
               {year}
             </SelectItem>

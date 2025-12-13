@@ -10,160 +10,299 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
+import {
+  useCreateCategory,
+  useUpdateCategory,
+} from "@/lib/query/hooks/dashboard/category";
+import { ICategory } from "@/types/others";
 import { Minus, Plus, Upload } from "lucide-react";
-import Image from "next/image";
-import { useRef, useState } from "react";
-
-// const categories = [
-//   "Contraction",
-//   "Cleaning",
-//   "Event & Hospitality",
-//   "Security",
-//   "Removals",
-//   "Drivers",
-//   "Warehouse & Logistics",
-//   "Dj & Entertainment",
-//   "Landscaping & Ground Maintenance",
-//   "Handyman",
-// ];
+import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 
 type InputField = {
+  id: number;
   value: string;
 };
 
 export function SubCategoryEdit({
+  category,
   title,
   trigger,
+  onSuccess,
 }: {
+  category?: ICategory;
   title?: string;
   trigger: React.ReactNode;
+  onSuccess?: () => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [inputFields, setInputFields] = useState<InputField[]>([{ value: "" }]);
-  const [icon, setIcon] = useState<string | null>(null);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [inputFields, setInputFields] = useState<InputField[]>([
+    { id: Date.now(), value: "" },
+  ]);
+  const [imageUrl, setImageUrl] = useState<string>("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [categoryName, setCategoryName] = useState<string>("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false); // Track dialog state
 
-  const handleAddInput = () => {
-    const newInput = [...inputFields];
-    setInputFields([...newInput, { value: "" }]);
-  };
+  const generateId = useCallback(() => Date.now() + Math.random(), []);
 
-  const handleInputChange = (
-    index: number,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newInputValues = [...inputFields];
-    newInputValues[index].value = event.target.value;
-    setInputFields(newInputValues);
-  };
 
-  const removeInput = (index: number) => {
-    const filteredFields = inputFields.filter((_, i) => i !== index);
-    setInputFields(filteredFields);
-  };
+  const initializeForm = useCallback(() => {
+    if (category) {
+      setCategoryName(category.title || "");
+      setImageUrl(category.icon || "");
+      setImageFile(null); // Reset image file when editing
 
-  // image upload
-
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files?.[0];
-    if (files) {
-      const url = URL.createObjectURL(files);
-      setImageUrl(url);
+      if (category.subCategories?.length > 0) {
+        const fields = category.subCategories.map((subCat) => ({
+          id: generateId(),
+          value: subCat || "",
+        }));
+        setInputFields(fields);
+      } else {
+        setInputFields([{ id: generateId(), value: "" }]);
+      }
+    } else {
+      // Reset form for new category
+      resetForm();
     }
-  };
+  }, [category, generateId]);
 
-  const handleClick = () => {
+
+  const resetForm = useCallback(() => {
+    setCategoryName("");
+    setImageUrl("");
+    setImageFile(null);
+    setInputFields([{ id: generateId(), value: "" }]);
+
+    // Reset file input
     if (inputRef.current) {
-      inputRef.current.click();
+      inputRef.current.value = "";
     }
-  };
+  }, [generateId]);
+
+
+  useEffect(() => {
+    if (isDialogOpen) {
+      initializeForm();
+    }
+  }, [initializeForm, isDialogOpen]);
+
+
+  const { mutate: updateCategory, isPending: isUpdating } = useUpdateCategory();
+
+  const { mutate: createCategory, isPending: isCreating } = useCreateCategory();
+
+  const handleSuccess = useCallback(() => {
+    resetForm();
+    // setIsDialogOpen(false);
+    if (onSuccess) {
+      onSuccess();
+    }
+  }, [onSuccess, resetForm]);
+
+  const handleAddInput = useCallback(() => {
+    setInputFields((prev) => [...prev, { id: generateId(), value: "" }]);
+  }, [generateId]);
+
+  const handleInputChange = useCallback((id: number, value: string) => {
+    setInputFields((prev) =>
+      prev.map((field) => (field.id === id ? { ...field, value } : field))
+    );
+  }, []);
+
+  const handleCategoryNameChange = useCallback((value: string) => {
+    setCategoryName(value);
+  }, []);
+
+  const removeInput = useCallback((id: number) => {
+    setInputFields((prev) => {
+      if (prev.length > 1) {
+        return prev.filter((field) => field.id !== id);
+      }
+      return prev;
+    });
+  }, []);
+
+  // Memoized image upload handler
+  const handleImageUpload = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      setImageFile(file); // store real file
+
+      const url = URL.createObjectURL(file); // Only for preview
+      setImageUrl(url);
+    },
+    []
+  );
+
+  const handleClick = useCallback(() => {
+    inputRef.current?.click();
+  }, []);
+
+  // Memoized form data preparation
+  const prepareFormData = useCallback(() => {
+    const subCategories = inputFields
+      .map((field) => field.value.trim())
+      .filter((value) => value !== "");
+
+    const data = {
+      title: categoryName.trim(),
+      subCategories,
+    };
+
+    const formData = new FormData();
+
+
+    formData.append("data", JSON.stringify(data));
+
+    if (imageFile) {
+      formData.append("images", imageFile);
+    } else if (category?.icon && !imageFile) {
+
+      formData.append("existingIcon", category.icon);
+    }
+
+    return formData;
+  }, [categoryName, imageFile, inputFields, category?.icon]);
+
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+
+      const formData = prepareFormData();
+
+      if (category?._id) {
+        updateCategory({ id: category._id, category: formData }, {
+          onSuccess: handleSuccess,
+        });
+        return;
+      }
+
+      createCategory(formData, {
+        onSuccess: handleSuccess,
+      });
+    },
+    [prepareFormData, category?._id, createCategory, updateCategory]
+  );
+
+  // Memoize the dialog title
+  const dialogTitle = useMemo(() => {
+    return title || (category ? "Edit Category" : "Add Category");
+  }, [title, category]);
+
+  // Memoize the button text
+  const buttonText = useMemo(() => {
+    return category ? "Update Category" : "Add Category";
+  }, [category]);
+
+  const isPending = isUpdating || isCreating;
 
   return (
-    <Dialog>
-      <form>
-        <DialogTrigger asChild>{trigger}</DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle>{dialogTitle}</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4">
+
+          <div className="grid gap-4 py-4">
             <div className="grid gap-3">
-              <Label htmlFor="name-1">Category Name</Label>
-              <Input type="text" placeholder="Category Name" />
+              <Label htmlFor="category-title">Category title</Label>
+              <Input
+                type="text"
+                id="category-title"
+                placeholder="Category title"
+                value={categoryName}
+                onChange={(e) => handleCategoryNameChange(e.target.value)}
+                required
+                disabled={isPending}
+              />
             </div>
 
             {/* Upload Image */}
             <div>
-              <label className="block mb-1">Add Icon</label>
+              <Label className="block mb-1">Add Icon</Label>
               <div
                 className="w-full h-20 border border-gray-300 px-3 py-4 flex justify-center items-center rounded-md cursor-pointer hover:bg-gray-100"
                 onClick={handleClick}
               >
-                <section>
-                  <input
-                    ref={inputRef}
-                    id="upload"
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleImageUpload}
-                  />
-                </section>
+                <input
+                  ref={inputRef}
+                  id="upload"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageUpload}
+                  disabled={isPending}
+                />
 
                 {imageUrl ? (
                   <img
                     src={imageUrl}
-                    alt="Preview"
+                    alt="Category icon"
                     className="w-40 h-20 object-cover rounded border"
                   />
                 ) : (
-                  <span>
-                    <Upload />
+                  <span className="flex items-center gap-2">
+                    <Upload size={20} />
+                    <span className="text-sm text-gray-500">Upload Icon</span>
                   </span>
                 )}
               </div>
             </div>
 
             <div className="grid gap-3">
-              <section className="flex justify-between">
-                <Label htmlFor="name-1">Sub Category </Label>
-                <span onClick={handleAddInput}>
-                  <Plus />
-                </span>
-              </section>
-              <section className="flex flex-col gap-2">
-                {inputFields.map((field, index) => (
-                  <section className="flex items-center gap-2" key={index}>
-                    {/* Minus icon on the left */}
+              <div className="flex justify-between items-center">
+                <Label>Sub Categories</Label>
+                <button
+                  type="button"
+                  onClick={handleAddInput}
+                  className="p-1 rounded-full hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  title="Add subcategory"
+                  disabled={isPending}
+                >
+                  <Plus size={20} />
+                </button>
+              </div>
 
-                    {/* Input on the right */}
+              <div className="flex flex-col gap-2">
+                {inputFields.map((field, index) => (
+                  <div className="flex items-center gap-2" key={field.id}>
                     <Input
                       type="text"
+                      placeholder={`Subcategory ${index + 1}`}
                       value={field.value}
-                      onChange={(e) => handleInputChange(index, e)}
+                      onChange={(e) =>
+                        handleInputChange(field.id, e.target.value)
+                      }
                       className="flex-1"
+                      disabled={isPending}
                     />
-
-                    <span
-                      onClick={() => removeInput(index)}
-                      className="cursor-pointer text-red-500 hover:text-red-700"
-                    >
-                      <Minus />
-                    </span>
-                  </section>
+                    {inputFields.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeInput(field.id)}
+                        className="p-1 rounded-full hover:bg-red-50 text-red-500 hover:text-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        title="Remove subcategory"
+                        disabled={isPending}
+                      >
+                        <Minus size={20} />
+                      </button>
+                    )}
+                  </div>
                 ))}
-              </section>
+              </div>
             </div>
           </div>
 
-          <section className="flex justify-between items-center mt-6">
-            <Button className="!w-full" type="submit">
-              Confirm
-            </Button>
-          </section>
-        </DialogContent>
-      </form>
+          <Button type="submit" className="w-full mt-2" disabled={isPending}>
+            {isPending ? "Processing..." : buttonText}
+          </Button>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 }

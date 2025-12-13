@@ -1,60 +1,16 @@
+'use client'
 import { BadgeCheck, ArrowLeft, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button"; // If you're using ShadCN
 import Image from "next/image";
 import Link from "next/link";
+import { useGetUserDetail } from "@/lib/query/hooks/dashboard/users";
+import { getImageUrl } from "@/utils/image";
 
-const worker = {
-  name: "Md Kamran Khan",
-  email: "Admin@instantlabour.Co.Uk",
-  contact: "01333327633",
-  location: "Dhaka Bangladesh",
-  role: "Worker",
-  rate: "$250",
-  experience: "3 Years",
-  title: "General Laborer",
-  about: `I am a dedicated and hardworking general laborer specializing in removal, relocation, and site preparation work. 
-  I take pride in completing tasks with precision, efficiency, and attention to detail...`,
-  skills: [
-    "Furniture Removal and Relocation",
-    "Loading and Unloading Materials Safely",
-    "Construction Site Cleanup and Preparation",
-    "Debris and Waste Removal",
-    "Packing and Unpacking Services",
-    "Basic Handyman Aid and Repair Assistance",
-    "Operation Of Basic Tools and Equipment",
-    "Team Collaboration And Communication",
-    "Physical Stamina and Safety Compliance",
-  ],
-  portfolio: [
-    {
-      title: "1. Residential & Office Furniture Removal",
-      description:
-        "Safely dismantled, packed, and relocated household and office furniture, ensuring no damage to property.",
-    },
-    {
-      title: "2. Construction Site Assistance",
-      description:
-        "Provided general labor support, including unloading materials, cleaning debris, and assisting skilled tradesmen.",
-    },
-    {
-      title: "3. Event Setup & Dismantling",
-      description:
-        "Helped set up and take down event stages, tents, and seating arrangements for corporate and community events.",
-    },
-    {
-      title: "4. Junk & Waste Removal",
-      description:
-        "Handled the removal and disposal of unwanted items and debris, ensuring compliance with local waste regulations.",
-    },
-    {
-      title: "5. Local & Long-Distance Moves",
-      description:
-        "Assisted in moving projects within the city and to neighboring areas, providing efficient transport and organization.",
-    },
-  ],
-};
 
-export default function WorkerDetails() {
+export default function WorkerDetails({ id }: { id: string }) {
+
+  const { data: worker, isLoading, error } = useGetUserDetail(id);
+
   return (
     <div className="p-4 space-y-4">
       {/* Header */}
@@ -71,7 +27,7 @@ export default function WorkerDetails() {
         <div className="flex flex-col md:flex-row gap-6">
           {/* Avatar */}
           <Image
-            src="https://i.ibb.co.com/G3cLcHyf/Ellipse-16.png" // Replace with real path
+            src={getImageUrl(worker?.profile)}
             alt="Worker Avatar"
             width={150}
             height={150}
@@ -82,21 +38,21 @@ export default function WorkerDetails() {
           <div className=" space-y-2">
             <div>
               <p>
-                <span className="font-semibold">Name</span> : {worker.name}
+                <span className="font-semibold">Name</span> : {worker?.name}
               </p>
               <p>
-                <span className="font-semibold">Email</span> : {worker.email}
+                <span className="font-semibold">Email</span> : {worker?.email}
               </p>
               <p>
                 <span className="font-semibold">Contact</span> :{" "}
-                {worker.contact}
+                {worker?.phone}
               </p>
               <p>
                 <span className="font-semibold">Location</span> :{" "}
-                {worker.location}
+                {worker?.address}
               </p>
               <p>
-                <span className="font-semibold">Role Sec.</span> : {worker.role}
+                <span className="font-semibold">Role Sec.</span> : {worker?.role}
               </p>
             </div>
           </div>
@@ -107,11 +63,11 @@ export default function WorkerDetails() {
             <BadgeCheck className="w-4 h-4" /> Verified
           </div>
           <div>
-            <h2 className="text-xl font-semibold capitalize">{worker.name}</h2>
+            <h2 className="text-xl font-semibold capitalize">{worker?.name}</h2>
             <p className="text-sm text-gray-600">
-              {worker.title} / {worker.experience} Of Experience
+              {/* {worker?.title} / {worker?.experience} Of Experience */}
             </p>
-            <p className="text-lg font-semibold text-gray-800">{worker.rate}</p>
+            {/* <p className="text-lg font-semibold text-gray-800">{worker?.}</p> */}
           </div>
         </div>
 
@@ -119,7 +75,7 @@ export default function WorkerDetails() {
         <div className="mt-6">
           <h3 className="font-semibold text-gray-800">About</h3>
           <p className="text-sm text-gray-700 mt-1 whitespace-pre-line">
-            {worker.about}
+            {worker?.about}
           </p>
         </div>
 
@@ -127,7 +83,7 @@ export default function WorkerDetails() {
         <div className="mt-6">
           <h3 className="font-semibold text-gray-800 mb-2">Core Skill:</h3>
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">
-            {worker.skills.map((skill, idx) => (
+            {worker?.coreSkills && worker?.coreSkills.map((skill, idx) => (
               <li key={idx} className="flex items-start gap-1">
                 <CheckCircle className="text-green-500 w-4 h-4 mt-1" />
                 {skill}
@@ -141,14 +97,14 @@ export default function WorkerDetails() {
           <h3 className="font-semibold text-gray-800 mb-2">
             Portfolio / Work Experience
           </h3>
-          <ul className="space-y-3 text-sm text-gray-700">
-            {worker.portfolio.map((item, idx) => (
+          {/* <ul className="space-y-3 text-sm text-gray-700">
+            {worker?. && worker?.portfolio.map((item, idx) => (
               <li key={idx}>
                 <p className="font-medium">{item.title}</p>
                 <p>{item.description}</p>
               </li>
             ))}
-          </ul>
+          </ul> */}
         </div>
 
         {/* Action Buttons */}
