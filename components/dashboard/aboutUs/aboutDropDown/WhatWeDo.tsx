@@ -1,33 +1,88 @@
 import React from "react";
 import AboutUsEdit from "../AboutUsEdit";
-import { Edit } from "lucide-react";
+import { Edit, Plus } from "lucide-react";
 import Image from "next/image";
-import hero from "../../../../public/about-us/what.png";
+import { useGetSection } from "@/lib/query/hooks/dashboard/pageContent";
+import { SECTION_TYPES } from "@/types/others";
+import { getImageUrl } from "@/utils/image";
+import { Button } from "@/components/ui/button";
 
 export default function WhatWeDo() {
+  const { data: section, isLoading } = useGetSection(
+    SECTION_TYPES.WHERE_WE_OPERATE
+  );
+
+  const { title, description, images = [] } = section || {};
+  const hasData = Boolean(title && description);
+
+  if (isLoading) {
+    return (
+      <section className="relative p-4 bg-white rounded-lg shadow-md min-h-[400px] flex items-center justify-center">
+        <div className="text-gray-500">Loading...</div>
+      </section>
+    );
+  }
+
   return (
-    <section className="grid grid-cols-2 gap-14 p-4  bg-white rounded-lg shadow-md relative">
-      <div className="absolute top-4 right-4 flex items-center justify-center bg-blue-600 h-8 w-8 text-white rounded-full cursor-pointer">
-        <AboutUsEdit trigger={<Edit className="w-4 h-4 cursor-pointer" />} />
-      </div>
-      <div>
-        <h1 className="font-semibold text-3xl 2xl:text-5xl my-3 leading-16 capitalize">
-          Where We Operate
-        </h1>
-        <p className="text-[#545454] mt-6">
-          We connect job seekers with employers through a smart, easy-to-use
-          platform designed for today’s job market. Our technology matches
-          skills to opportunities, helping candidates find roles that fit their
-          ambitions while enabling businesses to hire faster and with greater
-          confidence.
-        </p>
-        {/* <button className="bg-[#FFC823] text-[#333333] rounded py-3 px-9 mt-6 text-xl cursor-pointer">
-          Contact
-        </button> */}
-      </div>
-      <div>
-        <Image src={hero} alt="upload image" width={500} height={500} />
-      </div>
+    <section className="relative p-4 bg-white rounded-lg shadow-md min-h-[400px]">
+      {/* Action button - Only show when there's data */}
+      {hasData && (
+        <div className="absolute top-4 right-4">
+          <div className="flex items-center justify-center bg-blue-600 h-8 w-8 text-white rounded-full cursor-pointer">
+            <AboutUsEdit
+              trigger={<Edit className="w-4 h-4 cursor-pointer" />}
+              mode="edit"
+              section={section}
+              sectionType={SECTION_TYPES.WHERE_WE_OPERATE}
+            />
+          </div>
+        </div>
+      )}
+
+      {hasData ? (
+        <div className="grid grid-cols-2 gap-14">
+          <div>
+            <h1 className="font-semibold text-3xl 2xl:text-5xl my-3 leading-16 capitalize">
+              {title}
+            </h1>
+            <p className="text-[#545454] mt-6">{description}</p>
+          </div>
+          <div>
+            {images[0] && (
+              <Image
+                src={getImageUrl(images[0])}
+                alt={title || "Where we operate"}
+                width={500}
+                height={500}
+                className="object-cover rounded-lg"
+              />
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-16 text-center h-full min-h-[350px]">
+          <h2 className="text-lg font-medium text-gray-700 mb-2">
+            Where We Operate section is not created yet
+          </h2>
+          <p className="text-sm text-gray-500 mb-6">
+            Click below to create the Where We Operate section
+          </p>
+          <div>
+            <AboutUsEdit
+              trigger={
+                <Button className="gap-2">
+                  <Plus className="w-4 h-4" />
+                  Create Where We Operate Section
+                </Button>
+              }
+              mode="create"
+              section={section}
+              sectionType={SECTION_TYPES.WHERE_WE_OPERATE}
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 }
+

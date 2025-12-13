@@ -33,10 +33,17 @@ export type ISectionType =
   | string;
 export const SECTION_TYPES = {
   HERO: "hero",
+  ABOUT_HERO: "about-hero",
+  ABOUT_WHY_US: "about-why-us",
   HOW_IT_WORKS: "how-it-works",
+  WHO_WE_ARE: "who-we-are",
+  OUR_MISSION: "our-mission",
+  OUR_VISION: "our-vision",
+  WHERE_WE_OPERATE: "where-we-operate",
   HOW_IT_WORKS_WORKER: "how-it-works-worker",
   WHY_US: "why-us",
   JOB_RESPONSE: "job-response",
+  CONTACT_US: "contact-us",
   CUSTOM: "custom",
 };
 export const PAGE_SLUGS = {

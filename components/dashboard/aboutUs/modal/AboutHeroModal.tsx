@@ -3,6 +3,7 @@
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -13,44 +14,45 @@ import { Edit, Plus, Upload } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { useCreateSection } from "@/lib/query/hooks/dashboard/pageContent";
 import { useUpdateSection } from "@/lib/query/hooks/dashboard/pageContent";
-import { ISection, PAGE_SLUGS, SECTION_TYPES } from "@/types/others";
 import { getImageUrl } from "@/utils/image";
+import { ISection, PAGE_SLUGS, SECTION_TYPES } from "@/types/others";
 
-type ContactUsFormProps = {
+type AboutHeroModalProps = {
   mode: "create" | "edit";
-  section?: ISection;
-  trigger: React.ReactNode;
+  contents?: ISection;
 };
 
-export default function ContactEdit({ mode, section, trigger }: ContactUsFormProps) {
+export default function AboutHeroModal({ mode, contents }: AboutHeroModalProps) {
   const isEdit = mode === "edit";
   
-  const [title, setTitle] = useState(section?.title || "Let’s Connect and Build Something Great.");
-  const [description, setDescription] = useState(section?.description || "");
+  const [title, setTitle] = useState(contents?.title || "");
+  const [description, setDescription] = useState(contents?.description || "");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(
-    section?.images?.[0] ? getImageUrl(section.images[0]) : null
+    contents?.images?.[0] ? getImageUrl(contents.images[0]) : null
   );
   
   const inputRef = useRef<HTMLInputElement>(null);
 
   // API mutations
-  const { mutateAsync: createMutation, isPending: isCreating } = useCreateSection(SECTION_TYPES.CONTACT_US);
-  const { mutateAsync: updateMutation, isPending: isUpdating } = useUpdateSection(SECTION_TYPES.CONTACT_US);
+  const {mutate: createMutation, isPending: isCreatePending} = useCreateSection(SECTION_TYPES.ABOUT_HERO);
+  const {mutate: updateMutation, isPending: isUpdatePending} = useUpdateSection(SECTION_TYPES.ABOUT_HERO);
+
 
   const resetForm = () => {
     setTitle("");
     setDescription("");
     setImageFile(null);
     setImagePreview(null);
-  };
+  }
 
 
+  // Reset preview when initialData changes
   useEffect(() => {
-    if (section?.images?.[0]) {
-      setImagePreview(getImageUrl(section.images[0]));
+    if (contents?.images?.[0]) {
+      setImagePreview(getImageUrl(contents.images[0]));
     }
-  }, [section]);
+  }, [contents]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -67,30 +69,41 @@ export default function ContactEdit({ mode, section, trigger }: ContactUsFormPro
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Create FormData for file upload
-    const formData = new FormData();
-    formData.append('pageSlug', PAGE_SLUGS.CONTACT);
-    formData.append('sectionType', SECTION_TYPES.CONTACT_US);
-    formData.append('title', title);
-    formData.append('description', description);
 
+    const formData = new FormData();
+   
+    const heroData = {
+      pageSlug: PAGE_SLUGS.ABOUT,
+      sectionType: SECTION_TYPES.ABOUT_HERO,
+      title: title.trim(),
+      description: description.trim(),
+    }
+
+    formData.append('data', JSON.stringify(heroData));
     
     if (imageFile) {
       formData.append('images', imageFile);
-    }
-
+    } 
 
     try {
-      if (isEdit && section) {
-        await updateMutation({
-          id: section._id,
-          data: formData
-        });
+      if (isEdit && contents) {
+        updateMutation(
+          {
+            id: contents._id,
+            data: formData 
+          }
+        )
+        resetForm();
       } else {
-        await createMutation({data: formData});
+        createMutation(
+          {
+            data: formData 
+          }
+        )
+        resetForm();
+
       }
       
-      // Close dialog on success
     } catch (error) {
       console.error("Failed to save:", error);
     }
@@ -99,12 +112,24 @@ export default function ContactEdit({ mode, section, trigger }: ContactUsFormPro
   return (
     <Dialog>
       <DialogTrigger asChild>
-        {trigger}
+        {isEdit ? (
+          <button 
+            className="bg-blue-600 h-8 w-8 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors"
+            aria-label="Edit about hero section"
+          >
+            <Edit className="w-4 h-4" />
+          </button>
+        ) : (
+          <Button className="gap-2">
+            <Plus className="w-4 h-4" />
+            Create Hero Section
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent className="max-w-2xl">
         <DialogTitle>
-          {isEdit ? "Edit Contact Section" : "Create Contact Section"}
+          {isEdit ? "Edit About Hero Section" : "Create About Hero Section"}
         </DialogTitle>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-6">
@@ -114,7 +139,7 @@ export default function ContactEdit({ mode, section, trigger }: ContactUsFormPro
               Headline
             </label>
             <Input 
-              placeholder="Let’s Connect and Build Something Great." 
+              placeholder="Type your headline here..." 
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
@@ -127,7 +152,7 @@ export default function ContactEdit({ mode, section, trigger }: ContactUsFormPro
               Description
             </label>
             <Textarea 
-              placeholder="We make it simple for employers and skilled professionals to connect..." 
+              placeholder="Type description..." 
               rows={4}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -180,24 +205,24 @@ export default function ContactEdit({ mode, section, trigger }: ContactUsFormPro
                 </div>
               )}
             </div>
-            {section?.images?.[0] && !imageFile && (
+            {contents?.images?.[0] && !imageFile && (
               <p className="text-xs text-gray-500 mt-1">
                 Current image will be kept if no new image is selected
               </p>
             )}
           </div>
 
-          <div className="flex justify-end">
+          <DialogFooter>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-whaite rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={isCreating || isUpdating}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isCreatePending || isUpdatePending}
             >
-              {isCreating || isUpdating 
+              {isCreatePending || isUpdatePending 
                 ? "Saving..." 
                 : isEdit ? "Update" : "Create"}
             </button>
-          </div>
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
