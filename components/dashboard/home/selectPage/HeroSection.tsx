@@ -1,28 +1,62 @@
 import Image from "next/image";
-import React from "react";
 import HeroSectionModal from "../modal/HeroSection";
-import hero from "../../../../public/home/hero.png";
+import { useGetPageContent } from "@/lib/query/hooks/dashboard/pageContent";
+import { getImageUrl } from "@/utils/image";
 
 export default function HeroSection() {
+  const { data: pageContent } = useGetPageContent("hero-section");
+
+  const title = pageContent?.title;
+  const description = pageContent?.description;
+  const image = pageContent?.image;
+
+  const hasHeroData = Boolean(title && description && image);
+
   return (
-    <section className="grid grid-cols-[auto_30%] gap-14 p-4 bg-white rounded-lg shadow-md relative">
-      <div className="absolute top-4 right-4 flex items-center justify-center bg-blue-600 h-8 w-8 text-white rounded-full cursor-pointer">
-        <HeroSectionModal />
-      </div>
+    <section className="relative p-4 bg-white rounded-lg shadow-md min-h-[400px]">
+      {/* Action button - Only show when there's data */}
+      {hasHeroData && (
+        <div className="absolute top-4 right-4">
+          <HeroSectionModal mode="edit" />
+        </div>
+      )}
 
-      <div>
-        <h1 className="font-semibold text-3xl 2xl:text-5xl my-3 leading-12 2xl:leading-16">
-          Employment marketplace find trusted labour in minutes no phone calls
-          needed.
-        </h1>
-        <p className="text-[#545454] mt-6 capitalize">
-          instantly match with local tradesmen and temp workers!
-        </p>
-      </div>
+      {hasHeroData ? (
+        <div className="grid grid-cols-[auto_30%] gap-14">
+          <div>
+            <h1 className="font-semibold text-3xl 2xl:text-5xl my-3 leading-12 2xl:leading-16">
+              {title}
+            </h1>
+            <p className="text-[#545454] mt-6 capitalize">
+              {description}
+            </p>
+          </div>
 
-      <div>
-        <Image src={hero} alt="upload image" width={300} height={300} />
-      </div>
+          <div>
+            <Image
+              src={getImageUrl(image)}
+              alt="Hero image"
+              width={300}
+              height={300}
+              priority
+              className="object-cover rounded-lg"
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-16 text-center h-full min-h-[350px]">
+          <h2 className="text-lg font-medium text-gray-700 mb-2">
+            Hero section is not created yet
+          </h2>
+          <p className="text-sm text-gray-500 mb-6">
+            Click below to create the hero section
+          </p>
+
+         <div>
+           <HeroSectionModal mode="create" />
+         </div>
+        </div>
+      )}
     </section>
   );
 }

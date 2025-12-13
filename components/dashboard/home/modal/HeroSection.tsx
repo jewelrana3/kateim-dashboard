@@ -9,100 +9,128 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Edit } from "lucide-react";
-type HeroSectionProps = {
-  trigger: React.ReactNode;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
+import { Edit, Plus, Upload } from "lucide-react";
+import { useRef, useState } from "react";
+
+type HeroSectionModalProps = {
+  mode: "create" | "edit";
 };
 
-export default function HeroSectionModal() {
+export default function HeroSectionModal({ mode }: HeroSectionModalProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
+  const isEdit = mode === "edit";
+
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files?.[0];
-    if (files) {
-      const url = URL.createObjectURL(files);
-      setImageUrl(url);
+    const file = event.target.files?.[0];
+    if (file) {
+      setImageUrl(URL.createObjectURL(file));
     }
   };
 
   const handleClick = () => {
-    if (inputRef?.current) {
-      inputRef.current?.click();
-    }
+    inputRef.current?.click();
   };
 
   return (
     <Dialog>
-      <DialogTrigger>
-        <Edit className="w-4 h-4 cursor-pointer" />
+      <DialogTrigger asChild>
+        {isEdit ? (
+          <button 
+            className="bg-blue-600 h-8 w-8 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors"
+            aria-label="Edit hero section"
+          >
+            <Edit className="w-4 h-4" />
+          </button>
+        ) : (
+          <Button className="gap-2">
+            <Plus className="w-4 h-4" />
+            Create Hero Section
+          </Button>
+        )}
       </DialogTrigger>
+
       <DialogContent className="max-w-2xl">
-        <div className="  rounded-md text-black">
-          <DialogTitle>Hero Section</DialogTitle>
+        <DialogTitle>
+          {isEdit ? "Edit Hero Section" : "Create Hero Section"}
+        </DialogTitle>
 
-          <form className="space-y-4 mt-6">
-            <div>
-              <label className="mb-2" htmlFor="headline">
-                HeadLine
-              </label>
-              <Input
-                type="text"
-                placeholder="Type your headline here..."
-                className="w-full border border-gray-300 px-3 py-2 rounded-md outline-none"
+        <form className="space-y-4 mt-6">
+          {/* Headline */}
+          <div>
+            <label className="mb-2 block text-sm font-medium">
+              Headline
+            </label>
+            <Input placeholder="Type your headline here..." />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="mb-2 block text-sm font-medium">
+              Description
+            </label>
+            <Textarea 
+              placeholder="Type description..." 
+              rows={4}
+            />
+          </div>
+
+          {/* Upload Image */}
+          <div>
+            <label className="block mb-2 text-sm font-medium">
+              Upload Image
+            </label>
+            <div
+              className="w-full h-40 border-2 border-dashed border-gray-300 flex flex-col justify-center items-center rounded-md cursor-pointer hover:bg-gray-50 transition-colors"
+              onClick={handleClick}
+            >
+              <input
+                ref={inputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageUpload}
               />
-            </div>
 
-            {/* Sub Headline */}
-            <div>
-              <label className="mb-2" htmlFor="description">
-                description
-              </label>
-              <Textarea
-                placeholder="Type..."
-                className="w-[460px] border border-gray-300 px-3 py-2 rounded-md outline-none"
-              />
-            </div>
-
-            {/* Upload Image */}
-            <div>
-              <label className="block mb-1">Upload Image</label>
-              <div
-                className="w-full h-40 border border-gray-300 px-3 py-4 flex justify-center items-center rounded-md cursor-pointer hover:bg-gray-100"
-                onClick={handleClick}
-              >
-                <section>
-                  <input
-                    ref={inputRef}
-                    id="upload"
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleImageUpload}
-                  />
-                </section>
-
-                {imageUrl ? (
+              {imageUrl ? (
+                <div className="relative w-full h-full">
                   <img
                     src={imageUrl}
                     alt="Preview"
-                    className="w-40 h-40 object-cover rounded border"
+                    className="w-full h-full object-cover rounded"
                   />
-                ) : (
-                  <span>Upload Image</span>
-                )}
-              </div>
+                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                    <Button 
+                      type="button" 
+                      variant="secondary" 
+                      size="sm"
+                      className="gap-2"
+                    >
+                      <Upload className="w-4 h-4" />
+                      Change Image
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center gap-2 text-gray-500">
+                  <Upload className="w-8 h-8" />
+                  <span>Click to upload image</span>
+                  <span className="text-xs text-gray-400">
+                    Recommended: 300x300px
+                  </span>
+                </div>
+              )}
             </div>
+          </div>
 
-            <DialogFooter>
-              <Button type="submit">Submit</Button>
-            </DialogFooter>
-          </form>
-        </div>
+          <DialogFooter>
+            <Button type="submit" className="gap-2">
+              {isEdit ? "Update" : "Create"}
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

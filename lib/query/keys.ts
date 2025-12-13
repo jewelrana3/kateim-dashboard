@@ -22,6 +22,7 @@ export const queryKeys = {
      */
     dashboard: {
         all: ['dashboard'] as const,
+        pageContent: () => [...queryKeys.dashboard.all, 'pageContent'] as const,
         stats: () => [...queryKeys.dashboard.all, 'stats'] as const,
         revenue: (params?: { year?: number; month?: number }) =>
             [...queryKeys.dashboard.all, 'revenue', params] as const,
