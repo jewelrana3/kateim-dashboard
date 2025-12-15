@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "../../keys";
 
 import { UserApis } from "../../apis/user";
+import { toast } from "react-toastify";
 
 export const useGetAllUser = (params = {} as IUserFilterableFields) => {
     return useQuery({
@@ -44,6 +45,25 @@ export const useUpdateUserStatus = (id: string) => {
             return data.data;
         },
         onSuccess: () => {
+            // Invalidate all user queries to refetch data
+            queryClient.invalidateQueries({
+                queryKey: ['dashboard', 'users']
+            });
+        },
+    })
+}
+
+export const useToggleUserVerification = (id: string) => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationKey: ["dashboard", "users", "toggleVerification", id],
+        mutationFn: async (userId: string) => {
+            const data = await UserApis.toggleUserVerification(userId);
+            return data;
+        },
+        onSuccess: (data) => {
+            toast.success(data.message || 'User verification status updated!');
             // Invalidate all user queries to refetch data
             queryClient.invalidateQueries({
                 queryKey: ['dashboard', 'users']

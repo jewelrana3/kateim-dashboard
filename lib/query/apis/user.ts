@@ -17,8 +17,14 @@ const updateUserStatus = async (id: string): Promise<ApiResponse<IUser>> => {
     return res.data;
 }
 
+const toggleUserVerification = async (id: string): Promise<ApiResponse<IUser>> => {
+    const res = await api.patch(`/dashboard/users/verify/${id}`);
+    return res.data;
+}
+
 export const UserApis = {
     geAllUser,
     getUserDetail,
     updateUserStatus,
+    toggleUserVerification,
 }

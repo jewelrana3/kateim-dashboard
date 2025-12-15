@@ -22,64 +22,14 @@ import {
 
 import Swal from "sweetalert2";
 import VerifyDetailsModal from "@/modal/VerifyDetailsModal";
+import { useGetAllUser } from "@/lib/query/hooks";
+import { IUser } from "@/types/users";
 
-const employers = [
-  {
-    id: 2,
-    name: "Katiem",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Verify",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 3,
-    name: "Katiem",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Verify",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 4,
-    name: "Katiem",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Verify",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 5,
-    name: "Katiem",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Verify",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 6,
-    name: "Katiem",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Verify",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 7,
-    name: "Katiem",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Verify",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-];
+
 export default function VerifyReuest() {
+
+  const {data,isLoading} = useGetAllUser();
+  const {meta, data:users} = data || {};
   const handleClick = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -133,24 +83,25 @@ export default function VerifyReuest() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {employers.map((employer, index) => (
-              <TableRow key={employer.id}>
+            {users && users.map((user:IUser, index:number) => (
+              <TableRow key={user._id}>
                 <TableCell className="font-medium">0{index + 1}</TableCell>
 
                 <TableCell className="flex items-center gap-2">
-                  {employer.name}
+                  {user.name}
                 </TableCell>
 
-                <TableCell>{employer.email}</TableCell>
-                <TableCell>{employer.contact}</TableCell>
-                <TableCell>{employer.location}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.phone}</TableCell>
+                <TableCell>{user.address}</TableCell>
                 <TableCell>
-                  <Badge className="bg-green-500 text-white p-2">
-                    {employer.status}
+                  <Badge className={`${user.isAccountVerified ? "bg-green-500 text-white" : "bg-red-500 text-white"} p-2`}>
+                    {user.isAccountVerified ? "Verified" : "Not Verified"}
                   </Badge>
                 </TableCell>
                 <TableCell className="flex gap-2 pl-10">
                   <VerifyDetailsModal
+                    user={user}
                     trigger={
                       <span className="bg-blue-600 p-1 rounded cursor-pointer">
                         <Eye className=" text-white" />

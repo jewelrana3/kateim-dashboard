@@ -1,11 +1,19 @@
 import Image from "next/image";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { IUser } from "@/types/users";
+import { getImageUrl } from "@/utils/image";
+import { useToggleUserVerification } from "@/lib/query/hooks/dashboard/users";
 
 export default function VerifyDetailsModal({
   trigger,
+  user,
 }: {
   trigger: React.ReactNode;
+  user: IUser;
 }) {
+
+  const {mutate: toggleVerification} = useToggleUserVerification(user._id);
+
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -26,19 +34,19 @@ export default function VerifyDetailsModal({
             {/* Info Text */}
             <div className="space-y-2 text-sm text-gray-800">
               <p>
-                <strong>Name</strong> : Katiem
+                <strong>Name</strong> : {user.name}
               </p>
               <p>
-                <strong>Email</strong> : Admin@Instantlabour.Co.Uk
+                <strong>Email</strong> : {user.email}
               </p>
               <p>
-                <strong>Contact</strong> : 01333327633
+                <strong>Contact</strong> : {user.phone}
               </p>
               <p>
-                <strong>Location</strong> : Dhaka Bangladesh
+                <strong>Location</strong> : {user.address}
               </p>
               <p>
-                <strong>Role Sec.</strong> : Employer
+                <strong>Role Sec.</strong> : {user.role}
               </p>
             </div>
           </div>
@@ -46,8 +54,15 @@ export default function VerifyDetailsModal({
           {/* ID Image Section */}
           <div className="mt-6 flex justify-center">
             <Image
-              src="https://i.ibb.co.com/4nymc2Tt/image-10.png" // Replace with actual ID image path
+              src={getImageUrl(user.nidFront)} // Replace with actual ID image path
               alt="ID Front"
+              width={300}
+              height={200}
+              className="rounded-md shadow"
+            />
+             <Image
+              src={getImageUrl(user.nidBack)} // Replace with actual ID image path
+              alt="ID Back"
               width={300}
               height={200}
               className="rounded-md shadow"
@@ -65,10 +80,10 @@ export default function VerifyDetailsModal({
 
           {/* Action Buttons */}
           <div className="flex justify-center gap-4 mt-6">
-            <button className="bg-white border border-red-500 text-red-500 px-5 py-2 rounded-md hover:bg-red-50">
+            <button onClick={() => toggleVerification(user._id)} className={`bg-white border border-red-500 text-red-500 px-5 py-2 rounded-md hover:bg-red-50 `}>
               Decline
             </button>
-            <button className="bg-yellow-400 text-black px-5 py-2 rounded-md hover:bg-yellow-500">
+            <button onClick={() => toggleVerification(user._id)} className="bg-yellow-400 text-black px-5 py-2 rounded-md hover:bg-yellow-500">
               Approve
             </button>
           </div>
