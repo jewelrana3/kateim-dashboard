@@ -93,3 +93,16 @@ export enum PUBLIC_TYPES {
   ABOUT_US = "about-us",
   
 }
+
+export interface IContact {
+  _id?: string
+  name: string
+  email: string
+  phone: string
+  country?: string
+  message: string
+  feedback?: string
+  isSolved: boolean
+  createdAt?: Date
+  updatedAt?: Date
+}

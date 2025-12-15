@@ -8,9 +8,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+
 import { Badge } from "@/components/ui/badge";
-import { Eye, Link, Lock, Trash2 } from "lucide-react";
+import {  Trash2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -23,68 +23,18 @@ import {
 import { useRouter } from "next/navigation";
 import { DialogDemo } from "./Message";
 import Swal from "sweetalert2";
+import { useDeleteSupportMessage, useGetSupportMessage } from "@/lib/query/hooks/dashboard/public";
+import { IContact } from "@/types/others";
 
-const employers = [
-  {
-    id: 2,
-    name: "Katiem",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Solved",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 3,
-    name: "Katiem",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Solved",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 4,
-    name: "Katiem",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Solved",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 5,
-    name: "Katiem",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Solved",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 6,
-    name: "Katiem",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Solved",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 7,
-    name: "Katiem",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Solved",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-];
 
 export default function Support() {
 
 
-  const handleClick = () => {
+  const {data: supportMessages} = useGetSupportMessage();
+
+  const { mutate: deleteMessageMutation } = useDeleteSupportMessage();
+
+  const handleClick = (id: string) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You want to be delete this!",
@@ -95,6 +45,7 @@ export default function Support() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
+        deleteMessageMutation(id);
         Swal.fire({
           title: "Deleted!",
           text: "Your file has been deleted.",
@@ -131,26 +82,26 @@ export default function Support() {
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Contact</TableHead>
-              <TableHead>Location</TableHead>
+              {/* <TableHead>Location</TableHead> */}
               <TableHead>Status</TableHead>
               <TableHead className="pl-8">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {employers.map((employer, index) => (
-              <TableRow key={employer.id}>
+            {supportMessages && supportMessages.length > 0 && supportMessages.map((message: IContact, index:number) => (
+              <TableRow key={message._id}>
                 <TableCell className="font-medium">0{index + 1}</TableCell>
 
                 <TableCell className="flex items-center gap-2">
-                  {employer.name}
+                  {message.name}
                 </TableCell>
 
-                <TableCell>{employer.email}</TableCell>
-                <TableCell>{employer.contact}</TableCell>
-                <TableCell>{employer.location}</TableCell>
+                <TableCell>{message.email}</TableCell>
+                <TableCell>{message.phone}</TableCell>
+                {/* <TableCell>{message.location}</TableCell> */}
                 <TableCell>
-                  <Badge className="bg-green-500 text-white">
-                    {employer.status}
+                  <Badge className={message.isSolved ? "bg-green-500 text-white" : "bg-red-500 text-white"}>
+                    {message.isSolved ? "Solved" : "Unresolved"}
                   </Badge>
                 </TableCell>
                 <TableCell className="flex gap-2">
@@ -161,10 +112,10 @@ export default function Support() {
                       </span>
                     }
                   /> */}
-                  <DialogDemo />
+                  <DialogDemo message={message} />
                   <span
                     className="bg-red-600 p-1 rounded cursor-pointer"
-                    onClick={handleClick}
+                    onClick={() => handleClick(message._id!)}
                   >
                     <Trash2 className=" text-white" />
                   </span>
