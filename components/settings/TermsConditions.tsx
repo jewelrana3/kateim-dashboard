@@ -3,13 +3,22 @@
 import { useRef, useState } from "react";
 import Button from "./Button";
 import { JoditEditor } from "../JodiClient";
+import { useGetPublicData, useUpdateOrCreatePublicData } from "@/lib/query/hooks/dashboard/public";
+import { PUBLIC_TYPES } from "@/types/others";
 
 export default function TermsCondition() {
   const editor = useRef(null);
 
   const [content, setContent] = useState("");
+  const { data: termsCondition } = useGetPublicData(PUBLIC_TYPES.TERMS_AND_CONDITIONS);
+  const { mutate: updateTermsCondition } = useUpdateOrCreatePublicData(PUBLIC_TYPES.TERMS_AND_CONDITIONS);
 
-  const handleOnSave = (value: string) => {};
+  const handleOnSave = (value: string) => {
+    updateTermsCondition({
+      type: PUBLIC_TYPES.TERMS_AND_CONDITIONS,
+      content: value,
+    });
+  };
   return (
     <section className="p-3">
       <div className="">
@@ -17,7 +26,7 @@ export default function TermsCondition() {
           <JoditEditor
             className="border-none break-all"
             ref={editor}
-            value={content}
+            value={termsCondition?.content || ""}
             config={{ height: 550, theme: "", readonly: false }}
             onBlur={(newContent) => setContent(newContent)}
           />

@@ -72,3 +72,24 @@ export interface IPageData extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+
+export type IPublic = {
+  content: string
+  type: string
+}
+
+export type IFaq = {
+  _id?: string
+  question: string
+  answer: string
+  createdAt?: Date
+  updatedAt?: Date
+}
+
+export enum PUBLIC_TYPES {
+  TERMS_AND_CONDITIONS = "terms-and-condition",
+  PRIVACY_POLICY = "privacy-policy",
+  ABOUT_US = "about-us",
+  
+}

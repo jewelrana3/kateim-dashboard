@@ -32,6 +32,8 @@ export const queryKeys = {
         detail: (id: string) => [...queryKeys.dashboard.all, 'detail', id] as const,
         updateStatus: (id: string) => [...queryKeys.dashboard.all, 'updateStatus', id] as const,
         categories: () => [...queryKeys.dashboard.all, 'categories'] as const,
+        public: (type: string) => [...queryKeys.dashboard.all, 'public', type] as const,
+        faq: () => [...queryKeys.dashboard.all, 'faq'] as const,
     },
 
     /**
