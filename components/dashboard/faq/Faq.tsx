@@ -30,10 +30,28 @@ export function Faq() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteFaq(id);
+
+        deleteFaq(id, {
+          onSuccess: () => {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your FAQ has been deleted.",
+              icon: "success",
+            });
+          },
+          onError: (error) => {
+            Swal.fire({
+              title: "Error!",
+              text: "Failed to delete FAQ. Please try again.",
+              icon: "error",
+            });
+            console.error("Delete error:", error);
+          }
+        });
       }
     });
   };
+
   return (
     <Accordion
       type="single"
@@ -44,7 +62,7 @@ export function Faq() {
       {faqs && faqs.length > 0 ? (
         faqs?.map((item: IFaq) => (
           <div className="bg-[#E6EEFC] px-4 my-3 rounded-md" key={item._id}>
-            <AccordionItem value={item.question}>
+            <AccordionItem value={item._id || `item-${item._id}`}>
               <AccordionTrigger className="text-md cursor-pointer">
                 {item.question}
               </AccordionTrigger>
@@ -53,22 +71,24 @@ export function Faq() {
                 <p>{item.answer}</p>
                 <section className="flex justify-end">
                   <div className="flex items-center gap-3">
+                    {/* Pass the FAQ data as default values to FaqEdit */}
                     <FaqEdit
-                      title="Edit FAQ"
+                      title="Edit Faq"
+                      defaultValues={{
+                        id: item._id,
+                        question: item.question,
+                        answer: item.answer,
+                        // Add any other fields your IFaq interface has
+                      }}
                       trigger={
                         <span className="cursor-pointer">
                           <Edit2Icon size={20} />
                         </span>
                       }
-                      defaultValues={{
-                        id: item._id,
-                        question: item.question,
-                        answer: item.answer,
-                      }}
                     />
-                    <span
-                      className="cursor-pointer"
-                      onClick={() => handleDelete(item._id!)}
+                    <span 
+                      className="cursor-pointer" 
+                      onClick={() => item._id && handleDelete(item._id)}
                     >
                       <Trash2 size={20} />
                     </span>
