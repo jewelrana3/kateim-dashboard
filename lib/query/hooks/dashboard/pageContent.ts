@@ -57,3 +57,57 @@ export const useCreateSection = (slug: string) => {
         }
       });
 }
+
+
+export const useGetClientReview = () => {
+    return useQuery({
+        queryKey: queryKeys.dashboard.clientReview(),
+        queryFn: async () => {
+            const data = await pageContentApi.getClientReview();
+            return data.data || [];
+        },
+        staleTime: 3 * 60 * 1000, // 3 minutes
+        gcTime: 10 * 60 * 1000, // 10 minutes
+    })
+}
+
+export const useCreateClientReview = () => {
+    return useMutation({
+        mutationKey: queryKeys.dashboard.clientReview(),
+        mutationFn: async (params: {data: FormData }) => {
+          const data = await pageContentApi.createClientReview(params.data);
+          return data.data || {};
+        },
+        onSuccess: (data) => {
+          toast.success(data.message || "Client review created successfully");
+          // Invalidate and refetch categories query
+          queryClient.invalidateQueries({ 
+            queryKey: queryKeys.dashboard.clientReview() 
+          });
+        },
+        onError: (error) => {
+          console.error("Client review creation error:", error);
+        }
+      });
+}
+
+export const useUpdateClientReview = (id: string) => {
+    return useMutation({
+        mutationKey: queryKeys.dashboard.clientReview(),
+        mutationFn: async (params: {data: FormData }) => {
+          const data = await pageContentApi.updateClientReview(id, params.data);
+          return data.data || {};
+        },
+        onSuccess: (data) => {
+          toast.success(data.message || "Client review updated successfully");
+          // Invalidate and refetch categories query
+          queryClient.invalidateQueries({ 
+            queryKey: queryKeys.dashboard.clientReview() 
+          });
+        },
+        onError: (error) => {
+          console.error("Client review update error:", error);
+        }
+      });
+}
+

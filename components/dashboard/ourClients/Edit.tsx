@@ -10,64 +10,99 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useUpdateClientReview } from "@/lib/query/hooks/dashboard/pageContent";
+import { IClientreview } from "@/types/others";
 import { Edit } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { getImageUrl } from "@/utils/image";
 
-export function EditClientSection() {
+export function EditClientSection({ clientReview }: { clientReview: IClientreview }) {
   const [previewImage, setPreviewImage] = useState<string | null>(
-    "https://i.ibb.co.com/93Cb6KpS/Rectangle-5.png"
+    getImageUrl(clientReview.image)
   );
   const [file, setFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const { mutate: updateClientReview } = useUpdateClientReview(clientReview._id);
+
   const handleClick = () => {
-    if (inputRef?.current) {
-      inputRef.current?.click();
-    }
+    inputRef.current?.click();
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-
-    if (file) {
-      const url = URL.createObjectURL(file);
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      const url = URL.createObjectURL(selectedFile);
       setPreviewImage(url);
-      setFile(file);
+      setFile(selectedFile);
     }
   };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    const payload: Partial<IClientreview> = {
+      name: formData.get("name") as string,
+      designation: formData.get("designation") as string,
+      description: formData.get("description") as string,
+      rating: Number(formData.get("rating")),
+    };
+
+    // Append JSON payload as "data"
+    formData.append("data", JSON.stringify(payload));
+
+    // Append image file if selected
+    if (file) {
+      formData.append("images", file);
+    }
+
+    // Call mutation
+    updateClientReview({ data: formData });
+  };
+
   return (
     <Dialog>
-      <form>
-        <DialogTrigger asChild>
-          <button className="cursor-pointer">
-            <Edit />
-          </button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+      <DialogTrigger asChild>
+        <button type="button" className="cursor-pointer">
+          <Edit />
+        </button>
+      </DialogTrigger>
+
+      <DialogContent className="sm:max-w-[425px]">
+        <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Edit Clients</DialogTitle>
           </DialogHeader>
+
           <div className="grid gap-4">
             <div className="grid gap-3">
               <Label htmlFor="name-1">Name</Label>
-              <Input name="name" defaultValue="Pedro Duarte" />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="title">Title</Label>
-              <Input name="title" placeholder="title here" />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="description">Description</Label>
-              <Input name="description" placeholder="description here" />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="rating">Rating</Label>
-              <Input type="number" name="rating" placeholder="rating here" />
+              <Input name="name" defaultValue={clientReview.name} />
             </div>
 
-            <Label htmlFor="Image">Upload Picture</Label>
-            <div onClick={handleClick}>
+            <div className="grid gap-3">
+              <Label htmlFor="designation">Designation</Label>
+              <Input name="designation" defaultValue={clientReview.designation} />
+            </div>
+
+            <div className="grid gap-3">
+              <Label htmlFor="description">Description</Label>
+              <Input name="description" defaultValue={clientReview.description} />
+            </div>
+
+            <div className="grid gap-3">
+              <Label htmlFor="rating">Rating</Label>
+              <Input
+                type="number"
+                name="rating"
+                defaultValue={clientReview.rating}
+              />
+            </div>
+
+            <Label htmlFor="image">Upload Picture</Label>
+            <div onClick={handleClick} className="cursor-pointer">
               {previewImage ? (
                 <Image
                   src={previewImage}
@@ -90,11 +125,12 @@ export function EditClientSection() {
               />
             </div>
           </div>
+
           <DialogFooter>
             <Button type="submit">Submit</Button>
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 }

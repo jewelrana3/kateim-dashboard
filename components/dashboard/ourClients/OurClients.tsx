@@ -1,39 +1,23 @@
 // components/Testimonials.tsx
 
-import { Edit } from "lucide-react";
+'use client'
+
 import Image from "next/image";
 import { EditClientSection } from "./Edit";
+import { useGetClientReview } from "@/lib/query/hooks/dashboard/pageContent";
+import { IClientreview } from "@/types/others";
+import { getImageUrl } from "@/utils/image";
 
-const testimonials = [
-  {
-    name: "Sarah Ahmed",
-    title: "Business Owner",
-    testimonial:
-      "This platform made hiring so simple. I found a skilled web developer in less than a day, and the project was completed ahead of schedule.",
-    image: "https://i.ibb.co.com/93Cb6KpS/Rectangle-5.png",
-  },
-  {
-    name: "David Khan",
-    title: "Startup Founder",
-    testimonial:
-      "This platform saved us time and money. The secure payment system and verified talent gave me complete peace of mind.",
-    image: "https://i.ibb.co.com/93Cb6KpS/Rectangle-5.png",
-  },
-  {
-    name: "Emily Roberts",
-    title: "Event Planner",
-    testimonial:
-      "From searching to hiring, everything was smooth and simple. I’ll definitely use it again for my future projects and it's very excellent.",
-    image: "https://i.ibb.co.com/93Cb6KpS/Rectangle-5.png",
-  },
-];
+
 
 export default function OurClients() {
+
+  const {data:clientReviews = []} = useGetClientReview();
   return (
     <section className="my-5 p-4 bg-white text-center max-w-7xl mx-auto rounded-md ">
       <h2 className="text-3xl font-semibold mb-12 ">What Our Clients Say</h2>
       <div className="flex flex-col md:flex-row  items-center gap-8  px-4">
-        {testimonials.map((t, index) => (
+        {clientReviews && clientReviews.map((t:IClientreview, index:number) => (
           <div
             key={index}
             className={`bg-white shadow-md rounded-lg p-6 w-full max-w-sm ${
@@ -42,7 +26,7 @@ export default function OurClients() {
           >
             <div className="relative w-full h-48 mb-4 overflow-hidden">
               <Image
-                src={t.image}
+                src={getImageUrl(t.image)}
                 alt={t.name}
                 layout="fill"
                 objectFit="cover"
@@ -51,13 +35,13 @@ export default function OurClients() {
             <section className="flex justify-between mb-5">
               <div>
                 <h3 className="text-lg font-semibold">{t.name}</h3>
-                <p className="text-sm text-gray-600">{t.title}</p>
+                <p className="text-sm text-gray-600">{t.designation}</p>
               </div>
-              <EditClientSection />
+              <EditClientSection clientReview={t} />
             </section>
-            <p className="text-sm text-gray-700 mb-4">{t.testimonial}</p>
+            <p className="text-sm text-gray-700 mb-4">{t.description}</p>
             <div className="flex justify-center">
-              {Array(5)
+              {Array(t.rating)
                 .fill(0)
                 .map((_, i) => (
                   <svg

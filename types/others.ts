@@ -106,3 +106,15 @@ export interface IContact {
   createdAt?: Date
   updatedAt?: Date
 }
+
+
+export interface IClientreview {
+  _id: string;
+  image: string;
+  name: string;
+  designation: string;
+  description: string;
+  rating: number;
+  createdAt: Date;
+  updatedAt: Date;
+}

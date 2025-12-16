@@ -35,6 +35,7 @@ export const queryKeys = {
         public: (type: string) => [...queryKeys.dashboard.all, 'public', type] as const,
         faq: () => [...queryKeys.dashboard.all, 'faq'] as const,
         supportMessage: () => [...queryKeys.dashboard.all, 'supportMessage'] as const,
+        clientReview: () => [...queryKeys.dashboard.all, 'clientReview'] as const,
     },
 
     /**

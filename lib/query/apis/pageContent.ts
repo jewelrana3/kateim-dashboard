@@ -17,8 +17,25 @@ const updatePageContent = async(id:string, data:FormData) => {
   return res.data;
 }
 
+const getClientReview = async () => {
+  const res = await api.get(`/clientreview/`);
+  return res.data;
+};
+const createClientReview = async (data: FormData) => {
+  const res = await api.post(`/clientreview`, data);
+  return res.data;
+};
+
+const updateClientReview = async (id: string, data: FormData) => {
+  const res = await api.patch(`/clientreview/${id}`, data);
+  return res.data;
+};
+
 export const pageContentApi = {
     getSection,
     createPageContent,
     updatePageContent,
+    getClientReview,
+    createClientReview,
+    updateClientReview,
 }
