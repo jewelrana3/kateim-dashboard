@@ -73,40 +73,37 @@ export interface IPageData extends Document {
   updatedAt: Date;
 }
 
-
 export type IPublic = {
-  content: string
-  type: string
-}
+  content: string;
+  type: string;
+};
 
 export type IFaq = {
-  _id?: string
-  question: string
-  answer: string
-  createdAt?: Date
-  updatedAt?: Date
-}
+  _id?: string;
+  question: string;
+  answer: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
 
 export enum PUBLIC_TYPES {
   TERMS_AND_CONDITIONS = "terms-and-condition",
   PRIVACY_POLICY = "privacy-policy",
   ABOUT_US = "about-us",
-  
 }
 
 export interface IContact {
-  _id?: string
-  name: string
-  email: string
-  phone: string
-  country?: string
-  message: string
-  feedback?: string
-  isSolved: boolean
-  createdAt?: Date
-  updatedAt?: Date
+  _id?: string;
+  name: string;
+  email: string;
+  phone: string;
+  country?: string;
+  message: string;
+  feedback?: string;
+  isSolved: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
-
 
 export interface IClientreview {
   _id: string;
@@ -117,4 +114,33 @@ export interface IClientreview {
   rating: number;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface IPackage extends Document {
+  _id?: string;
+  type: string;
+  regularPrice: number;
+  discountPercent: number;
+  stripeProductId: string;
+  stripePriceId: string;
+  stripeCouponId?: string;
+  description?: string;
+  isInstantBooking?: boolean;
+  interval?: "month" | "year";
+  limits: {
+    jobPostLimit?: number;  // -1 means unlimited
+    bookingLimit?: number;  // -1 means unlimited
+    boostLimit?: number;    // -1 means unlimited
+  };
+  currency?: string;
+  features?: string[];
+  isActive?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface ICoupon {
+  _id?: string;
+  description?: string;
+  percent_off: number;
 }

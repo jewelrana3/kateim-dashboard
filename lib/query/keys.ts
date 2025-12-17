@@ -36,6 +36,8 @@ export const queryKeys = {
         faq: () => [...queryKeys.dashboard.all, 'faq'] as const,
         supportMessage: () => [...queryKeys.dashboard.all, 'supportMessage'] as const,
         clientReview: () => [...queryKeys.dashboard.all, 'clientReview'] as const,
+        package: () => [...queryKeys.dashboard.all, 'package'] as const,
+        coupon: () => [...queryKeys.dashboard.all, 'coupon'] as const,
     },
 
     /**
