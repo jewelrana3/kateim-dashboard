@@ -26,7 +26,7 @@ const path = [
   // { path: "/faq", label: "FAQ" },
   // { path: "/verify-request", label: "Verify Request" },
   { path: "/profile", label: "Profile" },
-  { path: "/notification", label: "Notification" },
+  // { path: "/notification", label: "Notification" },
 ];
 
 export default function Header() {
@@ -39,14 +39,14 @@ export default function Header() {
         <section className="flex items-center justify-end bg-white text-black p-4 z-50">
           {/* <p>{activePath?.label}</p> */}
           <div className="flex items-center gap-4">
-            <div className="relative bg-gray-100 p-2 rounded-full">
+            {/* <div className="relative bg-gray-100 p-2 rounded-full">
               <Link href="/notification">
                 <Bell className="w-5 h-5 text-black" />
                 <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] px-1.5 py-0.5 rounded-full font-semibold">
                   3
                 </span>
               </Link>
-            </div>
+            </div> */}
 
             <Link href="/profile">
               <div className="flex items-center gap-2">

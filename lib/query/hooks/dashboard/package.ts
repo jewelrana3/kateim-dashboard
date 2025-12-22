@@ -79,7 +79,6 @@ export const useApplyGlobalCoupon = () => {
     onSuccess: (res) => {
       toast.success(res.message || "Successfully applied coupon");
       queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.package() });
-      queryClient.invalidateQueries({ queryKey: ['dashboard', 'globalCoupon'] }); // Invalidate global coupon query
     },
     onError: (error) => {
       toast.error(error.message || `Failed to apply coupon`);
@@ -89,7 +88,7 @@ export const useApplyGlobalCoupon = () => {
 
 export const useGetGlobalCoupon = () => {
   return useQuery({
-    queryKey: ['dashboard', 'globalCoupon'], // Unique key for global coupon
+    queryKey: queryKeys.dashboard.coupon(),
     queryFn: async () => {
       const data = await PackageApi.getGlobalCoupon();
       return data.data || [];
