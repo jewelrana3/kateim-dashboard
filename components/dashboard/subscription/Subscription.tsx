@@ -11,7 +11,7 @@ import { IPackage } from "@/types/others";
 export default function Subscription() {
   const { data: packages, isLoading } = useGetPackages();
   const { data: coupon } = useGetGlobalCoupon();
-
+  
   return (
     <section>
       <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 gap-10 mt-4 px-6">
