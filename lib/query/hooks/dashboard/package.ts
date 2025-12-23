@@ -79,6 +79,8 @@ export const useApplyGlobalCoupon = () => {
     onSuccess: (res) => {
       toast.success(res.message || "Successfully applied coupon");
       queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.package() });
+      // Also invalidate coupon query to refresh the coupon data
+      queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.coupon() });
     },
     onError: (error) => {
       toast.error(error.message || `Failed to apply coupon`);
@@ -95,5 +97,22 @@ export const useGetGlobalCoupon = () => {
     },
     staleTime: 3 * 60 * 1000, // 3 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
+  });
+};
+
+export const useDeleteGlobalCoupon = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: queryKeys.dashboard.coupon(),
+    mutationFn: async ({ id }: { id: string }) => {
+      return await PackageApi.deleteGlobalCoupon({ id });
+    },
+    onSuccess: (res) => {
+      toast.success(res.message || "Successfully deleted coupon");
+      queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.coupon() });
+    },
+    onError: (error) => {
+      toast.error(error.message || `Failed to delete coupon`);
+    },
   });
 };

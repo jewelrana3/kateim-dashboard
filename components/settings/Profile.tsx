@@ -1,22 +1,42 @@
 "use client";
-import React, { useState, ChangeEvent, useRef } from "react";
+import React, { useState, ChangeEvent, useRef, useEffect } from "react";
 import { Input } from "../ui/input";
 import { Edit2Icon } from "lucide-react";
+import { useGetProfile, useUpdateProfile, useUploadImage } from "@/lib/query/hooks";
+import { getImageUrl } from "@/utils/image";
 
 export default function Profile() {
   const inputFileRef = useRef<HTMLInputElement | null>(null);
-  const [image, setImage] = useState<string | null>(
-    "https://i.ibb.co.com/xJdQCTG/download.jpg"
-  );
+  const [image, setImage] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+
+  // Fetch profile data
+  const { data: profile, isLoading } = useGetProfile();
+  const { mutate: updateProfile, isPending: isUpdatingProfile } = useUpdateProfile();
+  const { mutate: uploadImage, isPending: isUploadingImage } = useUploadImage();
+
+  const isPending = isUpdatingProfile || isUploadingImage;
+
+  // Populate form when profile data is loaded
+  useEffect(() => {
+    if (profile) {
+      setName(profile.name || "");
+      setEmail(profile.email || "");
+      if (profile.profile) {
+        setImage(getImageUrl(profile.profile));
+      }
+    }
+  }, [profile]);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      if (file) {
-        const url = URL.createObjectURL(file);
+      const selectedFile = e.target.files[0];
+      if (selectedFile) {
+        const url = URL.createObjectURL(selectedFile);
         setImage(url);
-        setFile(file);
+        setFile(selectedFile);
       }
     }
   };
@@ -25,8 +45,40 @@ export default function Profile() {
     inputFileRef.current?.click();
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // First, upload image if a new file is selected
+    if (file) {
+      const formData = new FormData();
+      formData.append("images", file);
+      formData.append("type", "profile");
+
+      uploadImage(formData, {
+        onSuccess: () => {
+          // After image upload, update profile with name
+          updateProfile({ name });
+          setFile(null); // Clear file after successful upload
+        },
+      });
+    } else {
+      // If no image, just update profile with name
+      updateProfile({ name });
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="bg-white p-8 rounded-xl shadow-md">
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className=" bg-white p-8 rounded-xl shadow-md">
+    <div className="bg-white p-8 rounded-xl shadow-md">
       <h1 className="text-3xl font-semibold mb-6 text-center text-gray-800">
         Profile
       </h1>
@@ -46,7 +98,7 @@ export default function Profile() {
             </div>
           )}
 
-          {/* Edit icon (click করলে ফাইল ইনপুট খুলবে) */}
+          {/* Edit icon */}
           <div
             className="absolute bottom-0 right-1 bg-white rounded-full p-1 shadow-md cursor-pointer hover:bg-gray-100"
             onClick={handleClick}
@@ -66,7 +118,7 @@ export default function Profile() {
         />
       </div>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label
             htmlFor="name"
@@ -77,7 +129,10 @@ export default function Profile() {
           <Input
             id="name"
             placeholder="Your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             className="w-full rounded-md border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+            required
           />
         </div>
         <div className="mb-6">
@@ -89,16 +144,20 @@ export default function Profile() {
           </label>
           <Input
             id="email"
-            placeholder="Your email"
-            type="email"
-            className="w-full rounded-md border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+            value={email}
+            readOnly
+            className="w-full rounded-md border border-gray-300 bg-gray-50 cursor-not-allowed"
           />
+          <p className="text-sm text-gray-500 mt-1">
+            Email cannot be changed
+          </p>
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded-md font-semibold cursor-pointer"
+          disabled={isPending}
+          className="w-full bg-blue-600 text-white py-3 rounded-md font-semibold cursor-pointer hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Update Profile
+          {isPending ? "Updating..." : "Update Profile"}
         </button>
       </form>
     </div>

@@ -2,16 +2,18 @@ import { PAGE_SLUGS, SECTION_TYPES } from "@/types/others";
 import WorkEdit from "../modal/WorkEdit";
 import { useGetSection } from "@/lib/query/hooks/dashboard/pageContent";
 
-
-
 export default function HowWorkEmployee() {
   const { data: section, isLoading } = useGetSection(SECTION_TYPES.HOW_IT_WORKS);
 
   // Extract data from pageContent or use default
   const headline = section?.title || "How It Works(Employee)";
   const steps = section?.content?.steps || [];
-  
 
+  // Check if section actually has data (not just an empty object)
+  const hasData = section &&
+    (section.title ||
+      (section.content &&
+        (section.content.steps && section.content.steps.length > 0)));
 
   if (isLoading) {
     return (
@@ -24,10 +26,10 @@ export default function HowWorkEmployee() {
   return (
     <div className="bg-white py-12 px-6 md:px-16 relative min-h-[400px]">
       {/* Edit button - only show when data exists */}
-      {section && (
+      {hasData && (
         <div className="absolute top-4 right-4 flex items-center justify-center bg-blue-600 h-8 w-8 text-white rounded-full cursor-pointer hover:bg-blue-700 transition-colors">
-          <WorkEdit 
-            mode="edit" 
+          <WorkEdit
+            mode="edit"
             section={section}
             pageSlug={PAGE_SLUGS.HOME}
             sectionType={SECTION_TYPES.HOW_IT_WORKS}
@@ -35,7 +37,7 @@ export default function HowWorkEmployee() {
         </div>
       )}
 
-      {section ? (
+      {hasData ? (
         <>
           <h2 className="text-3xl font-semibold text-center mb-12 text-gray-700">
             {headline}
@@ -64,13 +66,13 @@ export default function HowWorkEmployee() {
           <p className="text-sm text-gray-500 mb-6">
             Click below to create the how it works section
           </p>
-         <div>
-           <WorkEdit 
-            mode="create"
-            pageSlug={PAGE_SLUGS.HOME}
-            sectionType={SECTION_TYPES.HOW_IT_WORKS}
-          />
-         </div>
+          <div>
+            <WorkEdit
+              mode="create"
+              pageSlug={PAGE_SLUGS.HOME}
+              sectionType={SECTION_TYPES.HOW_IT_WORKS}
+            />
+          </div>
         </div>
       )}
     </div>

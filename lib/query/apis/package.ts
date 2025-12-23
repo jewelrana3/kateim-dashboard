@@ -21,13 +21,18 @@ const togglePackageStatus = async (id: string) => {
   return res.data;
 };
 
-const applyGlobalCuopon = async(data:ICoupon) => {
+const applyGlobalCuopon = async (data: ICoupon) => {
   const res = await api.post(`/package/apply-discount`, data);
   return res.data;
 }
 
 const getGlobalCoupon = async () => {
   const res = await api.get(`/package/coupon`);
+  return res.data;
+}
+
+const deleteGlobalCoupon = async ({ id }: { id: string }) => {
+  const res = await api.delete(`/package/coupon/${id}`);
   return res.data;
 }
 
@@ -38,4 +43,5 @@ export const PackageApi = {
   togglePackageStatus,
   applyGlobalCuopon,
   getGlobalCoupon,
+  deleteGlobalCoupon,
 };

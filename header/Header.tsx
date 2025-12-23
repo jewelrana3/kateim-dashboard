@@ -2,6 +2,9 @@
 import { Bell } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useGetProfile } from "@/lib/query/hooks";
+import { getImageUrl } from "@/utils/image";
+import Image from "next/image";
 
 const auth = [
   { path: "/login" },
@@ -33,6 +36,10 @@ export default function Header() {
   const pathname = usePathname();
   const isAuthPage = auth.some((item) => item.path === pathname);
   const activePath = path.find((item) => item.path === pathname);
+
+  // Fetch admin profile
+  const { data: profile } = useGetProfile();
+
   return (
     <>
       {!isAuthPage && (
@@ -50,14 +57,16 @@ export default function Header() {
 
             <Link href="/profile">
               <div className="flex items-center gap-2">
-                <img
-                  src="https://i.ibb.co.com/xJdQCTG/download.jpg"
-                  alt="User Avatar"
+                <Image
+                  src={profile?.profile ? getImageUrl(profile.profile) : "https://i.ibb.co.com/xJdQCTG/download.jpg"}
+                  alt="Admin Avatar"
+                  width={32}
+                  height={32}
                   className="w-8 h-8 rounded-full object-cover"
                 />
                 <div className="text-sm leading-tight ">
-                  <p className="font-medium">Katiem</p>
-                  <p className=" text-xs">Admin</p>
+                  <p className="font-medium">{profile?.name || "Admin"}</p>
+                  <p className=" text-xs">{profile?.role || "Admin"}</p>
                 </div>
               </div>
             </Link>

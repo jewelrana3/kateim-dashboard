@@ -6,9 +6,9 @@ import { useGetGlobalCoupon } from "@/lib/query/hooks/dashboard/package";
 import { ICoupon } from "@/types/others";
 
 export default function PromotionOffer({ coupon }: { coupon: ICoupon | null }) {
-  
+
   // Handle the case when no coupon is available
-  if (!coupon) {
+  if (!coupon?._id) {
     return (
       <section className="lg:w-[50%] ml-5 mt-5">
         <h1 className="bg-[#B0CBF4] py-2 text-center font-bold rounded-md w-full">
@@ -44,7 +44,7 @@ export default function PromotionOffer({ coupon }: { coupon: ICoupon | null }) {
       <div className="bg-[#FFC823] mt-4 p-6 rounded-lg shadow-md h-[260px]">
         {/* delete btn */}
         <div className="flex justify-end">
-          <PromotionOfferDelete />
+          <PromotionOfferDelete couponId={coupon._id!} />
         </div>
         <div className="mt-10">
           <span className="bg-[#FFC823] text-[#333333] font-semibold text-4xl px-4 py-2 rounded-md shadow border border-[#FEFB82]">

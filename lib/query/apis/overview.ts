@@ -26,9 +26,16 @@ const getMonthlyUserCounts = async (params = {}): Promise<ApiResponse<{
     return res.data;
 }
 
+ const getMonthlySubscriptions = async (params = {}): Promise<ApiResponse<IPlatformRevenue[]>> => {
+    const res = await api.get('/dashboard/monthly-subscriptions', { params });
+    return res.data;
+}
+
+
  export const OverviewApis = {
     getGeneralStats,
     getPlatformRevenue,
     getTotalUsers,
     getMonthlyUserCounts,
+    getMonthlySubscriptions
  }

@@ -133,8 +133,11 @@ export default function SubscriptionModal({
         // Create mode
         await createPackage.mutateAsync(submitData);
       }
+      // Only close modal on success
       setOpen(false);
     } catch (error) {
+      // Error is already handled by the mutation's onError callback
+      // Modal stays open so user can see the error and try again
       console.error("Failed to submit package:", error);
     }
   };

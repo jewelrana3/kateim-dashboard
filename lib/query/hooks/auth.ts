@@ -4,6 +4,7 @@ import { queryKeys } from '@/lib/query/keys';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { AuthApis } from '../apis/auth';
+import { IUser } from '@/types/users';
 
 
 export const useAuthStatus = () => {
@@ -54,6 +55,8 @@ export const useLogin = () => {
 
         onError: (error: any) => {
             // Error handling is done by apiRequest utility
+            console.log(error)
+            toast.error(error.response.data.message || 'Login failed!');
             console.error('Login failed:', error);
         },
     });
@@ -104,6 +107,90 @@ export const useVerifyAccount = () => {
         onError: (error) => {
             // Error handling is done by apiRequest utility
             console.error('Verification failed:', error);
+        },
+    });
+};
+
+
+/**
+ * Hook to get user profile
+ */
+export const useGetProfile = () => {
+    return useQuery({
+        queryKey: queryKeys.auth.user(),
+        queryFn: async () => {
+            const data = await AuthApis.getProfile();
+            return data.data;
+        },
+        staleTime: 3 * 60 * 1000, // 3 minutes
+        gcTime: 10 * 60 * 1000, // 10 minutes
+    });
+};
+
+
+/**
+ * Hook to update user profile
+ */
+export const useUpdateProfile = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (data: Partial<IUser>) => {
+
+            return await AuthApis.updateProfile({ data });
+        },
+
+        onSuccess: (response) => {
+            toast.success(response.message || 'Profile updated successfully!');
+            // Invalidate profile query to refetch updated data
+            queryClient.invalidateQueries({
+                queryKey: queryKeys.auth.user()
+            });
+        },
+
+        onError: (error: any) => {
+            console.error('Profile update failed:', error);
+        },
+    });
+};
+
+
+/**
+ * Hook to upload images
+ */
+export const useUploadImage = () => {
+    return useMutation({
+        mutationFn: async (data: FormData) => {
+            return await AuthApis.uploadImage({ data });
+        },
+
+        onSuccess: (response) => {
+            toast.success(response.message || 'Image uploaded successfully!');
+        },
+
+        onError: (error: any) => {
+            console.error('Image upload failed:', error);
+        },
+    });
+};
+
+
+/**
+ * Hook to change password
+ */
+export const useChangePassword = () => {
+    return useMutation({
+        mutationFn: async (data: { currentPassword: string, newPassword: string, confirmPassword: string }) => {
+            return await AuthApis.changePassword({ data });
+        },
+
+        onSuccess: (response) => {
+            toast.success(response.message || 'Password changed successfully!');
+        },
+
+        onError: (error: any) => {
+            toast.error(error.message || 'Failed to change password');
+            console.error('Password change failed:', error);
         },
     });
 };

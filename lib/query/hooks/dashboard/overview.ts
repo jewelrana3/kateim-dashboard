@@ -9,7 +9,7 @@ export const useGeneralStats = () => {
         queryFn: async () => {
             const data = await OverviewApis.getGeneralStats();
             return data.data;
-        
+
         },
         staleTime: 2 * 60 * 1000, // 2 minutes - stats don't change frequently
         gcTime: 10 * 60 * 1000, // 10 minutes
@@ -46,6 +46,21 @@ export const useTotalUsers = (params = {}) => {
         staleTime: 3 * 60 * 1000, // 3 minutes
         gcTime: 10 * 60 * 1000, // 10 minutes
         // enabled: !!params.year, // Only fetch when year is provided
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+    });
+};
+
+
+export const useMonthlySubscriptions = (params = {}) => {
+    return useQuery({
+        queryKey: queryKeys.dashboard.subscriptions(params),
+        queryFn: async () => {
+            const data = await OverviewApis.getMonthlySubscriptions(params);
+            return data.data;
+        },
+        staleTime: 5 * 60 * 1000, // 5 minutes
+        gcTime: 15 * 60 * 1000, // 15 minutes
         refetchOnMount: false,
         refetchOnWindowFocus: false,
     });

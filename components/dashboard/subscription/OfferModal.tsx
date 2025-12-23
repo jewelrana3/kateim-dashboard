@@ -33,13 +33,15 @@ export default function OfferModal({
 
     try {
       await applyGlobalCoupon.mutateAsync(formData);
+      // Only close modal and reset form on success
       setOpen(false);
-      // Reset form
       setFormData({
         percent_off: 0,
         description: "",
       });
     } catch (error) {
+      // Error is already handled by the mutation's onError callback
+      // Modal stays open so user can see the error and try again
       console.error("Failed to apply coupon:", error);
     }
   };

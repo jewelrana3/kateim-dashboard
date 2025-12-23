@@ -9,7 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -17,115 +17,127 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-const data = [
-  { name: "01", pv: 11 },
-  { name: "02", pv: 1 },
-  { name: "03", pv: 90 },
-  { name: "04", pv: 113 },
-  { name: "05", pv: 10 },
-  { name: "06", pv: 1 },
-  { name: "07", pv: 1 },
-  { name: "08", pv: 211 },
-  { name: "09", pv: 1 },
-  { name: "10", pv: 1 },
-  { name: "11", pv: 111 },
-  { name: "12", pv: 1 },
-  { name: "13", pv: 100 },
-  { name: "14", pv: 1 },
-  { name: "15", pv: 10 },
-  { name: "16", pv: 12 },
-  { name: "17", pv: 1 },
-  { name: "18", pv: 1 },
-  { name: "19", pv: 114 },
-  { name: "20", pv: 1 },
-  { name: "21", pv: 1 },
-  { name: "22", pv: 1 },
-  { name: "23", pv: 20 },
-  { name: "24", pv: 1 },
-  { name: "25", pv: 1 },
-  { name: "26", pv: 14 },
-  { name: "27", pv: 1 },
-  { name: "28", pv: 1 },
-  { name: "29", pv: 80 },
-  { name: "30", pv: 1 },
-  { name: "31", pv: 18 },
-];
+import { useMonthlySubscriptions } from "@/lib/query/hooks/dashboard/overview";
 
 const months = [
-  "Jan 2025",
-  "Feb 2025",
-  "Mar 2025",
-  "Apr 2025",
-  "May 2025",
-  "Jun 2025",
-  "Jul 2025",
-  "Aug 2025",
-  "Sep 2025",
-  "Oct 2025",
-  "Nov 2025",
-  "Dec 2025",
-  "Jan 2026",
-  "Feb 2026",
-  "Mar 2026",
-  "Apr 2026",
-  "May 2026",
-  "Jun 2026",
-  "Jul 2026",
-  "Aug 2026",
-  "Sep 2026",
-  "Oct 2026",
-  "Nov 2026",
-  "Dec 2026",
+  { label: "January", value: 1 },
+  { label: "February", value: 2 },
+  { label: "March", value: 3 },
+  { label: "April", value: 4 },
+  { label: "May", value: 5 },
+  { label: "June", value: 6 },
+  { label: "July", value: 7 },
+  { label: "August", value: 8 },
+  { label: "September", value: 9 },
+  { label: "October", value: 10 },
+  { label: "November", value: 11 },
+  { label: "December", value: 12 },
 ];
 
-const maxValue = Math.max(...data.map((data) => data.pv));
-
-const result = data.map((item) => ({
-  name: item.name,
-  pv: Math.round((item.pv / maxValue) * 100),
-}));
+const currentYear = new Date().getFullYear();
+const years = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
 
 export default function Chart() {
-  const [selectedMonth, setSelectedMonth] = useState("Jan 2025");
+  const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1);
+  const [selectedYear, setSelectedYear] = useState<number>(currentYear);
 
-  const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedMonth(e.target.value);
-    // Here you can add logic to filter data based on month
-  };
+  const { data: subscriptionData, isLoading } = useMonthlySubscriptions({
+    month: selectedMonth,
+    year: selectedYear,
+  });
+
+  const chartData = useMemo(() => {
+    if (!subscriptionData || !Array.isArray(subscriptionData)) return [];
+
+    return subscriptionData.map((item: any) => ({
+      name: item.date || item.day || "",
+      pv: Number(item.value || item.totalAmount || item.count || 0),
+    }));
+  }, [subscriptionData]);
+
+  const hasData = chartData.some(item => item.pv > 0);
 
   return (
     <section className="shadow-md rounded-lg px-3 text-textGray bg-[#FFFFFF] p-4">
-      <div className="flex items-center justify-between mb-4">
-        <h1 className=" text-xl capitalize text-gray-700 font-medium">
-          Total credit sales monthly
+      <div className="flex flex-col md:flex-row items-center justify-between mb-4 gap-4">
+        <h1 className="text-xl capitalize text-gray-700 font-medium">
+          Total subscriptions monthly
         </h1>
-        <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select a year" />
-          </SelectTrigger>
-          <SelectContent>
-            {months.map((year) => (
-              <SelectItem key={year} value={year}>
-                {year}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+
+        <div className="flex items-center gap-2">
+          <Select
+            value={selectedMonth.toString()}
+            onValueChange={(val) => setSelectedMonth(parseInt(val))}
+          >
+            <SelectTrigger className="w-[140px]">
+              <SelectValue placeholder="Month" />
+            </SelectTrigger>
+            <SelectContent>
+              {months.map((m) => (
+                <SelectItem key={m.value} value={m.value.toString()}>
+                  {m.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select
+            value={selectedYear.toString()}
+            onValueChange={(val) => setSelectedYear(parseInt(val))}
+          >
+            <SelectTrigger className="w-[100px]">
+              <SelectValue placeholder="Year" />
+            </SelectTrigger>
+            <SelectContent>
+              {years.map((y) => (
+                <SelectItem key={y} value={y.toString()}>
+                  {y}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      <ResponsiveContainer width="100%" height={250}>
-        <BarChart
-          data={result}
-          margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" tickLine={false} axisLine={false} />
-          <YAxis tickLine={false} axisLine={false} />
-          <Tooltip />
-          <Bar dataKey="pv" fill="#0057DC" radius={[10, 10, 0, 0]} />
-        </BarChart>
-      </ResponsiveContainer>
+      <div className="h-[250px] w-full relative">
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          </div>
+        )}
+
+        {!isLoading && !hasData && (
+          <div className="absolute inset-0 flex items-center justify-center text-gray-400 z-0">
+            No subscription data for this period
+          </div>
+        )}
+
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={chartData}
+            margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <XAxis
+              dataKey="name"
+              tickLine={false}
+              axisLine={false}
+              tick={{ fontSize: 12 }}
+            />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tick={{ fontSize: 12 }}
+              allowDecimals={false}
+            />
+            <Tooltip
+              cursor={{ fill: '#f3f4f6' }}
+              contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+            />
+            <Bar dataKey="pv" fill="#0057DC" radius={[4, 4, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </section>
   );
 }

@@ -26,7 +26,9 @@ export const queryKeys = {
         stats: () => [...queryKeys.dashboard.all, 'stats'] as const,
         revenue: (params?: { year?: number; month?: number }) =>
             [...queryKeys.dashboard.all, 'revenue', params] as const,
-        userStats: (params?: {year?: number; month?: number}) => [...queryKeys.dashboard.all, 'userStats', params] as const,
+        subscriptions: (params?: { year?: number; month?: number }) =>
+            [...queryKeys.dashboard.all, 'subscriptions', params] as const,
+        userStats: (params?: { year?: number; month?: number }) => [...queryKeys.dashboard.all, 'userStats', params] as const,
         users: (params?: IUserFilterableFields) =>
             [...queryKeys.dashboard.all, 'users', params] as const,
         detail: (id: string) => [...queryKeys.dashboard.all, 'detail', id] as const,
