@@ -39,6 +39,7 @@ export default function Header() {
 
   // Fetch admin profile
   const { data: profile } = useGetProfile();
+  console.log("juyel");
 
   return (
     <>
@@ -58,7 +59,11 @@ export default function Header() {
             <Link href="/profile">
               <div className="flex items-center gap-2">
                 <Image
-                  src={profile?.profile ? getImageUrl(profile.profile) : "https://i.ibb.co.com/xJdQCTG/download.jpg"}
+                  src={
+                    profile?.profile
+                      ? getImageUrl(profile.profile)
+                      : "https://i.ibb.co.com/xJdQCTG/download.jpg"
+                  }
                   alt="Admin Avatar"
                   width={32}
                   height={32}
