@@ -11,8 +11,9 @@ export default function VerifyDetailsModal({
   trigger: React.ReactNode;
   user: IUser;
 }) {
+  const { mutate: toggleVerification } = useToggleUserVerification(user?._id);
 
-  const {mutate: toggleVerification} = useToggleUserVerification(user._id);
+  console.log("users", user);
 
   return (
     <Dialog>
@@ -52,38 +53,35 @@ export default function VerifyDetailsModal({
           </div>
 
           {/* ID Image Section */}
-          <div className="mt-6 flex justify-center">
+          <div className="mt-6 flex justify-center gap-3.5">
             <Image
               src={getImageUrl(user.nidFront)} // Replace with actual ID image path
               alt="ID Front"
-              width={300}
+              width={270}
               height={200}
               className="rounded-md shadow"
             />
-             <Image
+            <Image
               src={getImageUrl(user.nidBack)} // Replace with actual ID image path
               alt="ID Back"
-              width={300}
+              width={270}
               height={200}
               className="rounded-md shadow"
             />
           </div>
-          {/* <div className="mt-4 flex justify-center">
-          <Image
-            src="/nid-back.jpg" // Replace with actual ID back image path
-            alt="ID Back"
-            width={300}
-            height={200}
-            className="rounded-md shadow"
-          />
-        </div> */}
 
           {/* Action Buttons */}
           <div className="flex justify-center gap-4 mt-6">
-            <button onClick={() => toggleVerification(user._id)} className={`bg-white border border-red-500 text-red-500 px-5 py-2 rounded-md hover:bg-red-50 `}>
+            <button
+              onClick={() => toggleVerification(user._id)}
+              className={`bg-white border border-red-500 text-red-500 px-5 py-2 rounded-md hover:bg-red-50 `}
+            >
               Decline
             </button>
-            <button onClick={() => toggleVerification(user._id)} className="bg-yellow-400 text-black px-5 py-2 rounded-md hover:bg-yellow-500">
+            <button
+              onClick={() => toggleVerification(user._id)}
+              className="bg-yellow-400 text-black px-5 py-2 rounded-md hover:bg-yellow-500"
+            >
               Approve
             </button>
           </div>

@@ -17,14 +17,21 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { getImageUrl } from "@/utils/image";
 
-export function EditClientSection({ clientReview }: { clientReview: IClientreview }) {
+export function EditClientSection({
+  clientReview,
+}: {
+  clientReview: IClientreview;
+}) {
   const [previewImage, setPreviewImage] = useState<string | null>(
     getImageUrl(clientReview.image)
   );
   const [file, setFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [open, setOpen] = useState(false);
 
-  const { mutate: updateClientReview } = useUpdateClientReview(clientReview._id);
+  const { mutate: updateClientReview } = useUpdateClientReview(
+    clientReview._id
+  );
 
   const handleClick = () => {
     inputRef.current?.click();
@@ -39,8 +46,9 @@ export function EditClientSection({ clientReview }: { clientReview: IClientrevie
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const formData = new FormData(e.currentTarget);
 
     const payload: Partial<IClientreview> = {
@@ -50,33 +58,35 @@ export function EditClientSection({ clientReview }: { clientReview: IClientrevie
       rating: Number(formData.get("rating")),
     };
 
-    // Append JSON payload as "data"
     formData.append("data", JSON.stringify(payload));
 
-    // Append image file if selected
     if (file) {
       formData.append("images", file);
     }
 
-    // Call mutation
-    updateClientReview({ data: formData });
+    try {
+      await updateClientReview({ data: formData });
+      setOpen(false); // ✅ modal close
+    } catch (error) {
+      console.error("Update failed:", error);
+    }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button type="button" className="cursor-pointer">
           <Edit />
         </button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] h-[600px] overflow-y-auto">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Edit Clients</DialogTitle>
           </DialogHeader>
 
-          <div className="grid gap-4">
+          <div className="grid gap-4 mt-4">
             <div className="grid gap-3">
               <Label htmlFor="name-1">Name</Label>
               <Input name="name" defaultValue={clientReview.name} />
@@ -84,12 +94,18 @@ export function EditClientSection({ clientReview }: { clientReview: IClientrevie
 
             <div className="grid gap-3">
               <Label htmlFor="designation">Designation</Label>
-              <Input name="designation" defaultValue={clientReview.designation} />
+              <Input
+                name="designation"
+                defaultValue={clientReview.designation}
+              />
             </div>
 
             <div className="grid gap-3">
               <Label htmlFor="description">Description</Label>
-              <Input name="description" defaultValue={clientReview.description} />
+              <Input
+                name="description"
+                defaultValue={clientReview.description}
+              />
             </div>
 
             <div className="grid gap-3">
@@ -127,7 +143,9 @@ export function EditClientSection({ clientReview }: { clientReview: IClientrevie
           </div>
 
           <DialogFooter>
-            <Button type="submit">Submit</Button>
+            <Button className="mt-7" type="submit">
+              Submit
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

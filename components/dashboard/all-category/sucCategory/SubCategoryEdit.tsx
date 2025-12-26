@@ -45,7 +45,6 @@ export function SubCategoryEdit({
 
   const generateId = useCallback(() => Date.now() + Math.random(), []);
 
-
   const initializeForm = useCallback(() => {
     if (category) {
       setCategoryName(category.title || "");
@@ -67,7 +66,6 @@ export function SubCategoryEdit({
     }
   }, [category, generateId]);
 
-
   const resetForm = useCallback(() => {
     setCategoryName("");
     setImageUrl("");
@@ -80,13 +78,11 @@ export function SubCategoryEdit({
     }
   }, [generateId]);
 
-
   useEffect(() => {
     if (isDialogOpen) {
       initializeForm();
     }
   }, [initializeForm, isDialogOpen]);
-
 
   const { mutate: updateCategory, isPending: isUpdating } = useUpdateCategory();
 
@@ -97,6 +93,7 @@ export function SubCategoryEdit({
     // setIsDialogOpen(false);
     if (onSuccess) {
       onSuccess();
+      // setIsDialogOpen(false);
     }
   }, [onSuccess, resetForm]);
 
@@ -154,13 +151,11 @@ export function SubCategoryEdit({
 
     const formData = new FormData();
 
-
     formData.append("data", JSON.stringify(data));
 
     if (imageFile) {
       formData.append("images", imageFile);
     } else if (category?.icon && !imageFile) {
-
       formData.append("existingIcon", category.icon);
     }
 
@@ -174,9 +169,12 @@ export function SubCategoryEdit({
       const formData = prepareFormData();
 
       if (category?._id) {
-        updateCategory({ id: category._id, category: formData }, {
-          onSuccess: handleSuccess,
-        });
+        updateCategory(
+          { id: category._id, category: formData },
+          {
+            onSuccess: handleSuccess,
+          }
+        );
         return;
       }
 

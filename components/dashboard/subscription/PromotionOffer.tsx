@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React from "react";
 import OfferModal from "./OfferModal";
 import PromotionOfferDelete from "./PromotionOfferDelete";
@@ -6,7 +6,6 @@ import { useGetGlobalCoupon } from "@/lib/query/hooks/dashboard/package";
 import { ICoupon } from "@/types/others";
 
 export default function PromotionOffer({ coupon }: { coupon: ICoupon | null }) {
-
   // Handle the case when no coupon is available
   if (!coupon?._id) {
     return (
@@ -58,6 +57,7 @@ export default function PromotionOffer({ coupon }: { coupon: ICoupon | null }) {
 
           <OfferModal
             title="Edit Offer"
+            data={coupon}
             trigger={
               <div className="bg-white text-text-gray-700 font-semibold px-4 py-3 rounded-md cursor-pointer">
                 Edit Now
