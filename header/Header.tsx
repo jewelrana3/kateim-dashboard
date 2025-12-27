@@ -39,7 +39,6 @@ export default function Header() {
 
   // Fetch admin profile
   const { data: profile } = useGetProfile();
-  console.log("juyel");
 
   return (
     <>

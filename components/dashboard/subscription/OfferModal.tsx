@@ -1,5 +1,11 @@
 "use client";
-import { Dialog, DialogContent, DialogTrigger, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -8,15 +14,17 @@ import { useApplyGlobalCoupon } from "@/lib/query/hooks/dashboard/package";
 
 export default function OfferModal({
   title,
+  data,
   trigger,
 }: {
   title?: string;
+  data?: any;
   trigger: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
-    percent_off: 0,
-    description: "",
+    percent_off: data?.percent_off || 0,
+    description: data?.description || "",
   });
 
   const applyGlobalCoupon = useApplyGlobalCoupon();
@@ -32,7 +40,8 @@ export default function OfferModal({
     e.preventDefault();
 
     try {
-      await applyGlobalCoupon.mutateAsync(formData);
+      const res = await applyGlobalCoupon.mutateAsync(formData);
+
       // Only close modal and reset form on success
       setOpen(false);
       setFormData({
@@ -66,7 +75,9 @@ export default function OfferModal({
               max="100"
               placeholder="0"
               value={formData.percent_off}
-              onChange={(e) => handleInputChange("percent_off", parseInt(e.target.value) || 0)}
+              onChange={(e) =>
+                handleInputChange("percent_off", parseInt(e.target.value) || 0)
+              }
               required
             />
           </div>

@@ -3,17 +3,21 @@ import WorkEdit from "../modal/WorkEdit";
 import { useGetSection } from "@/lib/query/hooks/dashboard/pageContent";
 
 export default function HowWorkEmployee() {
-  const { data: section, isLoading } = useGetSection(SECTION_TYPES.HOW_IT_WORKS);
+  const { data: section, isLoading } = useGetSection(
+    SECTION_TYPES.HOW_IT_WORKS
+  );
 
   // Extract data from pageContent or use default
-  const headline = section?.title || "How It Works(Employee)";
+  const headline = section?.title || "How It Works(worker)";
   const steps = section?.content?.steps || [];
 
   // Check if section actually has data (not just an empty object)
-  const hasData = section &&
+  const hasData =
+    section &&
     (section.title ||
       (section.content &&
-        (section.content.steps && section.content.steps.length > 0)));
+        section.content.steps &&
+        section.content.steps.length > 0));
 
   if (isLoading) {
     return (
@@ -39,9 +43,9 @@ export default function HowWorkEmployee() {
 
       {hasData ? (
         <>
-          <h2 className="text-3xl font-semibold text-center mb-12 text-gray-700">
+          {/* <h2 className="text-3xl font-semibold text-center mb-12 text-gray-700">
             {headline}
-          </h2>
+          </h2> */}
           <div className="grid md:grid-cols-3 gap-8 text-center">
             {steps.map((item: any, index: number) => (
               <div key={item.id || index} className="flex items-start gap-3">

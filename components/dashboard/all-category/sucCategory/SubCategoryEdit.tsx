@@ -17,6 +17,7 @@ import {
 import { ICategory } from "@/types/others";
 import { Minus, Plus, Upload } from "lucide-react";
 import { useRef, useState, useEffect, useCallback, useMemo } from "react";
+import Swal from "sweetalert2";
 
 type InputField = {
   id: number;
@@ -35,38 +36,37 @@ export function SubCategoryEdit({
   onSuccess?: () => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
+
   const [inputFields, setInputFields] = useState<InputField[]>([
     { id: Date.now(), value: "" },
   ]);
   const [imageUrl, setImageUrl] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [categoryName, setCategoryName] = useState<string>("");
-  const [isDialogOpen, setIsDialogOpen] = useState(false); // Track dialog state
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const generateId = useCallback(() => Date.now() + Math.random(), []);
-
 
   const initializeForm = useCallback(() => {
     if (category) {
       setCategoryName(category.title || "");
       setImageUrl(category.icon || "");
-      setImageFile(null); // Reset image file when editing
+      setImageFile(null);
 
       if (category.subCategories?.length > 0) {
-        const fields = category.subCategories.map((subCat) => ({
-          id: generateId(),
-          value: subCat || "",
-        }));
-        setInputFields(fields);
+        setInputFields(
+          category.subCategories.map((sub) => ({
+            id: generateId(),
+            value: sub,
+          }))
+        );
       } else {
         setInputFields([{ id: generateId(), value: "" }]);
       }
     } else {
-      // Reset form for new category
       resetForm();
     }
   }, [category, generateId]);
-
 
   const resetForm = useCallback(() => {
     setCategoryName("");
@@ -74,12 +74,10 @@ export function SubCategoryEdit({
     setImageFile(null);
     setInputFields([{ id: generateId(), value: "" }]);
 
-    // Reset file input
     if (inputRef.current) {
       inputRef.current.value = "";
     }
   }, [generateId]);
-
 
   useEffect(() => {
     if (isDialogOpen) {
@@ -87,18 +85,35 @@ export function SubCategoryEdit({
     }
   }, [initializeForm, isDialogOpen]);
 
-
   const { mutate: updateCategory, isPending: isUpdating } = useUpdateCategory();
-
   const { mutate: createCategory, isPending: isCreating } = useCreateCategory();
 
   const handleSuccess = useCallback(() => {
+    Swal.fire({
+      icon: "success",
+      title: "Success",
+      text: category
+        ? "Category updated successfully"
+        : "Category created successfully",
+      timer: 2000,
+      showConfirmButton: false,
+    });
+
     resetForm();
-    // setIsDialogOpen(false);
-    if (onSuccess) {
-      onSuccess();
-    }
-  }, [onSuccess, resetForm]);
+    setIsDialogOpen(false);
+
+    if (onSuccess) onSuccess();
+  }, [category, onSuccess, resetForm]);
+
+  const handleError = useCallback((error: any) => {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text:
+        error?.response?.data?.message ||
+        "Something went wrong. Please try again.",
+    });
+  }, []);
 
   const handleAddInput = useCallback(() => {
     setInputFields((prev) => [...prev, { id: generateId(), value: "" }]);
@@ -106,46 +121,31 @@ export function SubCategoryEdit({
 
   const handleInputChange = useCallback((id: number, value: string) => {
     setInputFields((prev) =>
-      prev.map((field) => (field.id === id ? { ...field, value } : field))
+      prev.map((f) => (f.id === id ? { ...f, value } : f))
     );
   }, []);
 
-  const handleCategoryNameChange = useCallback((value: string) => {
-    setCategoryName(value);
-  }, []);
-
   const removeInput = useCallback((id: number) => {
-    setInputFields((prev) => {
-      if (prev.length > 1) {
-        return prev.filter((field) => field.id !== id);
-      }
-      return prev;
-    });
+    setInputFields((prev) =>
+      prev.length > 1 ? prev.filter((f) => f.id !== id) : prev
+    );
   }, []);
 
-  // Memoized image upload handler
   const handleImageUpload = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
       if (!file) return;
 
-      setImageFile(file); // store real file
-
-      const url = URL.createObjectURL(file); // Only for preview
-      setImageUrl(url);
+      setImageFile(file);
+      setImageUrl(URL.createObjectURL(file));
     },
     []
   );
 
-  const handleClick = useCallback(() => {
-    inputRef.current?.click();
-  }, []);
-
-  // Memoized form data preparation
   const prepareFormData = useCallback(() => {
     const subCategories = inputFields
-      .map((field) => field.value.trim())
-      .filter((value) => value !== "");
+      .map((f) => f.value.trim())
+      .filter(Boolean);
 
     const data = {
       title: categoryName.trim(),
@@ -153,50 +153,54 @@ export function SubCategoryEdit({
     };
 
     const formData = new FormData();
-
-
     formData.append("data", JSON.stringify(data));
 
     if (imageFile) {
       formData.append("images", imageFile);
-    } else if (category?.icon && !imageFile) {
-
+    } else if (category?.icon) {
       formData.append("existingIcon", category.icon);
     }
 
     return formData;
-  }, [categoryName, imageFile, inputFields, category?.icon]);
+  }, [categoryName, inputFields, imageFile, category?.icon]);
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-
       const formData = prepareFormData();
 
       if (category?._id) {
-        updateCategory({ id: category._id, category: formData }, {
-          onSuccess: handleSuccess,
-        });
+        updateCategory(
+          { id: category._id, category: formData },
+          {
+            onSuccess: handleSuccess,
+            onError: handleError,
+          }
+        );
         return;
       }
 
       createCategory(formData, {
         onSuccess: handleSuccess,
+        onError: handleError,
       });
     },
-    [prepareFormData, category?._id, createCategory, updateCategory]
+    [
+      prepareFormData,
+      category?._id,
+      updateCategory,
+      createCategory,
+      handleSuccess,
+      handleError,
+    ]
   );
 
-  // Memoize the dialog title
-  const dialogTitle = useMemo(() => {
-    return title || (category ? "Edit Category" : "Add Category");
-  }, [title, category]);
+  const dialogTitle = useMemo(
+    () => title || (category ? "Edit Category" : "Add Category"),
+    [title, category]
+  );
 
-  // Memoize the button text
-  const buttonText = useMemo(() => {
-    return category ? "Update Category" : "Add Category";
-  }, [category]);
-
+  const buttonText = category ? "Update Category" : "Add Category";
   const isPending = isUpdating || isCreating;
 
   return (
@@ -210,28 +214,23 @@ export function SubCategoryEdit({
 
           <div className="grid gap-4 py-4">
             <div className="grid gap-3">
-              <Label htmlFor="category-title">Category title</Label>
+              <Label>Category title</Label>
               <Input
-                type="text"
-                id="category-title"
-                placeholder="Category title"
                 value={categoryName}
-                onChange={(e) => handleCategoryNameChange(e.target.value)}
+                onChange={(e) => setCategoryName(e.target.value)}
                 required
                 disabled={isPending}
               />
             </div>
 
-            {/* Upload Image */}
             <div>
-              <Label className="block mb-1">Add Icon</Label>
+              <Label>Add Icon</Label>
               <div
-                className="w-full h-20 border border-gray-300 px-3 py-4 flex justify-center items-center rounded-md cursor-pointer hover:bg-gray-100"
-                onClick={handleClick}
+                className="w-full h-20 border px-3 py-4 flex justify-center items-center rounded-md cursor-pointer"
+                onClick={() => inputRef.current?.click()}
               >
                 <input
                   ref={inputRef}
-                  id="upload"
                   type="file"
                   accept="image/*"
                   className="hidden"
@@ -241,12 +240,17 @@ export function SubCategoryEdit({
 
                 {imageUrl ? (
                   <img
-                    src={imageUrl}
-                    alt="Category icon"
+                    src={
+                      imageUrl.startsWith("blob:")
+                        ? imageUrl
+                        : imageUrl.startsWith("http")
+                        ? imageUrl
+                        : `${process.env.NEXT_PUBLIC_IMAGE_URL}${imageUrl}`
+                    }
                     className="w-40 h-20 object-cover rounded border"
                   />
                 ) : (
-                  <span className="flex items-center gap-2">
+                  <span className="flex gap-2">
                     <Upload size={20} />
                     <span className="text-sm text-gray-500">Upload Icon</span>
                   </span>
@@ -255,50 +259,39 @@ export function SubCategoryEdit({
             </div>
 
             <div className="grid gap-3">
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between">
                 <Label>Sub Categories</Label>
                 <button
                   type="button"
                   onClick={handleAddInput}
-                  className="p-1 rounded-full hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  title="Add subcategory"
                   disabled={isPending}
                 >
                   <Plus size={20} />
                 </button>
               </div>
 
-              <div className="flex flex-col gap-2">
-                {inputFields.map((field, index) => (
-                  <div className="flex items-center gap-2" key={field.id}>
-                    <Input
-                      type="text"
-                      placeholder={`Subcategory ${index + 1}`}
-                      value={field.value}
-                      onChange={(e) =>
-                        handleInputChange(field.id, e.target.value)
-                      }
-                      className="flex-1"
+              {inputFields.map((f, i) => (
+                <div key={f.id} className="flex gap-2">
+                  <Input
+                    value={f.value}
+                    onChange={(e) => handleInputChange(f.id, e.target.value)}
+                    disabled={isPending}
+                  />
+                  {inputFields.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeInput(f.id)}
                       disabled={isPending}
-                    />
-                    {inputFields.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeInput(field.id)}
-                        className="p-1 rounded-full hover:bg-red-50 text-red-500 hover:text-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        title="Remove subcategory"
-                        disabled={isPending}
-                      >
-                        <Minus size={20} />
-                      </button>
-                    )}
-                  </div>
-                ))}
-              </div>
+                    >
+                      <Minus size={20} />
+                    </button>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
 
-          <Button type="submit" className="w-full mt-2" disabled={isPending}>
+          <Button type="submit" className="w-full" disabled={isPending}>
             {isPending ? "Processing..." : buttonText}
           </Button>
         </form>

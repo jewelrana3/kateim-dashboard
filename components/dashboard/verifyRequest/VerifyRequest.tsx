@@ -25,11 +25,9 @@ import VerifyDetailsModal from "@/modal/VerifyDetailsModal";
 import { useGetAllUser } from "@/lib/query/hooks";
 import { IUser } from "@/types/users";
 
-
 export default function VerifyReuest() {
-
-  const {data,isLoading} = useGetAllUser();
-  const {meta, data:users} = data || {};
+  const { data, isLoading } = useGetAllUser();
+  const { meta, data: users } = data || {};
   const handleClick = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -83,41 +81,48 @@ export default function VerifyReuest() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {users && users.map((user:IUser, index:number) => (
-              <TableRow key={user._id}>
-                <TableCell className="font-medium">0{index + 1}</TableCell>
+            {users &&
+              users.map((user: IUser, index: number) => (
+                <TableRow key={user._id}>
+                  <TableCell className="font-medium">0{index + 1}</TableCell>
 
-                <TableCell className="flex items-center gap-2">
-                  {user.name}
-                </TableCell>
+                  <TableCell className="flex items-center gap-2">
+                    {user.name}
+                  </TableCell>
 
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.phone}</TableCell>
-                <TableCell>{user.address}</TableCell>
-                <TableCell>
-                  <Badge className={`${user.isAccountVerified ? "bg-green-500 text-white" : "bg-red-500 text-white"} p-2`}>
-                    {user.isAccountVerified ? "Verified" : "Not Verified"}
-                  </Badge>
-                </TableCell>
-                <TableCell className="flex gap-2 pl-10">
-                  <VerifyDetailsModal
-                    user={user}
-                    trigger={
-                      <span className="bg-blue-600 p-1 rounded cursor-pointer">
-                        <Eye className=" text-white" />
-                      </span>
-                    }
-                  />
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.phone}</TableCell>
+                  <TableCell>{user.address}</TableCell>
+                  <TableCell>
+                    <Badge
+                      className={`w-22 ${
+                        user.isAccountVerified
+                          ? "bg-green-500 text-white"
+                          : "bg-red-500 text-white"
+                      } p-2`}
+                    >
+                      {user.isAccountVerified ? "Verified" : "Not Verified"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="flex gap-2 pl-10">
+                    <VerifyDetailsModal
+                      user={user}
+                      trigger={
+                        <span className="bg-blue-600 p-1 rounded cursor-pointer">
+                          <Eye className=" text-white" />
+                        </span>
+                      }
+                    />
 
-                  {/* <span
+                    {/* <span
                     className="bg-red-600 p-1 rounded cursor-pointer"
                     onClick={handleClick}
                   >
                     <Trash2 className=" text-white" />
                   </span> */}
-                </TableCell>
-              </TableRow>
-            ))}
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </div>
