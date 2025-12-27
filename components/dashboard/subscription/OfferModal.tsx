@@ -26,7 +26,6 @@ export default function OfferModal({
     percent_off: data?.percent_off || 0,
     description: data?.description || "",
   });
-  console.log("data", data);
 
   const applyGlobalCoupon = useApplyGlobalCoupon();
 
@@ -42,7 +41,6 @@ export default function OfferModal({
 
     try {
       const res = await applyGlobalCoupon.mutateAsync(formData);
-      console.log("res", res);
 
       // Only close modal and reset form on success
       setOpen(false);

@@ -4,10 +4,11 @@ import { useGetSection } from "@/lib/query/hooks/dashboard/pageContent";
 import { SECTION_TYPES } from "@/types/others";
 
 export default function JobResponses() {
-  const { data: section, isLoading } = useGetSection(SECTION_TYPES.JOB_RESPONSE);
-  
-  const text = section?.title ;
-  console.log(text);
+  const { data: section, isLoading } = useGetSection(
+    SECTION_TYPES.JOB_RESPONSE
+  );
+
+  const text = section?.title;
 
   if (isLoading) {
     return (
@@ -22,7 +23,7 @@ export default function JobResponses() {
       {/* Edit button - only show when data exists */}
       {text && (
         <div className="absolute top-4 right-4 flex items-center justify-center bg-blue-600 h-8 w-8 text-white rounded-full cursor-pointer hover:bg-blue-700 transition-colors">
-          <JobResponseEdit 
+          <JobResponseEdit
             mode="edit"
             initialData={{ _id: section?._id, text: section?.title }}
           />
@@ -30,14 +31,14 @@ export default function JobResponses() {
       )}
 
       {text ? (
-        <div className="w-full text-center">
-          {text}
-        </div>
+        <div className="w-full text-center">{text}</div>
       ) : (
         <div className="w-full text-center">
-          <div className="mb-2 text-black">Job Response section is not created yet</div>
+          <div className="mb-2 text-black">
+            Job Response section is not created yet
+          </div>
           <div className="flex justify-center">
-            <JobResponseEdit 
+            <JobResponseEdit
               mode="create"
               initialData={{ _id: section?._id, text: section?.title || "" }}
             />

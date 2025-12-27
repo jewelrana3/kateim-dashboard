@@ -7,9 +7,8 @@ import { SECTION_TYPES } from "@/types/others";
 export default function HeroSection() {
   const { data: section, isLoading } = useGetSection(SECTION_TYPES.HERO);
 
-  const {title, description,images = []} = section || {};
-  console.log(title, description,images
-  );
+  const { title, description, images = [] } = section || {};
+
   const hasHeroData = Boolean(title && description);
 
   if (isLoading) {
@@ -25,10 +24,7 @@ export default function HeroSection() {
       {/* Action button - Only show when there's data */}
       {hasHeroData && (
         <div className="absolute top-4 right-4">
-          <HeroSectionModal 
-            mode="edit" 
-            contents={section}
-          />
+          <HeroSectionModal mode="edit" contents={section} />
         </div>
       )}
 
@@ -38,9 +34,7 @@ export default function HeroSection() {
             <h1 className="font-semibold text-3xl 2xl:text-5xl my-3 leading-12 2xl:leading-16">
               {title}
             </h1>
-            <p className="text-[#545454] mt-6 capitalize">
-              {description}
-            </p>
+            <p className="text-[#545454] mt-6 capitalize">{description}</p>
           </div>
 
           <div>
@@ -64,10 +58,7 @@ export default function HeroSection() {
           </p>
 
           <div>
-            <HeroSectionModal 
-              mode="create"
-              contents={section}
-            />
+            <HeroSectionModal mode="create" contents={section} />
           </div>
         </div>
       )}
