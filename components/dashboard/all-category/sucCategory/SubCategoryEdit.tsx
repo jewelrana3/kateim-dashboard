@@ -40,6 +40,8 @@ export function SubCategoryEdit({
   ]);
   const [imageUrl, setImageUrl] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  console.log("imageUrl", imageUrl);
+
   const [categoryName, setCategoryName] = useState<string>("");
   const [isDialogOpen, setIsDialogOpen] = useState(false); // Track dialog state
 
@@ -49,6 +51,8 @@ export function SubCategoryEdit({
     if (category) {
       setCategoryName(category.title || "");
       setImageUrl(category.icon || "");
+      console.log("category.icon", category.icon);
+
       setImageFile(null); // Reset image file when editing
 
       if (category.subCategories?.length > 0) {
@@ -197,6 +201,8 @@ export function SubCategoryEdit({
 
   const isPending = isUpdating || isCreating;
 
+  console.log("imageUrl", imageUrl);
+
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -239,7 +245,13 @@ export function SubCategoryEdit({
 
                 {imageUrl ? (
                   <img
-                    src={imageUrl}
+                    src={
+                      imageUrl.startsWith("blob:")
+                        ? imageUrl
+                        : imageUrl.startsWith("https")
+                        ? imageUrl
+                        : `${process.env.NEXT_PUBLIC_IMAGE_URL}${imageUrl}`
+                    }
                     alt="Category icon"
                     className="w-40 h-20 object-cover rounded border"
                   />
