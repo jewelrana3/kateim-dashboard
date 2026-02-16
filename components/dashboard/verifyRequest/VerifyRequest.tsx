@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Eye, Trash2 } from "lucide-react";
+import { ClockFading, Eye, Trash2 } from "lucide-react";
 import {
   Select,
   SelectContent,
