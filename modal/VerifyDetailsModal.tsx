@@ -22,7 +22,7 @@ export default function VerifyDetailsModal({
             {/* Profile Picture */}
             <div className="">
               <Image
-                src="https://i.ibb.co.com/xNXnsd1/Ellipse-7.png"
+                src={getImageUrl(user.profile)} // Replace with actual profile image path
                 alt="Profile"
                 width={140}
                 height={140}
@@ -67,6 +67,28 @@ export default function VerifyDetailsModal({
               className="rounded-md shadow"
             />
           </div>
+
+          <>
+            {user?.isBritish === true ? (
+              <div>
+                <h1 className="text-lg font-semibold text-[#333333] mt-4">
+                  National Insurance Number
+                </h1>
+                <p className="text-gray-700">{user.insuranceNumber}</p>
+              </div>
+            ) : (
+              <div className="mt-4">
+                <div className="grid grid-cols-2">
+                  <h1>Code(right to work)</h1>
+                  <h1>{user?.dateOfBirth?.slice(0, 10) || "N/A"}</h1>
+                </div>
+                <div className="grid grid-cols-2">
+                  <h1 className="text-[#545454]">Share Code</h1>
+                  <h1 className="text-[#545454]">{user?.shareCode || "N/A"}</h1>
+                </div>
+              </div>
+            )}
+          </>
 
           {/* Action Buttons */}
           <div className="flex justify-center gap-4 mt-6">
