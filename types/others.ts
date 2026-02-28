@@ -33,6 +33,7 @@ export type ISectionType =
   | string;
 export const SECTION_TYPES = {
   HERO: "hero",
+  CLIENT_SAY: "client-say",
   ABOUT_HERO: "about-hero",
   ABOUT_WHY_US: "about-why-us",
   HOW_IT_WORKS: "how-it-works",
@@ -128,9 +129,9 @@ export interface IPackage extends Document {
   isInstantBooking?: boolean;
   interval?: "month" | "year";
   limits: {
-    jobPostLimit?: number;  // -1 means unlimited
-    bookingLimit?: number;  // -1 means unlimited
-    boostLimit?: number;    // -1 means unlimited
+    jobPostLimit?: number; // -1 means unlimited
+    bookingLimit?: number; // -1 means unlimited
+    boostLimit?: number; // -1 means unlimited
   };
   currency?: string;
   features?: string[];

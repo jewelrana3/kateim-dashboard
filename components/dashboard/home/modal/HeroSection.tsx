@@ -19,40 +19,41 @@ import { ISection, PAGE_SLUGS, SECTION_TYPES } from "@/types/others";
 
 type HeroSectionModalProps = {
   mode: "create" | "edit";
-  contents?: ISection
+  contents?: ISection;
 };
 
-export default function HeroSectionModal({ mode, contents }: HeroSectionModalProps) {
+export default function HeroSectionModal({
+  mode,
+  contents,
+}: HeroSectionModalProps) {
   const isEdit = mode === "edit";
-  
+
   const [title, setTitle] = useState(contents?.title || "");
   const [description, setDescription] = useState(contents?.description || "");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(
-    contents?.images?.[0] ? getImageUrl(contents.images[0]) : null
+    contents?.images?.[0] ? getImageUrl(contents.images[0]) : null,
   );
-  
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   // API mutations
-  const {mutate: createMutation, isPending: isCreatePending} = useCreateSection(SECTION_TYPES.HERO);
-  const {mutate: updateMutation, isPending: isUpdatePending} = useUpdateSection(SECTION_TYPES.HERO);
-
+  const { mutate: createMutation, isPending: isCreatePending } =
+    useCreateSection(SECTION_TYPES.HERO);
+  const { mutate: updateMutation, isPending: isUpdatePending } =
+    useUpdateSection(SECTION_TYPES.HERO);
 
   const resetForm = () => {
     setTitle("");
     setDescription("");
     setImageFile(null);
     setImagePreview(null);
-  }
-
+  };
 
   // Reset preview when initialData changes
   useEffect(() => {
     if (contents?.images?.[0]) {
-
       setImagePreview(getImageUrl(contents.images[0]));
-
     }
   }, [contents]);
 
@@ -70,44 +71,37 @@ export default function HeroSectionModal({ mode, contents }: HeroSectionModalPro
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
 
     const formData = new FormData();
-   
+
     const heroData = {
       pageSlug: PAGE_SLUGS.HOME,
       sectionType: SECTION_TYPES.HERO,
       title: title.trim(),
       description: description.trim(),
-    }
+    };
 
-    formData.append('data', JSON.stringify(heroData));
-    
+    formData.append("data", JSON.stringify(heroData));
+
     if (imageFile) {
-      formData.append('images', imageFile);
-    } 
+      formData.append("images", imageFile);
+    }
 
     try {
       if (isEdit && contents) {
-        updateMutation(
-          {
-            id: contents._id,
-            data: formData 
-          }
-        )
+        updateMutation({
+          id: contents._id,
+          data: formData,
+        });
         resetForm();
       } else {
         // await createMutation.mutateAsync(formData);
-        createMutation(
-          {
-            data: formData 
-          }
-        )
+        createMutation({
+          data: formData,
+        });
         resetForm();
-
-
       }
-      
+
       // Close dialog on success
       // You might need to handle dialog state here
     } catch (error) {
@@ -119,7 +113,7 @@ export default function HeroSectionModal({ mode, contents }: HeroSectionModalPro
     <Dialog>
       <DialogTrigger asChild>
         {isEdit ? (
-          <button 
+          <button
             className="bg-blue-600 h-8 w-8 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors"
             aria-label="Edit hero section"
           >
@@ -141,11 +135,9 @@ export default function HeroSectionModal({ mode, contents }: HeroSectionModalPro
         <form onSubmit={handleSubmit} className="space-y-4 mt-6">
           {/* Headline */}
           <div>
-            <label className="mb-2 block text-sm font-medium">
-              Headline
-            </label>
-            <Input 
-              placeholder="Type your headline here..." 
+            <label className="mb-2 block text-sm font-medium">Headline</label>
+            <Input
+              placeholder="Type your headline here..."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
@@ -157,8 +149,8 @@ export default function HeroSectionModal({ mode, contents }: HeroSectionModalPro
             <label className="mb-2 block text-sm font-medium">
               Description
             </label>
-            <Textarea 
-              placeholder="Type description..." 
+            <Textarea
+              placeholder="Type description..."
               rows={4}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -191,7 +183,7 @@ export default function HeroSectionModal({ mode, contents }: HeroSectionModalPro
                     className="w-full h-full object-cover rounded"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                    <button 
+                    <button
                       type="button"
                       onClick={handleClick}
                       className="px-3 py-2 bg-white text-black rounded-md text-sm flex items-center gap-2 hover:bg-gray-100"
@@ -224,9 +216,11 @@ export default function HeroSectionModal({ mode, contents }: HeroSectionModalPro
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isCreatePending || isUpdatePending}
             >
-              {isCreatePending || isUpdatePending 
-                ? "Saving..." 
-                : isEdit ? "Update" : "Create"}
+              {isCreatePending || isUpdatePending
+                ? "Saving..."
+                : isEdit
+                  ? "Update"
+                  : "Create"}
             </button>
           </DialogFooter>
         </form>

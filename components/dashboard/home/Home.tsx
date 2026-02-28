@@ -16,6 +16,7 @@ import Labour from "./selectPage/Labour";
 import HowWorker from "./selectPage/HowWorker";
 import HowWorkEmployee from "./selectPage/HowWorkEmployee";
 import JobResponses from "./selectPage/JobResponses";
+import OurClients from "../ourClients/OurClients";
 
 const title = [
   { id: 1, value: "Hero Section" },
@@ -23,6 +24,7 @@ const title = [
   { id: 3, value: "How it work(worker)" },
   { id: 4, value: "Why instant labour" },
   { id: 5, value: "Job Responses" },
+  { id: 6, value: "Client Say" },
 ];
 
 export default function Home() {
@@ -40,6 +42,8 @@ export default function Home() {
     } else if (selectedValue === "Why instant labour") {
       setIsHeroOpen(true);
     } else if (selectedValue === "Job Responses") {
+      setIsHeroOpen(true);
+    } else if (selectedValue === "Client Say") {
       setIsHeroOpen(true);
     }
   }, [selectedValue]);
@@ -80,6 +84,7 @@ export default function Home() {
       {selectedValue === "How it work(worker)" && <HowWorker />}
       {selectedValue === "Why instant labour" && <Labour />}
       {selectedValue === "Job Responses" && <JobResponses />}
+      {selectedValue === "Client Say" && <OurClients />}
     </section>
   );
 }
