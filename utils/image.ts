@@ -18,9 +18,7 @@ export const getImageUrl = (url?: string | null) => {
   const baseUrl = process.env.NEXT_PUBLIC_IMAGE_URL;
   if (!baseUrl) {
     if (process.env.NODE_ENV === "development") {
-      console.error(
-        "[getImageUrl] NEXT_PUBLIC_API_URL is not defined"
-      );
+      console.error("[getImageUrl] NEXT_PUBLIC_API_URL is not defined");
     }
     return FALLBACK_IMAGE;
   }

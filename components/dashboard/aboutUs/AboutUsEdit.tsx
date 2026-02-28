@@ -12,7 +12,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Upload } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
-import { useCreateSection, useUpdateSection } from "@/lib/query/hooks/dashboard/pageContent";
+import {
+  useCreateSection,
+  useUpdateSection,
+} from "@/lib/query/hooks/dashboard/pageContent";
 import { getImageUrl } from "@/utils/image";
 import { ISection, PAGE_SLUGS, ISectionType } from "@/types/others";
 
@@ -35,7 +38,7 @@ export default function AboutUsEdit({
   const [description, setDescription] = useState(section?.description || "");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(
-    section?.images?.[0] ? getImageUrl(section.images[0]) : null
+    section?.images?.[0] ? getImageUrl(section.images[0]) : null,
   );
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -115,16 +118,12 @@ export default function AboutUsEdit({
       <DialogTrigger asChild>{trigger}</DialogTrigger>
 
       <DialogContent className="max-w-2xl">
-        <DialogTitle>
-          {isEdit ? "Edit Section" : "Create Section"}
-        </DialogTitle>
+        <DialogTitle>{isEdit ? "Edit Section" : "Create Section"}</DialogTitle>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-6">
           {/* Headline */}
           <div>
-            <label className="mb-2 block text-sm font-medium">
-              Headline
-            </label>
+            <label className="mb-2 block text-sm font-medium">Headline</label>
             <Input
               placeholder="Type your headline here..."
               value={title}

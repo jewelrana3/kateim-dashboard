@@ -10,28 +10,44 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useUpdateClientReview } from "@/lib/query/hooks/dashboard/pageContent";
-import { IClientreview } from "@/types/others";
-import { Edit } from "lucide-react";
+import {
+  useCreateClientReview,
+  useUpdateClientReview,
+} from "@/lib/query/hooks/dashboard/pageContent";
+import {
+  IClientreview,
+  ISection,
+  ISectionType,
+  SECTION_TYPES,
+} from "@/types/others";
+import { Edit, Plus } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { getImageUrl } from "@/utils/image";
 
-export function EditClientSection({
-  clientReview,
-}: {
+type AboutUsEditProps = {
+  trigger?: React.ReactNode;
+  mode?: "create" | "edit";
+  section?: ISection;
   clientReview: IClientreview;
-}) {
+  sectionType: ISectionType;
+};
+
+export function EditClientSection({
+  mode,
+  clientReview,
+  sectionType,
+}: AboutUsEditProps) {
+  const isEdit = mode === "edit";
   const [previewImage, setPreviewImage] = useState<string | null>(
-    getImageUrl(clientReview.image)
+    getImageUrl(clientReview.image),
   );
   const [file, setFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
 
-  const { mutate: updateClientReview } = useUpdateClientReview(
-    clientReview._id
-  );
+  const { mutate: updateClientReview } = useUpdateClientReview(sectionType);
+  const { mutate: createMutation } = useCreateClientReview(sectionType);
 
   const handleClick = () => {
     inputRef.current?.click();
@@ -61,12 +77,21 @@ export function EditClientSection({
     formData.append("data", JSON.stringify(payload));
 
     if (file) {
-      formData.append("images", file);
+      formData.append("images[]", file);
     }
 
+    console.log("form data", formData);
+
     try {
-      await updateClientReview({ data: formData });
-      setOpen(false); // ✅ modal close
+      if (isEdit && clientReview._id) {
+        updateClientReview({
+          id: clientReview._id,
+          data: formData,
+        });
+      } else {
+        const res = createMutation({ data: formData });
+        console.log("res", res);
+      }
     } catch (error) {
       console.error("Update failed:", error);
     }
@@ -75,15 +100,28 @@ export function EditClientSection({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button type="button" className="cursor-pointer">
-          <Edit />
-        </button>
+        {isEdit ? (
+          <button
+            className="bg-blue-600 h-8 w-8 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors"
+            aria-label="Edit hero section"
+          >
+            <Edit className="w-4 h-4" />
+          </button>
+        ) : (
+          <Button className="gap-2">
+            <Plus className="w-4 h-4" />
+            Create Client Review
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px] h-[600px] overflow-y-auto">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Edit Clients</DialogTitle>
+            <DialogTitle>
+              {" "}
+              {isEdit ? "Edit Client Review" : "Create Client Review"}
+            </DialogTitle>
           </DialogHeader>
 
           <div className="grid gap-4 mt-4">
