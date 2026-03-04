@@ -33,8 +33,9 @@ export const useUpdateSection = (slug: string) => {
         queryKey: queryKeys.dashboard.section(slug),
       });
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error("Page content update error:", error);
+      toast.error(error.response?.data?.message || "Page content update failed");
     },
   });
 };
@@ -53,8 +54,9 @@ export const useCreateSection = (slug: string) => {
         queryKey: queryKeys.dashboard.section(slug),
       });
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error("Page content creation error:", error);
+      toast.error(error.response?.data?.message || "Page content creation failed");
     },
   });
 };
@@ -88,8 +90,9 @@ export const useCreateClientReview = (slug: string) => {
         queryKey: queryKeys.dashboard.clientReview(slug),
       });
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error("Client review creation error:", error);
+      toast.error(error.response?.data?.message || "Client review creation failed");
     },
   });
 };
@@ -111,8 +114,9 @@ export const useUpdateClientReview = (slug: string) => {
         queryKey: queryKeys.dashboard.clientReview(slug),
       });
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error("Client review update error:", error);
+      toast.error(error.response?.data?.message || "Client review update failed");
     },
   });
 };
