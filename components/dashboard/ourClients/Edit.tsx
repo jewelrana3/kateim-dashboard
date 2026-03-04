@@ -77,20 +77,33 @@ export function EditClientSection({
     formData.append("data", JSON.stringify(payload));
 
     if (file) {
-      formData.append("images[]", file);
+      formData.append("image", file);
     }
 
     console.log("form data", formData);
 
     try {
       if (isEdit && clientReview._id) {
-        updateClientReview({
-          id: clientReview._id,
-          data: formData,
-        });
+        updateClientReview(
+          {
+            id: clientReview._id,
+            data: formData,
+          },
+          {
+            onSuccess: () => {
+              setOpen(false);
+            },
+          },
+        );
       } else {
-        const res = createMutation({ data: formData });
-        console.log("res", res);
+        createMutation(
+          { data: formData },
+          {
+            onSuccess: () => {
+              setOpen(false);
+            },
+          },
+        );
       }
     } catch (error) {
       console.error("Update failed:", error);
