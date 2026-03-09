@@ -14,16 +14,15 @@ export default function Header({ coupon }: { coupon: ICoupon | null }) {
         <h1 className="text-2xl font-semibold text-[#333333]">Subscriptions</h1>
       </div>
       <div className="flex items-center gap-5">
-        {!coupon && (
-          <OfferModal
-            trigger={
-              <div className="capitalize font-semibold bg-[#FFC823] text-black rounded-md px-2 py-3 cursor-pointer flex">
-                <Plus />
-                promotional offer
-              </div>
-            }
-          />
-        )}
+        <OfferModal
+          trigger={
+            <div className="capitalize font-semibold bg-[#FFC823] text-black rounded-md px-2 py-3 cursor-pointer flex">
+              <Plus />
+              promotional offer
+            </div>
+          }
+        />
+
         <SubscriptionModal
           header="Add Subscriber"
           trigger={

@@ -15,7 +15,9 @@ interface Props {
 
 export default function YearDropdown({ selectedYear, onChange }: Props) {
   const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 10 }, (_, i) => (currentYear - i).toString());
+  const years = Array.from({ length: 7 }, (_, i) =>
+    (currentYear - i).toString(),
+  );
 
   return (
     <div className="inline-block relative">

@@ -37,6 +37,7 @@ export const queryKeys = {
     updateStatus: (id: string) =>
       [...queryKeys.dashboard.all, "updateStatus", id] as const,
     categories: () => [...queryKeys.dashboard.all, "categories"] as const,
+    // users: () => [...queryKeys.dashboard.all, "users"] as const,
     public: (type: string) =>
       [...queryKeys.dashboard.all, "public", type] as const,
     faq: () => [...queryKeys.dashboard.all, "faq"] as const,

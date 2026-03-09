@@ -74,13 +74,13 @@ export function EditClientSection({
       rating: Number(formData.get("rating")),
     };
 
+    console.log("payload", payload);
+
     formData.append("data", JSON.stringify(payload));
 
     if (file) {
       formData.append("image", file);
     }
-
-    console.log("form data", formData);
 
     try {
       if (isEdit && clientReview._id) {

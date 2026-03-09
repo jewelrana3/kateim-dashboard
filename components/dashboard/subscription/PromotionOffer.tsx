@@ -37,9 +37,9 @@ export default function PromotionOffer({ coupon }: { coupon: ICoupon | null }) {
 
   return (
     <section className="lg:w-[50%] ml-5 mt-5">
-      <h1 className="bg-[#B0CBF4] py-2 text-center font-bold rounded-md w-full">
+      {/* <h1 className="bg-[#B0CBF4] py-2 text-center font-bold rounded-md w-full">
         Promotional Offer
-      </h1>
+      </h1> */}
       <div className="bg-[#FFC823] mt-4 p-6 rounded-lg shadow-md h-[260px]">
         {/* delete btn */}
         <div className="flex justify-end">
@@ -51,7 +51,7 @@ export default function PromotionOffer({ coupon }: { coupon: ICoupon | null }) {
           </span>
         </div>
         <div className="flex justify-between mt-10">
-          <p className="mt-2 text-black text-lg font-medium">
+          <p className="mt-2 text-black text-lg font-medium capitalize">
             {coupon.description || `All Package ${coupon.percent_off}% Offer`}
           </p>
 
