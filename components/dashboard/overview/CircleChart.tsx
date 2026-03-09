@@ -23,9 +23,12 @@ export default function CircleChart() {
     year: selectedYear,
   });
 
+  console.log("data", data);
+
   const radius = useResponsiveRadius();
 
-  const used = Number(data?.[0]?.employers);
+  // data is an array — sum all employers across entries
+  const used = Number((data as any)?.employers ?? 0);
   const remaining = Math.max(0, 100 - used);
 
   const chartData = [
