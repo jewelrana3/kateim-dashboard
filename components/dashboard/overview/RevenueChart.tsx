@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import {
   AreaChart,
   Area,
@@ -50,7 +49,10 @@ export default function GreenAreaChart() {
   const month = Number(searchParams.get("month")) || 12;
 
   // Use TanStack Query hook
-  const { data: revenueData = [], isLoading } = usePlatformRevenue({ year, month });
+  const { data: revenueData = [], isLoading } = usePlatformRevenue({
+    year,
+    month,
+  });
 
   const handleYearChange = (selectedYear: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -71,7 +73,7 @@ export default function GreenAreaChart() {
   }));
 
   // Normalize data for chart
-  const maxValue = Math.max(...chartData.map((d: RevenueData) => d.value), 1);
+
   const normalizedData = chartData.map((item: RevenueData) => ({
     name: item.month,
     uv: item.value,

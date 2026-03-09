@@ -73,6 +73,7 @@ export const useToggleUserVerification = (id: string) => {
 
 export const useDeleteUser = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["dashboard", "users", "delete"],
     mutationFn: async ({ _id }: { _id: string }) => {
@@ -80,9 +81,14 @@ export const useDeleteUser = () => {
       return data.data || {};
     },
     onSuccess: () => {
-      // Invalidate and refetch users query
+      // Refetch users list
       queryClient.invalidateQueries({
         queryKey: ["dashboard", "users"],
+      });
+
+      // Refetch dashboard stats
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.dashboard.stats(),
       });
     },
   });
