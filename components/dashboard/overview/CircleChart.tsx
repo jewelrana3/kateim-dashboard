@@ -41,13 +41,13 @@ export default function CircleChart() {
   // Default data if loading or no data
   const chartData = data
     ? [
-      { name: "Employers", value: (data as any).employers || 0 },
-      { name: "Workers", value: (data as any).workers || 0 },
-    ]
+        { name: "Employers", value: (data as any).employers || 0 },
+        { name: "Workers", value: (data as any).workers || 0 },
+      ]
     : [
-      { name: "Employers", value: 0 },
-      { name: "Workers", value: 0 },
-    ];
+        { name: "Employers", value: 0 },
+        { name: "Workers", value: 0 },
+      ];
 
   const total = chartData[0].value + chartData[1].value;
 
@@ -57,7 +57,10 @@ export default function CircleChart() {
         <h2 className="text-lg font-medium">Total Users</h2>
         <div className="flex gap-2">
           <MonthDropdown selectedMonth={month} onChange={handleMonthChange} />
-          <YearDropdown selectedYear={year.toString()} onChange={handleYearChange} />
+          <YearDropdown
+            selectedYear={year.toString()}
+            onChange={handleYearChange}
+          />
         </div>
       </div>
 
@@ -90,7 +93,9 @@ export default function CircleChart() {
           {/* Legend */}
           <div className="absolute bottom-2   gap-4">
             {chartData.map((item, index) => {
-              const percent = total ? Math.round((item.value / total) * 100) : 0;
+              const percent = total
+                ? Math.round((item.value / total) * 100)
+                : 0;
               return (
                 <div key={item.name} className="flex items-center gap-1">
                   <div

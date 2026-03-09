@@ -23,12 +23,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import Image from "next/image";
-import { useGetAllUser, useUpdateUserStatus } from "@/lib/query/hooks/dashboard/users";
+import {
+  useDeleteUser,
+  useGetAllUser,
+  useUpdateUserStatus,
+} from "@/lib/query/hooks/dashboard/users";
 import { USER_ROLES, USER_STATUS } from "@/types/users";
 import { getImageUrl } from "@/utils/image";
 import Pagination from "@/components/ui/pagination";
-
-
 
 export default function AllWorker() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,13 +46,17 @@ export default function AllWorker() {
     ...(statusFilter !== "all" && { status: statusFilter }),
   });
 
+  const { data, mutate: deleteUser } = useDeleteUser();
+
   const workers = response?.data || [];
+  console.log("responsive --", workers);
   const meta = response?.meta;
 
   // Update user status mutation
-  const { mutate: updateStatus, isPending: isUpdating } = useUpdateUserStatus("");
+  const { mutate: updateStatus, isPending: isUpdating } =
+    useUpdateUserStatus("");
 
-  const handleDelete = () => {
+  const handleDelete = (id: string) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You want to be delete this!",
@@ -61,11 +67,18 @@ export default function AllWorker() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
-        });
+        deleteUser(
+          { _id: id },
+          {
+            onSuccess: () => {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success",
+              });
+            },
+          },
+        );
       }
     });
   };
@@ -89,14 +102,16 @@ export default function AllWorker() {
     );
   }
 
-
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold">All Worker</h2>
           <div>
-            <Select value={statusFilter} onValueChange={handleStatusFilterChange}>
+            <Select
+              value={statusFilter}
+              onValueChange={handleStatusFilterChange}
+            >
               <SelectTrigger className="w-[100px]">
                 <SelectValue placeholder="All" />
               </SelectTrigger>
@@ -126,7 +141,10 @@ export default function AllWorker() {
           <TableBody>
             {workers.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-8 text-gray-500">
+                <TableCell
+                  colSpan={7}
+                  className="text-center py-8 text-gray-500"
+                >
                   No workers found
                 </TableCell>
               </TableRow>
@@ -153,24 +171,36 @@ export default function AllWorker() {
                   <TableCell>{worker.address}</TableCell>
                   <TableCell>
                     <Badge
-                      className={`${worker.status === USER_STATUS.ACTIVE ? "bg-green-500 " : "bg-[#E02121]"
-                        } w-20 text-white`}
+                      className={`${
+                        worker.status === USER_STATUS.ACTIVE
+                          ? "bg-green-500 "
+                          : "bg-[#E02121]"
+                      } w-20 text-white`}
                     >
-                      {worker.status === USER_STATUS.ACTIVE ? "Active" : "Block"}
+                      {worker.status === USER_STATUS.ACTIVE
+                        ? "Active"
+                        : "Block"}
                     </Badge>
                   </TableCell>
                   <TableCell className="flex gap-2 ml-3">
                     <span
                       className="bg-blue-600 p-1 rounded cursor-pointer"
-                      onClick={() => router.push(`/worker-details/?id=${worker._id}`)}
+                      onClick={() =>
+                        router.push(`/worker-details/?id=${worker._id}`)
+                      }
                     >
                       <Eye className=" text-white" />
                     </span>
 
                     <span
-                      className={`bg-[#E6E6E6] p-1 rounded ${isUpdating ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-                        }`}
-                      onClick={() => !isUpdating && handleStatusToggle(worker._id)}
+                      className={`bg-[#E6E6E6] p-1 rounded ${
+                        isUpdating
+                          ? "opacity-50 cursor-not-allowed"
+                          : "cursor-pointer"
+                      }`}
+                      onClick={() =>
+                        !isUpdating && handleStatusToggle(worker._id)
+                      }
                     >
                       {worker.status === USER_STATUS.ACTIVE ? (
                         <LockOpen size={24} className=" text-green-600" />
@@ -179,12 +209,12 @@ export default function AllWorker() {
                       )}
                     </span>
 
-                    {/* <span
+                    <span
                       className="bg-red-600 p-1 rounded cursor-pointer"
-                      onClick={handleDelete}
+                      onClick={() => handleDelete(worker._id)}
                     >
                       <Trash2 className=" text-white" />
-                    </span> */}
+                    </span>
                   </TableCell>
                 </TableRow>
               ))

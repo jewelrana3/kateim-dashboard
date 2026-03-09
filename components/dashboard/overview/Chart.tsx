@@ -38,7 +38,9 @@ const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
 
 export default function Chart() {
-  const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1);
+  const [selectedMonth, setSelectedMonth] = useState<number>(
+    new Date().getMonth() + 1,
+  );
   const [selectedYear, setSelectedYear] = useState<number>(currentYear);
 
   const { data: subscriptionData, isLoading } = useMonthlySubscriptions({
@@ -55,7 +57,7 @@ export default function Chart() {
     }));
   }, [subscriptionData]);
 
-  const hasData = chartData.some(item => item.pv > 0);
+  const hasData = chartData.some((item) => item.pv > 0);
 
   return (
     <section className="shadow-md rounded-lg px-3 text-textGray bg-[#FFFFFF] p-4">
@@ -131,10 +133,14 @@ export default function Chart() {
               allowDecimals={false}
             />
             <Tooltip
-              cursor={{ fill: '#f3f4f6' }}
-              contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+              cursor={{ fill: "#f3f4f6" }}
+              contentStyle={{
+                borderRadius: "8px",
+                border: "none",
+                boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+              }}
             />
-            <Bar dataKey="pv" fill="#0057DC" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="pv" fill="#0057DC" radius={[12, 12, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>

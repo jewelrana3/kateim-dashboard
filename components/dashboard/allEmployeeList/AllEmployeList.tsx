@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Eye, Lock, LockOpen } from "lucide-react";
+import { Eye, Lock, LockOpen, Trash2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -25,7 +25,8 @@ import { useGetAllUser, useUpdateUserStatus } from "@/lib/query/hooks";
 import { USER_ROLES, USER_STATUS } from "@/types/users";
 import { getImageUrl } from "@/utils/image";
 import Pagination from "@/components/ui/pagination";
-
+import Swal from "sweetalert2";
+import { useDeleteUser } from "@/lib/query/hooks/dashboard/users";
 
 export default function AllEmployeList() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -40,13 +41,14 @@ export default function AllEmployeList() {
     ...(statusFilter !== "all" && { status: statusFilter }),
   });
 
+  const { data, mutate: deleteUser } = useDeleteUser();
+
   const employers = response?.data || [];
   const meta = response?.meta;
 
-
   // Update user status mutation
-  const { mutate: updateStatus, isPending: isUpdating } = useUpdateUserStatus("");
-
+  const { mutate: updateStatus, isPending: isUpdating } =
+    useUpdateUserStatus("");
 
   const handleStatusFilterChange = (value: string) => {
     setStatusFilter(value);
@@ -55,6 +57,32 @@ export default function AllEmployeList() {
 
   const handleStatusToggle = (employerId: string) => {
     updateStatus(employerId);
+  };
+  const handleDelete = (id: string) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to be delete this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteUser(
+          { _id: id },
+          {
+            onSuccess: () => {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success",
+              });
+            },
+          },
+        );
+      }
+    });
   };
 
   if (isLoading) {
@@ -73,7 +101,10 @@ export default function AllEmployeList() {
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold">All Employer</h2>
           <div>
-            <Select value={statusFilter} onValueChange={handleStatusFilterChange}>
+            <Select
+              value={statusFilter}
+              onValueChange={handleStatusFilterChange}
+            >
               <SelectTrigger className="w-[100px]">
                 <SelectValue placeholder="All" />
               </SelectTrigger>
@@ -103,7 +134,10 @@ export default function AllEmployeList() {
           <TableBody>
             {employers.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-8 text-gray-500">
+                <TableCell
+                  colSpan={7}
+                  className="text-center py-8 text-gray-500"
+                >
                   No employers found
                 </TableCell>
               </TableRow>
@@ -130,12 +164,15 @@ export default function AllEmployeList() {
                   <TableCell>{employer.address as string}</TableCell>
                   <TableCell>
                     <Badge
-                      className={`${employer.status === USER_STATUS.ACTIVE
-                        ? "bg-green-500 "
-                        : "bg-[#E02121]"
-                        } w-20 text-white`}
+                      className={`${
+                        employer.status === USER_STATUS.ACTIVE
+                          ? "bg-green-500 "
+                          : "bg-[#E02121]"
+                      } w-20 text-white`}
                     >
-                      {employer.status === USER_STATUS.ACTIVE ? "Active" : "Block"}
+                      {employer.status === USER_STATUS.ACTIVE
+                        ? "Active"
+                        : "Block"}
                     </Badge>
                   </TableCell>
                   <TableCell className="flex gap-2 ml-2">
@@ -149,15 +186,26 @@ export default function AllEmployeList() {
                     />
 
                     <span
-                      className={`bg-[#E6E6E6] p-1 rounded ${isUpdating ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-                        }`}
-                      onClick={() => !isUpdating && handleStatusToggle(employer._id)}
+                      className={`bg-[#E6E6E6] p-1 rounded ${
+                        isUpdating
+                          ? "opacity-50 cursor-not-allowed"
+                          : "cursor-pointer"
+                      }`}
+                      onClick={() =>
+                        !isUpdating && handleStatusToggle(employer._id)
+                      }
                     >
                       {employer.status === USER_STATUS.ACTIVE ? (
                         <LockOpen size={24} className=" text-green-600" />
                       ) : (
                         <Lock size={24} className=" text-red-600" />
                       )}
+                    </span>
+                    <span
+                      className="bg-red-600 p-1 rounded cursor-pointer"
+                      onClick={() => handleDelete(employer._id)}
+                    >
+                      <Trash2 className=" text-white" />
                     </span>
                   </TableCell>
                 </TableRow>

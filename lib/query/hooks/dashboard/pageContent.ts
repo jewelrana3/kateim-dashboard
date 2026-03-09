@@ -35,7 +35,9 @@ export const useUpdateSection = (slug: string) => {
     },
     onError: (error: any) => {
       console.error("Page content update error:", error);
-      toast.error(error.response?.data?.message || "Page content update failed");
+      toast.error(
+        error.response?.data?.message || "Page content update failed",
+      );
     },
   });
 };
@@ -56,7 +58,9 @@ export const useCreateSection = (slug: string) => {
     },
     onError: (error: any) => {
       console.error("Page content creation error:", error);
-      toast.error(error.response?.data?.message || "Page content creation failed");
+      toast.error(
+        error.response?.data?.message || "Page content creation failed",
+      );
     },
   });
 };
@@ -74,7 +78,6 @@ export const useGetClientReview = (slug: string) => {
 };
 
 export const useCreateClientReview = (slug: string) => {
-  console.log("click");
   return useMutation({
     mutationKey: queryKeys.dashboard.clientReview(slug),
     mutationFn: async (params: { data: FormData }) => {
@@ -92,7 +95,9 @@ export const useCreateClientReview = (slug: string) => {
     },
     onError: (error: any) => {
       console.error("Client review creation error:", error);
-      toast.error(error.response?.data?.message || "Client review creation failed");
+      toast.error(
+        error.response?.data?.message || "Client review creation failed",
+      );
     },
   });
 };
@@ -116,7 +121,9 @@ export const useUpdateClientReview = (slug: string) => {
     },
     onError: (error: any) => {
       console.error("Client review update error:", error);
-      toast.error(error.response?.data?.message || "Client review update failed");
+      toast.error(
+        error.response?.data?.message || "Client review update failed",
+      );
     },
   });
 };
