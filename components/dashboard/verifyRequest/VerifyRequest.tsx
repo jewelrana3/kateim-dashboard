@@ -24,11 +24,15 @@ import Swal from "sweetalert2";
 import VerifyDetailsModal from "@/modal/VerifyDetailsModal";
 import { useGetAllUser } from "@/lib/query/hooks";
 import { IUser } from "@/types/users";
+import { useDeleteUser } from "@/lib/query/hooks/dashboard/users";
 
 export default function VerifyReuest() {
   const { data, isLoading } = useGetAllUser();
   const { meta, data: users } = data || {};
-  const handleClick = () => {
+
+  const { mutate: deleteUser } = useDeleteUser();
+
+  const handleDelete = (id: string) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You want to be delete this!",
@@ -39,11 +43,18 @@ export default function VerifyReuest() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
-        });
+        deleteUser(
+          { _id: id },
+          {
+            onSuccess: () => {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success",
+              });
+            },
+          },
+        );
       }
     });
   };
@@ -114,12 +125,12 @@ export default function VerifyReuest() {
                       }
                     />
 
-                    {/* <span
-                    className="bg-red-600 p-1 rounded cursor-pointer"
-                    onClick={handleClick}
-                  >
-                    <Trash2 className=" text-white" />
-                  </span> */}
+                    <span
+                      className="bg-red-600 p-1 rounded cursor-pointer"
+                      onClick={() => handleDelete(user?._id)}
+                    >
+                      <Trash2 className=" text-white" />
+                    </span>
                   </TableCell>
                 </TableRow>
               ))}
