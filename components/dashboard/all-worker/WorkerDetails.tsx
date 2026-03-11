@@ -14,15 +14,18 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import {
+  useDeleteUser,
   useGetUserDetail,
   useUpdateUserStatus,
 } from "@/lib/query/hooks/dashboard/users";
 import { getImageUrl } from "@/utils/image";
 import { USER_STATUS } from "@/types/users";
 import { Badge } from "@/components/ui/badge";
+import Swal from "sweetalert2";
 
 export default function WorkerDetails({ id }: { id: string }) {
   const { data: worker, isLoading, error } = useGetUserDetail(id);
+  const { mutate: deleteUser } = useDeleteUser();
   const { mutate: updateStatus, isPending: isUpdating } =
     useUpdateUserStatus("");
 
@@ -61,7 +64,32 @@ export default function WorkerDetails({ id }: { id: string }) {
     { name: "Role Sec", value: worker.role },
   ];
 
-  console.log("worker", worker.address);
+  const handleDelete = (id: string) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to be delete this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteUser(
+          { _id: id },
+          {
+            onSuccess: () => {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success",
+              });
+            },
+          },
+        );
+      }
+    });
+  };
 
   return (
     <div className="p-4 space-y-4">
@@ -118,72 +146,9 @@ export default function WorkerDetails({ id }: { id: string }) {
                       <div className="font-medium">{item?.value || "-"}</div>
                     </div>
                   ))}
-                  {/* <h1 className="text-2xl font-bold text-gray-800 capitalize">
-                    {worker?.name}
-                  </h1> */}
-                  {/* {worker?.verified && (
-                    <div className="flex items-center gap-1 text-green-600 font-medium text-sm bg-green-50 px-2 py-1 rounded-full">
-                      <BadgeCheck className="w-4 h-4" /> Verified
-                    </div>
-                  )} */}
-                </div>
-                {/* <p className="text-lg text-gray-600 font-medium">
-                  {worker?.category} - {worker?.subCategory}
-                </p> */}
-                {/* {worker?.yearsOfExperience && (
-                  <p className="text-sm text-gray-500">
-                    {worker.yearsOfExperience} years of experience
-                  </p>
-                )} */}
-              </div>
-              {/* <Badge
-                className={`${isBlocked ? "bg-red-500" : "bg-green-500"} text-white`}
-              >
-                {isBlocked ? "Blocked" : "Active"}
-              </Badge> */}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
-              {/* <div className="flex items-center gap-2 text-gray-700">
-                <Mail className="w-4 h-4 text-blue-600" />
-                <span className="text-sm">{worker?.email}</span>
-              </div> */}
-              {/* <div className="flex items-center gap-2 text-gray-700">
-                <Phone className="w-4 h-4 text-blue-600" />
-                <span className="text-sm">{worker?.phone || "N/A"}</span>
-              </div>
-              <div className="flex items-center gap-2 text-gray-700">
-                <MapPin className="w-4 h-4 text-blue-600" />
-                <span className="text-sm">{worker?.address || "N/A"}</span>
-              </div> */}
-              {/* <div className="flex items-center gap-2 text-gray-700">
-                <DollarSign className="w-4 h-4 text-blue-600" />
-                <span className="text-sm">
-                  {worker?.salary
-                    ? `${worker.salary} / ${worker.salaryType}`
-                    : "N/A"}
-                </span>
-              </div> */}
-            </div>
-
-            {/* Availability */}
-            {/* {worker?.availability && worker.availability.length > 0 && (
-              <div className="mt-3">
-                <p className="text-sm font-semibold text-gray-700 mb-1">
-                  Availability:
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {worker.availability.map((avail, idx) => (
-                    <span
-                      key={idx}
-                      className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-medium"
-                    >
-                      {avail}
-                    </span>
-                  ))}
                 </div>
               </div>
-            )} */}
+            </div>
           </div>
         </div>
 
@@ -281,8 +246,8 @@ export default function WorkerDetails({ id }: { id: string }) {
 
       {/* Action Section */}
       <section className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white shadow-md rounded-md p-4 gap-4">
-        <p className="text-sm text-gray-600">
-          If you feel the user is fake in any way, you can block or unblock the
+        <p className="text-sm text-gray-600 capitalize">
+          If you feel the user is fake in any way, you can block or delete the
           user from here.
         </p>
         <div className="flex gap-3">
@@ -290,13 +255,26 @@ export default function WorkerDetails({ id }: { id: string }) {
             variant="outline"
             className={`${
               isBlocked
-                ? "bg-green-600 hover:bg-green-700 text-white"
-                : "bg-red-600 hover:bg-red-700 text-white"
+                ? "bg-[#0057DC]  text-white"
+                : "bg-[#0057DC]    text-white"
             }`}
             onClick={handleBlockToggle}
             disabled={isUpdating}
           >
             {isUpdating ? "Processing..." : isBlocked ? "Unblock" : "Block"}
+          </Button>
+
+          <Button
+            variant="outline"
+            className={`${
+              isBlocked
+                ? "bg-green-600 hover:bg-green-700 text-white"
+                : "bg-red-600 hover:bg-red-700 text-white"
+            }`}
+            onClick={() => handleDelete(id)}
+            disabled={isUpdating}
+          >
+            Delete
           </Button>
         </div>
       </section>
