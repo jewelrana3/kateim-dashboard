@@ -13,18 +13,19 @@ import { useUpdateSupportMessage } from "@/lib/query/hooks/dashboard/public";
 
 export function DialogDemo({ message }: { message: IContact }) {
   const [reply, setReply] = useState("");
+  const [open, setOpen] = useState(false);
   const { mutate: sendReplyMutation, isPending } = useUpdateSupportMessage(
-    message._id!
+    message._id!,
   );
-
 
   const handleSendReply = () => {
     if (!reply.trim()) return;
     sendReplyMutation({ feedback: reply });
+    setOpen(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <span className="bg-blue-600 p-1 rounded cursor-pointer">
           <Eye className="text-white" />
@@ -67,7 +68,7 @@ export function DialogDemo({ message }: { message: IContact }) {
           </div>
 
           <div className="mb-4">
-            <p className="text-sm font-medium text-gray-700">Message :</p>
+            <p className="text-sm font-medium text-gray-700">Message : </p>
             <textarea
               readOnly
               value={message.message}
@@ -82,7 +83,7 @@ export function DialogDemo({ message }: { message: IContact }) {
               value={reply}
               onChange={(e) => setReply(e.target.value)}
               placeholder="Type Your Response Here."
-              className="w-full h-20 p-2 mt-1 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              className="w-full bg-white h-20 p-2 mt-1 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
           </div>
 

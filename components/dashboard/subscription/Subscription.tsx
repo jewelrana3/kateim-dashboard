@@ -32,11 +32,14 @@ export default function Subscription() {
                   </h1>
 
                   <div className="flex items-center justify-center">
-                    <h1 className="text-2xl 2xl:text-3xl font-bold">
-                      {plan.currency || "$"}
-                      {plan.regularPrice}
+                    <h1 className="text-2xl 2xl:text-3xl">
+                      {/* {plan.currency || ""} */}
+                      <span className="font-bold">
+                        £{plan.regularPrice}
+                      </span>{" "}
+                      <span className="text-sm ">{plan.interval}ly</span>
                     </h1>
-                    <p>/{plan.interval || "month"}</p>
+                    {/* <p>/{plan.interval}</p> */}
                   </div>
                 </div>
 

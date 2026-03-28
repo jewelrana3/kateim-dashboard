@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useGetProfile } from "@/lib/query/hooks";
 import { getImageUrl } from "@/utils/image";
 import Image from "next/image";
+import { useGetFaq } from "@/lib/query/hooks/dashboard/public";
 
 const auth = [
   { path: "/login" },
@@ -35,10 +36,10 @@ const path = [
 export default function Header() {
   const pathname = usePathname();
   const isAuthPage = auth.some((item) => item.path === pathname);
-  const activePath = path.find((item) => item.path === pathname);
 
   // Fetch admin profile
   const { data: profile } = useGetProfile();
+  const { data: faqData } = useGetFaq();
 
   return (
     <>
@@ -50,7 +51,7 @@ export default function Header() {
               <Link href="/notification">
                 <Bell className="w-5 h-5 text-black" />
                 <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] px-1.5 py-0.5 rounded-full font-semibold">
-                  3
+                  {faqData?.length}
                 </span>
               </Link>
             </div> */}
