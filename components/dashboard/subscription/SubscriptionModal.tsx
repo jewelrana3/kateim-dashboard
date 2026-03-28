@@ -11,7 +11,10 @@ import { Label } from "@/components/ui/label";
 import { Plus, X } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { IPackage } from "@/types/others";
-import { useCreatePackage, useUpdatePackage } from "@/lib/query/hooks/dashboard/package";
+import {
+  useCreatePackage,
+  useUpdatePackage,
+} from "@/lib/query/hooks/dashboard/package";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -180,10 +183,26 @@ export default function SubscriptionModal({
               step="0.01"
               placeholder="0.00"
               value={formData.regularPrice}
-              onChange={(e) => handleInputChange("regularPrice", parseFloat(e.target.value))}
+              onChange={(e) =>
+                handleInputChange("regularPrice", parseFloat(e.target.value))
+              }
               required
             />
           </div>
+          {/* <div>
+            <Label htmlFor="regularPrice">Discount</Label>
+            <Input
+              id="regularPrice"
+              type="number"
+              step="0.01"
+              placeholder="0.00"
+              value={formData.regularPrice}
+              onChange={(e) =>
+                handleInputChange("regularPrice", parseFloat(e.target.value))
+              }
+              required
+            />
+          </div> */}
 
           {/* Interval */}
           <div>
@@ -192,7 +211,12 @@ export default function SubscriptionModal({
               id="interval"
               className="w-full px-3 py-2 border rounded-md"
               value={formData.interval}
-              onChange={(e) => handleInputChange("interval", e.target.value as "month" | "year")}
+              onChange={(e) =>
+                handleInputChange(
+                  "interval",
+                  e.target.value as "month" | "year",
+                )
+              }
             >
               <option value="month">Monthly</option>
               <option value="year">Yearly</option>
@@ -217,7 +241,9 @@ export default function SubscriptionModal({
             <Checkbox
               id="isInstantBooking"
               checked={formData.isInstantBooking}
-              onCheckedChange={(checked) => handleInputChange("isInstantBooking", checked)}
+              onCheckedChange={(checked) =>
+                handleInputChange("isInstantBooking", checked)
+              }
             />
             <Label htmlFor="isInstantBooking" className="cursor-pointer">
               Enable Instant Booking
@@ -236,9 +262,17 @@ export default function SubscriptionModal({
                   <Checkbox
                     id="isJobPostLimitUnlimited"
                     checked={isUnlimited(formData.limits?.jobPostLimit)}
-                    onCheckedChange={() => toggleUnlimited("jobPostLimit", formData.limits?.jobPostLimit)}
+                    onCheckedChange={() =>
+                      toggleUnlimited(
+                        "jobPostLimit",
+                        formData.limits?.jobPostLimit,
+                      )
+                    }
                   />
-                  <Label htmlFor="isJobPostLimitUnlimited" className="cursor-pointer text-sm">
+                  <Label
+                    htmlFor="isJobPostLimitUnlimited"
+                    className="cursor-pointer text-sm"
+                  >
                     Unlimited
                   </Label>
                 </div>
@@ -248,8 +282,17 @@ export default function SubscriptionModal({
                 type="number"
                 min="0"
                 placeholder="0"
-                value={isUnlimited(formData.limits?.jobPostLimit) ? "" : formData.limits?.jobPostLimit}
-                onChange={(e) => handleLimitChange("jobPostLimit", parseInt(e.target.value) || 0)}
+                value={
+                  isUnlimited(formData.limits?.jobPostLimit)
+                    ? ""
+                    : formData.limits?.jobPostLimit
+                }
+                onChange={(e) =>
+                  handleLimitChange(
+                    "jobPostLimit",
+                    parseInt(e.target.value) || 0,
+                  )
+                }
                 disabled={isUnlimited(formData.limits?.jobPostLimit)}
               />
             </div>
@@ -262,9 +305,17 @@ export default function SubscriptionModal({
                   <Checkbox
                     id="isBookingLimitUnlimited"
                     checked={isUnlimited(formData.limits?.bookingLimit)}
-                    onCheckedChange={() => toggleUnlimited("bookingLimit", formData.limits?.bookingLimit)}
+                    onCheckedChange={() =>
+                      toggleUnlimited(
+                        "bookingLimit",
+                        formData.limits?.bookingLimit,
+                      )
+                    }
                   />
-                  <Label htmlFor="isBookingLimitUnlimited" className="cursor-pointer text-sm">
+                  <Label
+                    htmlFor="isBookingLimitUnlimited"
+                    className="cursor-pointer text-sm"
+                  >
                     Unlimited
                   </Label>
                 </div>
@@ -274,8 +325,17 @@ export default function SubscriptionModal({
                 type="number"
                 min="0"
                 placeholder="0"
-                value={isUnlimited(formData.limits?.bookingLimit) ? "" : formData.limits?.bookingLimit}
-                onChange={(e) => handleLimitChange("bookingLimit", parseInt(e.target.value) || 0)}
+                value={
+                  isUnlimited(formData.limits?.bookingLimit)
+                    ? ""
+                    : formData.limits?.bookingLimit
+                }
+                onChange={(e) =>
+                  handleLimitChange(
+                    "bookingLimit",
+                    parseInt(e.target.value) || 0,
+                  )
+                }
                 disabled={isUnlimited(formData.limits?.bookingLimit)}
               />
             </div>
@@ -288,9 +348,14 @@ export default function SubscriptionModal({
                   <Checkbox
                     id="isBoostLimitUnlimited"
                     checked={isUnlimited(formData.limits?.boostLimit)}
-                    onCheckedChange={() => toggleUnlimited("boostLimit", formData.limits?.boostLimit)}
+                    onCheckedChange={() =>
+                      toggleUnlimited("boostLimit", formData.limits?.boostLimit)
+                    }
                   />
-                  <Label htmlFor="isBoostLimitUnlimited" className="cursor-pointer text-sm">
+                  <Label
+                    htmlFor="isBoostLimitUnlimited"
+                    className="cursor-pointer text-sm"
+                  >
                     Unlimited
                   </Label>
                 </div>
@@ -300,8 +365,14 @@ export default function SubscriptionModal({
                 type="number"
                 min="0"
                 placeholder="0"
-                value={isUnlimited(formData.limits?.boostLimit) ? "" : formData.limits?.boostLimit}
-                onChange={(e) => handleLimitChange("boostLimit", parseInt(e.target.value) || 0)}
+                value={
+                  isUnlimited(formData.limits?.boostLimit)
+                    ? ""
+                    : formData.limits?.boostLimit
+                }
+                onChange={(e) =>
+                  handleLimitChange("boostLimit", parseInt(e.target.value) || 0)
+                }
                 disabled={isUnlimited(formData.limits?.boostLimit)}
               />
             </div>

@@ -59,6 +59,8 @@ export default function VerifyReuest() {
     });
   };
 
+  console.log("users -----", users);
+
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">

@@ -90,6 +90,8 @@ export type IUser = {
   authentication: IAuthentication;
   createdAt: Date;
   updatedAt: Date;
+  employerType: string;
+  companyNumber: string;
 };
 
 export type IUserFilterableFields = {

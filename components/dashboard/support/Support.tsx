@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 
 import { Badge } from "@/components/ui/badge";
-import {  Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -20,17 +20,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { useRouter } from "next/navigation";
 import { DialogDemo } from "./Message";
 import Swal from "sweetalert2";
-import { useDeleteSupportMessage, useGetSupportMessage } from "@/lib/query/hooks/dashboard/public";
+import {
+  useDeleteSupportMessage,
+  useGetSupportMessage,
+} from "@/lib/query/hooks/dashboard/public";
 import { IContact } from "@/types/others";
 
-
 export default function Support() {
-
-
-  const {data: supportMessages} = useGetSupportMessage();
+  const { data: supportMessages } = useGetSupportMessage();
 
   const { mutate: deleteMessageMutation } = useDeleteSupportMessage();
 
@@ -88,40 +87,41 @@ export default function Support() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {supportMessages && supportMessages.length > 0 && supportMessages.map((message: IContact, index:number) => (
-              <TableRow key={message._id}>
-                <TableCell className="font-medium">0{index + 1}</TableCell>
+            {supportMessages &&
+              supportMessages?.length > 0 &&
+              supportMessages?.map((message: IContact, index: number) => (
+                <TableRow key={message._id}>
+                  <TableCell className="font-medium">0{index + 1}</TableCell>
 
-                <TableCell className="flex items-center gap-2">
-                  {message.name}
-                </TableCell>
+                  <TableCell className="flex items-center gap-2">
+                    {message.name}
+                  </TableCell>
 
-                <TableCell>{message.email}</TableCell>
-                <TableCell>{message.phone}</TableCell>
-                {/* <TableCell>{message.location}</TableCell> */}
-                <TableCell>
-                  <Badge className={message.isSolved ? "bg-green-500 text-white" : "bg-red-500 text-white"}>
-                    {message.isSolved ? "Solved" : "Unresolved"}
-                  </Badge>
-                </TableCell>
-                <TableCell className="flex gap-2">
-                  {/* <Message
-                    trigger={
-                      <span className="bg-blue-600 p-1 rounded cursor-pointer">
-                        <Eye className=" text-white" />
-                      </span>
-                    }
-                  /> */}
-                  <DialogDemo message={message} />
-                  <span
-                    className="bg-red-600 p-1 rounded cursor-pointer"
-                    onClick={() => handleClick(message._id!)}
-                  >
-                    <Trash2 className=" text-white" />
-                  </span>
-                </TableCell>
-              </TableRow>
-            ))}
+                  <TableCell>{message.email}</TableCell>
+                  <TableCell>{message.phone}</TableCell>
+                  {/* <TableCell>{message.location}</TableCell> */}
+                  <TableCell>
+                    <Badge
+                      className={
+                        message.isSolved
+                          ? "bg-green-500 text-white"
+                          : "bg-red-500 text-white"
+                      }
+                    >
+                      {message.isSolved ? "Solved" : "Unresolved"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="flex gap-2">
+                    <DialogDemo message={message} />
+                    <span
+                      className="bg-red-600 p-1 rounded cursor-pointer"
+                      onClick={() => handleClick(message._id!)}
+                    >
+                      <Trash2 className=" text-white" />
+                    </span>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </div>

@@ -117,9 +117,9 @@ export const useUpdateSupportMessage = (id: string) => {
         (oldData) => {
           if (!oldData) return [];
           return oldData.map((msg) =>
-            msg._id === id ? { ...msg, ...updatedMessage } : msg
+            msg._id === id ? { ...msg, ...updatedMessage } : msg,
           );
-        }
+        },
       );
     },
   });
@@ -134,7 +134,9 @@ export const useDeleteSupportMessage = () => {
     },
     onSuccess: (res) => {
       toast.success(res.message || "Successfully deleted support message");
-      queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.supportMessage() });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.dashboard.supportMessage(),
+      });
     },
     onError: (error) => {
       toast.error(error.message || `Failed to delete support message`);
