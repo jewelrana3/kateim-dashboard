@@ -110,6 +110,8 @@ export enum USER_STATUS {
   ACTIVE = "active",
   RESTRICTED = "restricted",
   DELETED = "deleted",
+  WORKER = "worker",
+  EMPLOYER = "employer",
 }
 
 export enum USER_ROLES {
@@ -117,4 +119,5 @@ export enum USER_ROLES {
   EMPLOYER = "employer",
   GUEST = "guest",
   WORKER = "worker",
+  VERIFY_REQUEST = "verify_request",
 }

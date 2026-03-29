@@ -11,7 +11,6 @@ import {
 
 export default function Notifications() {
   const { data: faqData } = useGetFaq();
-  console.log("faq data", faqData);
 
   return (
     <div className="space-y-4">
