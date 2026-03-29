@@ -13,8 +13,6 @@ export default function VerifyDetailsModal({
 }) {
   const { mutate: toggleVerification } = useToggleUserVerification(user?._id);
 
-  console.log("user", user);
-
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>

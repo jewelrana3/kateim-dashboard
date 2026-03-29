@@ -49,8 +49,8 @@ export default function AllWorker() {
   const { data, mutate: deleteUser } = useDeleteUser();
 
   const workers = response?.data || [];
-  console.log("responsive --", workers);
   const meta = response?.meta;
+  console.log("data all worker", workers);
 
   // Update user status mutation
   const { mutate: updateStatus, isPending: isUpdating } =

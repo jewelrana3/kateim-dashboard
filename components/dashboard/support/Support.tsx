@@ -27,9 +27,22 @@ import {
   useGetSupportMessage,
 } from "@/lib/query/hooks/dashboard/public";
 import { IContact } from "@/types/others";
+import { useState } from "react";
+import { USER_ROLES } from "@/types/users";
 
 export default function Support() {
-  const { data: supportMessages } = useGetSupportMessage();
+  const [roleFilter, setRoleFilter] = useState<string>("all");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const limit = 10;
+
+  const { data: supportMessages } = useGetSupportMessage({
+    role: roleFilter === "all" ? undefined : roleFilter,
+    page: currentPage,
+    limit,
+  });
+
+  console.log("supportMessages", supportMessages);
 
   const { mutate: deleteMessageMutation } = useDeleteSupportMessage();
 
@@ -54,24 +67,30 @@ export default function Support() {
     });
   };
 
+  const handleStatusFilterChange = (value: string) => {
+    setRoleFilter(value);
+    setCurrentPage(1); // Reset to first page when filter changes
+  };
+
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold">Support</h2>
-          <div>
-            <Select>
+          {/* <div>
+            <Select value={roleFilter} onValueChange={handleStatusFilterChange}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select item" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value="block">Worker</SelectItem>
-                  <SelectItem value="Solved">Employer</SelectItem>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value={USER_ROLES.WORKER}>Worker</SelectItem>
+                  <SelectItem value={USER_ROLES.EMPLOYER}>Employer</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
-          </div>
+          </div> */}
         </div>
 
         <Table>

@@ -86,11 +86,11 @@ export const useDeleteFaq = () => {
   });
 };
 
-export const useGetSupportMessage = () => {
+export const useGetSupportMessage = (params?: any) => {
   return useQuery({
-    queryKey: queryKeys.dashboard.supportMessage(),
+    queryKey: queryKeys.dashboard.allSupportMessage(params),
     queryFn: async () => {
-      const data = await publicApi.getSupportMessage();
+      const data = await publicApi.getSupportMessage(params);
       return data.data || [];
     },
     staleTime: 3 * 60 * 1000, // 3 minutes

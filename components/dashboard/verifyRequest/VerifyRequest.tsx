@@ -23,12 +23,23 @@ import {
 import Swal from "sweetalert2";
 import VerifyDetailsModal from "@/modal/VerifyDetailsModal";
 import { useGetAllUser } from "@/lib/query/hooks";
-import { IUser } from "@/types/users";
+import { IUser, USER_ROLES } from "@/types/users";
 import { useDeleteUser } from "@/lib/query/hooks/dashboard/users";
+import { useState } from "react";
 
 export default function VerifyReuest() {
-  const { data, isLoading } = useGetAllUser();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+
+  const limit = 10;
+  const { data, isLoading } = useGetAllUser({
+    role: statusFilter === "all" ? undefined : statusFilter,
+    page: currentPage,
+    limit,
+  });
+
   const { meta, data: users } = data || {};
+  console.log("users --", users);
 
   const { mutate: deleteUser } = useDeleteUser();
 
@@ -59,7 +70,10 @@ export default function VerifyReuest() {
     });
   };
 
-  console.log("users -----", users);
+  const handleStatusFilterChange = (value: string) => {
+    setStatusFilter(value);
+    setCurrentPage(1); // Reset to first page when filter changes
+  };
 
   return (
     <>
@@ -67,14 +81,18 @@ export default function VerifyReuest() {
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold">All Verify Request</h2>
           <div>
-            <Select>
+            <Select
+              value={statusFilter}
+              onValueChange={handleStatusFilterChange}
+            >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select item" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value="block">Worker</SelectItem>
-                  <SelectItem value="Verify">Employer</SelectItem>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value={USER_ROLES.WORKER}>Worker</SelectItem>
+                  <SelectItem value={USER_ROLES.EMPLOYER}>Employer</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>

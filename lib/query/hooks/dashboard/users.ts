@@ -12,6 +12,7 @@ export const useGetAllUser = (params = {} as IUserFilterableFields) => {
     queryKey: queryKeys.dashboard.users(params),
     queryFn: async () => {
       const response = await UserApis.geAllUser(params);
+
       return {
         data: response.data || [],
         meta: response.meta,

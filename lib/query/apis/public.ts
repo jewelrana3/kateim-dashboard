@@ -30,8 +30,8 @@ const deleteFaq = async (id: string) => {
   return res.data;
 };
 
-const getSupportMessage = async () => {
-  const res = await api.get(`/public/contact/all`);
+const getSupportMessage = async (params?: any) => {
+  const res = await api.get(`/public/contact/all`, { params });
   return res.data;
 };
 
@@ -44,7 +44,6 @@ const deleteSupportMessage = async (id: string) => {
   const res = await api.delete(`/public/contact/${id}`);
   return res.data;
 };
-
 
 export const publicApi = {
   getPublicData,
