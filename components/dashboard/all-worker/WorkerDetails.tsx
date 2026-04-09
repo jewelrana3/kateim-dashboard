@@ -21,13 +21,15 @@ import {
 import { getImageUrl } from "@/utils/image";
 import { USER_STATUS } from "@/types/users";
 import { Badge } from "@/components/ui/badge";
+import { GiCancel } from "react-icons/gi";
 import Swal from "sweetalert2";
 
 export default function WorkerDetails({ id }: { id: string }) {
   const { data: worker, isLoading, error } = useGetUserDetail(id);
   const { mutate: deleteUser } = useDeleteUser();
-  const { mutate: updateStatus, isPending: isUpdating } =
-    useUpdateUserStatus("");
+  const { mutate: updateStatus, isPending: isUpdating } = useUpdateUserStatus("");
+
+  console.log({ UserDetails: worker })
 
   const handleBlockToggle = () => {
     if (worker?._id) {
@@ -114,11 +116,13 @@ export default function WorkerDetails({ id }: { id: string }) {
               height={150}
               className="rounded-full h-40 w-40 object-cover border-4 border-blue-100"
             />
-            {worker?.verified && (
+            {worker?.isAccountVerified ?
               <div className="flex items-center gap-1 text-green-600 font-medium text-sm ml-9 px-2 py-1 rounded-full">
                 <BadgeCheck className="w-4 h-4" /> Verified
-              </div>
-            )}
+              </div> :
+              <div className="flex items-center gap-1 text-red-600 font-medium text-sm ml-9 px-2 py-1 rounded-full">
+                <GiCancel  className="w-4 h-4" /> Not Verified
+              </div>}
 
             <h1 className="text-xl ml-9">{worker?.name}</h1>
 
@@ -253,11 +257,10 @@ export default function WorkerDetails({ id }: { id: string }) {
         <div className="flex gap-3">
           <Button
             variant="outline"
-            className={`${
-              isBlocked
+            className={`${isBlocked
                 ? "bg-[#0057DC]  text-white"
                 : "bg-[#0057DC]    text-white"
-            }`}
+              }`}
             onClick={handleBlockToggle}
             disabled={isUpdating}
           >
@@ -266,11 +269,10 @@ export default function WorkerDetails({ id }: { id: string }) {
 
           <Button
             variant="outline"
-            className={`${
-              isBlocked
+            className={`${isBlocked
                 ? "bg-green-600 hover:bg-green-700 text-white"
                 : "bg-red-600 hover:bg-red-700 text-white"
-            }`}
+              }`}
             onClick={() => handleDelete(id)}
             disabled={isUpdating}
           >

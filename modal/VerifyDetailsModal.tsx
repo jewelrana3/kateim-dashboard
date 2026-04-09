@@ -12,11 +12,13 @@ export default function VerifyDetailsModal({
   user: IUser;
 }) {
   const { mutate: toggleVerification } = useToggleUserVerification(user?._id);
+  console.log("Toggle Uerification working")
+  console.log({modalUser: user});
 
   return (
-    <Dialog>
+    <Dialog >
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] w-full max-h-[700px] h-full overflow-y-auto">
         <div className="bg-white my-9">
           <div className="flex  mb-5 gap-6 ">
             {/* Profile Picture */}
@@ -37,6 +39,9 @@ export default function VerifyDetailsModal({
                 <strong>Name</strong> : {user.name}
               </p>
               <p>
+                <strong>ID</strong> : {user._id}
+              </p>
+              <p>
                 <strong>Email</strong> : {user.email}
               </p>
               <p>
@@ -46,66 +51,40 @@ export default function VerifyDetailsModal({
                 <strong>Location</strong> : {user.address}
               </p>
               <p>
-                <strong>Role Sec.</strong> : {user.role}
+                <strong>Role Sec.</strong> : <span className="capitalize">{user.role}</span>
               </p>
             </div>
           </div>
 
-          <h1 className=" text-[#0057DC]">
-            {user.role !== "employer"
-              ? "British Nationals"
-              : "Non British Nationals"}
-          </h1>
-          <p>NID</p>
-
-          {/* ID Image Section */}
+          {/* NID Image Section */}
+          <p>NID (front and back)</p>
           <div className="mt-6 flex justify-center gap-3.5">
             <Image
               src={getImageUrl(user.nidFront)} // Replace with actual ID image path
               alt="ID Front"
-              width={270}
-              height={200}
-              className="rounded-md shadow"
+              width={1000}
+              height={900}
+              className="rounded-md shadow w-[270px] h-[160px] object-contain"
             />
             <Image
               src={getImageUrl(user.nidBack)} // Replace with actual ID image path
               alt="ID Back"
-              width={270}
-              height={200}
-              className="rounded-md shadow"
+              width={1000}
+              height={900}
+              className="rounded-md shadow w-[270px] h-[160px] object-contain"
             />
           </div>
 
-          {user?.role !== "employer" ? (
-            <>
-              {user?.isBritish === true ? (
-                <div>
-                  <h1 className="text-lg font-semibold text-[#333333] mt-4">
-                    National Insurance Number
-                  </h1>
-                  <p className="text-gray-700">{user?.insuranceNumber}</p>
-                </div>
-              ) : (
-                <div className="mt-4">
-                  <div className="grid grid-cols-2">
-                    <h1>Code(right to work)</h1>
-                    <h1>{user?.dateOfBirth?.slice(0, 10) || "N/A"}</h1>
-                  </div>
-                  <div className="grid grid-cols-2">
-                    <h1 className="text-[#545454]">Share Code</h1>
-                    <h1 className="text-[#545454]">
-                      {user?.shareCode || "N/A"}
-                    </h1>
-                  </div>
-                </div>
-              )}
-            </>
-          ) : (
+          {user?.role == "employer" && (
             <div>
               <div className="mt-4">
                 <div className="grid grid-cols-[200px_20px_auto]">
                   <h1>Employer Type</h1> <span>:</span>{" "}
                   <h1 className="text-[#545454]">{user?.employerType}</h1>
+                </div>
+                <div className="grid grid-cols-[200px_20px_auto]">
+                  <h1>Business Name</h1> <span>:</span>{" "}
+                  <h1 className="text-[#545454]">{user?.businessName}</h1>
                 </div>
                 <div className="grid grid-cols-[200px_20px_auto]">
                   <h1 className="">Company Number</h1>
@@ -115,9 +94,9 @@ export default function VerifyDetailsModal({
                   </h1>
                 </div>
                 <div className="grid grid-cols-[200px_20px_auto]">
-                  <h1 className="">Address</h1>
+                  <h1 className="">Reg. Address</h1>
                   <span>:</span>
-                  <h1 className="text-[#545454]">{user?.address || "N/A"}</h1>
+                  <h1 className="text-[#545454]">{user?.registeredAddress || "N/A"}</h1>
                 </div>
               </div>
             </div>
@@ -125,18 +104,18 @@ export default function VerifyDetailsModal({
 
           {/* Action Buttons */}
           <div className="flex justify-center gap-4 mt-6">
-            <button
+            {user.isAccountVerified ? <button
               onClick={() => toggleVerification(user._id)}
               className={`bg-white border border-red-500 text-red-500 px-5 py-2 rounded-md hover:bg-red-50 `}
             >
               Decline
-            </button>
-            <button
-              onClick={() => toggleVerification(user._id)}
-              className="bg-yellow-400 text-black px-5 py-2 rounded-md hover:bg-yellow-500"
-            >
-              Approve
-            </button>
+            </button> :
+              <button
+                onClick={() => toggleVerification(user._id)}
+                className="bg-yellow-400 text-black px-5 py-2 rounded-md hover:bg-yellow-500"
+              >
+                Approve
+              </button>}
           </div>
         </div>
       </DialogContent>

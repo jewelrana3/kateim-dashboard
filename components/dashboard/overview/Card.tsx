@@ -14,7 +14,7 @@ const defaultCards: StatCard[] = [
   { title: "Total Employer", value: 0, icon: profile },
   { title: "Total Worker", value: 0, icon: profile },
   { title: "Total Subscribers", value: 0, icon: profile },
-  { title: "Total Revenue", value: "$0", icon: profile },
+  { title: "Total Revenue", value: "£0", icon: profile },
 ];
 
 export default function Card() {
@@ -31,7 +31,7 @@ export default function Card() {
         case "Total Subscribers":
           return { ...card, value: (stats as any).totalSubscription || 0 };
         case "Total Revenue":
-          return { ...card, value: `$${stats.totalRevenue || 0}` };
+          return { ...card, value: `£${stats.totalRevenue || 0}` };
         default:
           return card;
       }

@@ -97,7 +97,7 @@ export default function AllEmployeList() {
 
   return (
     <>
-      <div className="bg-[#f9f9f9] p-6 rounded-lg">
+      <div className="bg-[#f9f9f9] p-6 rounded-lg w-full">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold">All Employer</h2>
           <div>
@@ -119,102 +119,103 @@ export default function AllEmployeList() {
           </div>
         </div>
 
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-blue-100 text-gray-600">
-              <TableHead>Serial No</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Contact</TableHead>
-              <TableHead>Location</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="pl-8">Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {employers.length === 0 ? (
-              <TableRow>
-                <TableCell
-                  colSpan={7}
-                  className="text-center py-8 text-gray-500"
-                >
-                  No employers found
-                </TableCell>
+        <div className="w-full max-w-[calc(100vw-330px)] overflow-x-auto">
+          <Table className="">
+            <TableHeader>
+              <TableRow className="bg-blue-100 text-gray-600">
+                <TableHead>Serial No</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Contact</TableHead>
+                <TableHead>Location</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="pl-8">Action</TableHead>
               </TableRow>
-            ) : (
-              employers.map((employer, index) => (
-                <TableRow key={employer._id}>
-                  <TableCell className="font-medium">
-                    {(currentPage - 1) * limit + index + 1}
-                  </TableCell>
-
-                  <TableCell className="flex items-center gap-2">
-                    <Image
-                      src={getImageUrl(employer.profile)}
-                      alt="name"
-                      width={30}
-                      height={30}
-                      className=" rounded-full object-cover h-12 w-12"
-                      sizes="100vh"
-                    />
-                    {employer.name}
-                  </TableCell>
-
-                  <TableCell>{employer.email}</TableCell>
-                  <TableCell>{employer.phone}</TableCell>
-                  <TableCell>{employer.address as string}</TableCell>
-                  <TableCell>
-                    <Badge
-                      className={`${
-                        employer.status === USER_STATUS.ACTIVE
-                          ? "bg-green-500 "
-                          : "bg-[#E02121]"
-                      } w-20 text-white`}
-                    >
-                      {employer.status === USER_STATUS.ACTIVE
-                        ? "Active"
-                        : "Block"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="flex gap-2 ml-2">
-                    <UserDetails
-                      user={employer}
-                      trigger={
-                        <span className="bg-blue-600 p-1 rounded cursor-pointer">
-                          <Eye className=" text-white" />
-                        </span>
-                      }
-                    />
-
-                    <span
-                      className={`bg-[#E6E6E6] p-1 rounded ${
-                        isUpdating
-                          ? "opacity-50 cursor-not-allowed"
-                          : "cursor-pointer"
-                      }`}
-                      onClick={() =>
-                        !isUpdating && handleStatusToggle(employer._id)
-                      }
-                    >
-                      {employer.status === USER_STATUS.ACTIVE ? (
-                        <LockOpen size={24} className=" text-green-600" />
-                      ) : (
-                        <Lock size={24} className=" text-red-600" />
-                      )}
-                    </span>
-                    <span
-                      className="bg-red-600 p-1 rounded cursor-pointer"
-                      onClick={() => handleDelete(employer._id)}
-                    >
-                      <Trash2 className=" text-white" />
-                    </span>
+            </TableHeader>
+            <TableBody>
+              {employers.length === 0 ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={7}
+                    className="text-center py-8 text-gray-500"
+                  >
+                    No employers found
                   </TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
+              ) : (
+                employers.map((employer, index) => (
+                  <TableRow key={employer._id}>
+                    <TableCell className="font-medium">
+                      {(currentPage - 1) * limit + index + 1}
+                    </TableCell>
 
+                    <TableCell className="flex items-center gap-2">
+                      <Image
+                        src={getImageUrl(employer.profile)}
+                        alt="name"
+                        width={30}
+                        height={30}
+                        className=" rounded-full object-cover h-12 w-12"
+                        sizes="100vh"
+                      />
+                      {employer.name}
+                    </TableCell>
+
+                    <TableCell>{employer.email}</TableCell>
+                    <TableCell>{employer.phone}</TableCell>
+                    <TableCell>{employer.address as string}</TableCell>
+                    <TableCell>
+                      <Badge
+                        className={`${employer.status === USER_STATUS.ACTIVE
+                          ? "bg-green-500 "
+                          : "bg-[#E02121]"
+                          } w-20 text-white`}
+                      >
+                        {employer.status === USER_STATUS.ACTIVE
+                          ? "Active"
+                          : "Block"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="">
+                      <div className="flex items-center gap-2">
+                        <UserDetails
+                          user={employer}
+                          trigger={
+                            <span className="bg-blue-600 p-1 rounded cursor-pointer">
+                              <Eye className=" text-white" />
+                            </span>
+                          }
+                        />
+
+                        <span
+                          className={`bg-[#E6E6E6] p-1 rounded ${isUpdating
+                            ? "opacity-50 cursor-not-allowed"
+                            : "cursor-pointer"
+                            }`}
+                          onClick={() =>
+                            !isUpdating && handleStatusToggle(employer._id)
+                          }
+                        >
+                          {employer.status === USER_STATUS.ACTIVE ? (
+                            <LockOpen size={24} className=" text-green-600" />
+                          ) : (
+                            <Lock size={24} className=" text-red-600" />
+                          )}
+                        </span>
+                        <span
+                          className="bg-red-600 p-1 rounded cursor-pointer"
+                          onClick={() => handleDelete(employer._id)}
+                        >
+                          <Trash2 className=" text-white" />
+                        </span>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </div>
         {/* Pagination */}
         {meta && meta.totalPages > 1 && (
           <Pagination

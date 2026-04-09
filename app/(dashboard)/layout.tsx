@@ -19,7 +19,7 @@ function DashboardLayout({
 }>) {
   return (
     <section className="flex">
-      <aside className="bg-white">
+      <aside className="bg-white w-[250px]">
         <Sidebar />
       </aside>
       <main className="main flex-1 h-screen bg-[#F6F6F6]">

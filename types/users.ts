@@ -92,6 +92,8 @@ export type IUser = {
   updatedAt: Date;
   employerType: string;
   companyNumber: string;
+  registeredAddress: string;
+  businessName: string;
 };
 
 export type IUserFilterableFields = {

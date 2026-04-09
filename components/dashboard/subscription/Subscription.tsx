@@ -14,7 +14,7 @@ export default function Subscription() {
 
   return (
     <section>
-      <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 gap-10 mt-4 px-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10 mt-4 px-6">
         {packages &&
           packages.length > 0 &&
           packages?.map((plan: IPackage, index: number) => (

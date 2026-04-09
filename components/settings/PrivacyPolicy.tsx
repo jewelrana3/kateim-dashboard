@@ -8,9 +8,42 @@ import { PUBLIC_TYPES } from "@/types/others";
 
 export default function PrivacyPolicy() {
   const editor = useRef(null);
+  const joditConfig = {
+    height: 550,
+    readonly: false,
+    buttons: [
+      "bold",
+      "italic",
+      "underline",
+      "strikethrough",
+      "|",
+      "ul",
+      "ol",
+      "outdent",
+      "indent",
+      "|",
+      "font",
+      "fontsize",
+      "brush", // clear formatting
+      "|",
+      "align",
+      "|",
+      "link",
+      "table",
+      "|",
+      "hr",
+      "|",
+      "undo",
+      "redo",
+      "fullsize"
+    ],
+    showCharsCounter: false,
+    showWordsCounter: false,
+    showXPathInStatusbar: false,
+  }
 
   const [content, setContent] = useState("");
-  const { data:privacyPolicy, isLoading } = useGetPublicData(PUBLIC_TYPES.PRIVACY_POLICY);
+  const { data: privacyPolicy, isLoading } = useGetPublicData(PUBLIC_TYPES.PRIVACY_POLICY);
   const { mutate: updatePrivacyPolicy } = useUpdateOrCreatePublicData(PUBLIC_TYPES.PRIVACY_POLICY);
   const handleOnSave = (value: string) => {
     updatePrivacyPolicy({
@@ -21,15 +54,13 @@ export default function PrivacyPolicy() {
   return (
     <section className="p-3">
       <div className="">
-        <div className="">
-          <JoditEditor
-            className="border-none break-all"
-            ref={editor}
-            value={privacyPolicy?.content}
-            config={{ height: 550, theme: "", readonly: false }}
-            onBlur={(newContent) => setContent(newContent)}
-          />
-        </div>
+        <JoditEditor
+          className="border-none break-all"
+          ref={editor}
+          value={privacyPolicy?.content}
+          config={joditConfig}
+          onBlur={(newContent) => setContent(newContent)}
+        />
       </div>
 
       <Button

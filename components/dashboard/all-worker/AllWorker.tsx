@@ -125,103 +125,101 @@ export default function AllWorker() {
             </Select>
           </div>
         </div>
-
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-blue-100 text-gray-600">
-              <TableHead>Serial No</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Contact</TableHead>
-              <TableHead>Location</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="pl-8">Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {workers.length === 0 ? (
-              <TableRow>
-                <TableCell
-                  colSpan={7}
-                  className="text-center py-8 text-gray-500"
-                >
-                  No workers found
-                </TableCell>
+        <div className="w-full max-w-[calc(100vw-330px)] overflow-x-auto">
+          <Table className="">
+            <TableHeader>
+              <TableRow className="bg-blue-100 text-gray-600">
+                <TableHead>Serial No</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Contact</TableHead>
+                <TableHead>Location</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="pl-8">Action</TableHead>
               </TableRow>
-            ) : (
-              workers.map((worker, index) => (
-                <TableRow key={worker._id}>
-                  <TableCell className="font-medium">
-                    {(currentPage - 1) * limit + index + 1}
-                  </TableCell>
-
-                  <TableCell className="flex items-center gap-2">
-                    <Image
-                      src={getImageUrl(worker.profile)}
-                      alt="name"
-                      width={30}
-                      height={30}
-                      className=" rounded-full object-cover"
-                    />
-                    {worker.name}
-                  </TableCell>
-
-                  <TableCell>{worker.email}</TableCell>
-                  <TableCell>{worker.phone}</TableCell>
-                  <TableCell>{worker.address}</TableCell>
-                  <TableCell>
-                    <Badge
-                      className={`${
-                        worker.status === USER_STATUS.ACTIVE
-                          ? "bg-green-500 "
-                          : "bg-[#E02121]"
-                      } w-20 text-white`}
-                    >
-                      {worker.status === USER_STATUS.ACTIVE
-                        ? "Active"
-                        : "Block"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="flex gap-2 ml-3">
-                    <span
-                      className="bg-blue-600 p-1 rounded cursor-pointer"
-                      onClick={() =>
-                        router.push(`/worker-details/?id=${worker._id}`)
-                      }
-                    >
-                      <Eye className=" text-white" />
-                    </span>
-
-                    <span
-                      className={`bg-[#E6E6E6] p-1 rounded ${
-                        isUpdating
-                          ? "opacity-50 cursor-not-allowed"
-                          : "cursor-pointer"
-                      }`}
-                      onClick={() =>
-                        !isUpdating && handleStatusToggle(worker._id)
-                      }
-                    >
-                      {worker.status === USER_STATUS.ACTIVE ? (
-                        <LockOpen size={24} className=" text-green-600" />
-                      ) : (
-                        <Lock size={24} className=" text-red-600" />
-                      )}
-                    </span>
-
-                    <span
-                      className="bg-red-600 p-1 rounded cursor-pointer"
-                      onClick={() => handleDelete(worker._id)}
-                    >
-                      <Trash2 className=" text-white" />
-                    </span>
+            </TableHeader>
+            <TableBody>
+              {workers.length === 0 ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={7}
+                    className="text-center py-8 text-gray-500"
+                  >
+                    No workers found
                   </TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
+              ) : (
+                workers.map((worker, index) => (
+                  <TableRow key={worker._id}>
+                    <TableCell className="font-medium">
+                      {(currentPage - 1) * limit + index + 1}
+                    </TableCell>
 
+                    <TableCell className="flex items-center gap-2">
+                      <Image
+                        src={getImageUrl(worker.profile)}
+                        alt="name"
+                        width={30}
+                        height={30}
+                        className=" rounded-full object-cover"
+                      />
+                      {worker.name}
+                    </TableCell>
+
+                    <TableCell>{worker.email}</TableCell>
+                    <TableCell>{worker.phone}</TableCell>
+                    <TableCell>{worker.address}</TableCell>
+                    <TableCell>
+                      <Badge
+                        className={`${worker.status === USER_STATUS.ACTIVE
+                            ? "bg-green-500 "
+                            : "bg-[#E02121]"
+                          } w-20 text-white`}
+                      >
+                        {worker.status === USER_STATUS.ACTIVE
+                          ? "Active"
+                          : "Block"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="flex gap-2 ml-3">
+                      <span
+                        className="bg-blue-600 p-1 rounded cursor-pointer"
+                        onClick={() =>
+                          router.push(`/worker-details/?id=${worker._id}`)
+                        }
+                      >
+                        <Eye className=" text-white" />
+                      </span>
+
+                      <span
+                        className={`bg-[#E6E6E6] p-1 rounded ${isUpdating
+                            ? "opacity-50 cursor-not-allowed"
+                            : "cursor-pointer"
+                          }`}
+                        onClick={() =>
+                          !isUpdating && handleStatusToggle(worker._id)
+                        }
+                      >
+                        {worker.status === USER_STATUS.ACTIVE ? (
+                          <LockOpen size={24} className=" text-green-600" />
+                        ) : (
+                          <Lock size={24} className=" text-red-600" />
+                        )}
+                      </span>
+
+                      <span
+                        className="bg-red-600 p-1 rounded cursor-pointer"
+                        onClick={() => handleDelete(worker._id)}
+                      >
+                        <Trash2 className=" text-white" />
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </div>
         {/* Pagination */}
         {meta && meta.totalPages > 1 && (
           <Pagination

@@ -103,45 +103,47 @@ export default function Sidebar() {
           Instantlabour
         </h1>
       </Link>
-      <aside
-        className=" bg-white p-4 space-y-1  overflow-y-scroll  text-sm hide-scrollbar"
-        style={{ height: "calc(100vh-30px)" }}
-      >
-        {sidebarMenu.map((item, index) => {
-          const isActive = pathname === item.path;
-          const dubleActive =
-            item.path === "/all-worker" && pathname === "/worker-details";
-          const Icon = item.icon;
+      <div className="h-[calc(100vh-100px)] overflow-y-auto">
+        <div
+          className=" bg-white p-4 space-y-1  overflow-y-scroll  text-sm hide-scrollbar"
+          style={{ height: "calc(100vh-30px)" }}
+        >
+          {sidebarMenu.map((item, index) => {
+            const isActive = pathname === item.path;
+            const dubleActive =
+              item.path === "/all-worker" && pathname === "/worker-details";
+            const Icon = item.icon;
 
-          // Handle logout separately
-          if (item.isLogout) {
+            // Handle logout separately
+            if (item.isLogout) {
+              return (
+                <div
+                  key={index}
+                  onClick={handleLogout}
+                  className="flex items-center gap-3 px-4 my-2 py-2 cursor-pointer text-black hover:bg-red-50 hover:text-red-600 transition-colors"
+                >
+                  <Icon className="w-5 h-5 shrink-0" />
+                  <span className="truncate">{item.label}</span>
+                </div>
+              );
+            }
+
             return (
-              <div
-                key={index}
-                onClick={handleLogout}
-                className="flex items-center gap-3 px-4 my-2 py-2 cursor-pointer text-black hover:bg-red-50 hover:text-red-600 transition-colors"
-              >
-                <Icon className="w-5 h-5 shrink-0" />
-                <span className="truncate">{item.label}</span>
-              </div>
+              <Link key={index} href={item.path} className="">
+                <div
+                  className={`flex items-center gap-3 px-4 my-2 py-2 cursor-pointer ${isActive || dubleActive
+                    ? "bg-blue-600 text-white"
+                    : "text-black"
+                    }`}
+                >
+                  <Icon className="w-5 h-5 shrink-0" />
+                  <span className="truncate">{item.label}</span>
+                </div>
+              </Link>
             );
-          }
-
-          return (
-            <Link key={index} href={item.path} className="">
-              <div
-                className={`flex items-center gap-3 px-4 my-2 py-2 cursor-pointer ${isActive || dubleActive
-                  ? "bg-blue-600 text-white"
-                  : "text-black"
-                  }`}
-              >
-                <Icon className="w-5 h-5 shrink-0" />
-                <span className="truncate">{item.label}</span>
-              </div>
-            </Link>
-          );
-        })}
-      </aside>
+          })}
+        </div>
+      </div>
     </div>
   );
 }

@@ -13,6 +13,40 @@ export default function TermsCondition() {
   const { data: termsCondition } = useGetPublicData(PUBLIC_TYPES.TERMS_AND_CONDITIONS);
   const { mutate: updateTermsCondition } = useUpdateOrCreatePublicData(PUBLIC_TYPES.TERMS_AND_CONDITIONS);
 
+  const joditConfig = {
+    height: 550,
+    readonly: false,
+    buttons: [
+      "bold",
+      "italic",
+      "underline",
+      "strikethrough",
+      "|",
+      "ul",
+      "ol",
+      "outdent",
+      "indent",
+      "|",
+      "font",
+      "fontsize",
+      "brush", // clear formatting
+      "|",
+      "align",
+      "|",
+      "link",
+      "table",
+      "|",
+      "hr",
+      "|",
+      "undo",
+      "redo",
+      "fullsize"
+    ],
+    showCharsCounter: false,
+    showWordsCounter: false,
+    showXPathInStatusbar: false,
+  }
+
   const handleOnSave = (value: string) => {
     updateTermsCondition({
       type: PUBLIC_TYPES.TERMS_AND_CONDITIONS,
@@ -27,7 +61,7 @@ export default function TermsCondition() {
             className="border-none break-all"
             ref={editor}
             value={termsCondition?.content || ""}
-            config={{ height: 550, theme: "", readonly: false }}
+            config={joditConfig}
             onBlur={(newContent) => setContent(newContent)}
           />
         </div>

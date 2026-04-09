@@ -92,57 +92,58 @@ export default function Support() {
             </Select>
           </div> */}
         </div>
+        <div className="w-full max-w-[calc(100vw-330px)] overflow-x-auto">
+          <Table className="">
+            <TableHeader>
+              <TableRow className="bg-blue-100 text-gray-600">
+                <TableHead>Serial No</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Contact</TableHead>
+                {/* <TableHead>Location</TableHead> */}
+                <TableHead>Status</TableHead>
+                <TableHead className="pl-8">Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {supportMessages &&
+                supportMessages?.length > 0 &&
+                supportMessages?.map((message: IContact, index: number) => (
+                  <TableRow key={message._id}>
+                    <TableCell className="font-medium">0{index + 1}</TableCell>
 
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-blue-100 text-gray-600">
-              <TableHead>Serial No</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Contact</TableHead>
-              {/* <TableHead>Location</TableHead> */}
-              <TableHead>Status</TableHead>
-              <TableHead className="pl-8">Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {supportMessages &&
-              supportMessages?.length > 0 &&
-              supportMessages?.map((message: IContact, index: number) => (
-                <TableRow key={message._id}>
-                  <TableCell className="font-medium">0{index + 1}</TableCell>
+                    <TableCell className="flex items-center gap-2">
+                      {message.name}
+                    </TableCell>
 
-                  <TableCell className="flex items-center gap-2">
-                    {message.name}
-                  </TableCell>
-
-                  <TableCell>{message.email}</TableCell>
-                  <TableCell>{message.phone}</TableCell>
-                  {/* <TableCell>{message.location}</TableCell> */}
-                  <TableCell>
-                    <Badge
-                      className={
-                        message.isSolved
-                          ? "bg-green-500 text-white"
-                          : "bg-red-500 text-white"
-                      }
-                    >
-                      {message.isSolved ? "Solved" : "Unresolved"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="flex gap-2">
-                    <DialogDemo message={message} />
-                    <span
-                      className="bg-red-600 p-1 rounded cursor-pointer"
-                      onClick={() => handleClick(message._id!)}
-                    >
-                      <Trash2 className=" text-white" />
-                    </span>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
+                    <TableCell>{message.email}</TableCell>
+                    <TableCell>{message.phone}</TableCell>
+                    {/* <TableCell>{message.location}</TableCell> */}
+                    <TableCell>
+                      <Badge
+                        className={
+                          message.isSolved
+                            ? "bg-green-500 text-white"
+                            : "bg-red-500 text-white"
+                        }
+                      >
+                        {message.isSolved ? "Solved" : "Unresolved"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="flex gap-2">
+                      <DialogDemo message={message} />
+                      <span
+                        className="bg-red-600 p-1 rounded cursor-pointer"
+                        onClick={() => handleClick(message._id!)}
+                      >
+                        <Trash2 className=" text-white" />
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </>
   );

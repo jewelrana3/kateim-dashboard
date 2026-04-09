@@ -35,7 +35,7 @@ const renderCustomTooltip = ({ active, payload }: any) => {
           boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <p className="font-semibold">$ {uv.toFixed(2)}</p>
+        <p className="font-semibold">£ {uv.toFixed(2)}</p>
       </div>
     );
   }
