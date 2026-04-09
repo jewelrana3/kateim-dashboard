@@ -43,7 +43,7 @@ export default function PrivacyPolicy() {
   }
 
   const [content, setContent] = useState("");
-  const { data: privacyPolicy, isLoading } = useGetPublicData(PUBLIC_TYPES.PRIVACY_POLICY);
+  const { data: privacyPolicy } = useGetPublicData(PUBLIC_TYPES.PRIVACY_POLICY);
   const { mutate: updatePrivacyPolicy } = useUpdateOrCreatePublicData(PUBLIC_TYPES.PRIVACY_POLICY);
   const handleOnSave = (value: string) => {
     updatePrivacyPolicy({
