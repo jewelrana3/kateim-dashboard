@@ -26,6 +26,7 @@ import { useGetAllUser } from "@/lib/query/hooks";
 import { IUser, USER_ROLES } from "@/types/users";
 import { useDeleteUser } from "@/lib/query/hooks/dashboard/users";
 import { useState } from "react";
+import Pagination from "@/components/ui/pagination";
 
 export default function VerifyReuest() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -99,7 +100,7 @@ export default function VerifyReuest() {
           </div>
         </div>
 
-        <div className="w-full max-w-[calc(100vw-330px)] overflow-x-auto">
+        <div className="w-full max-w-[calc(100vw-330px)] overflow-x-auto min-h-[400px]">
           <Table>
             <TableHeader>
               <TableRow className="bg-blue-100 text-gray-600">
@@ -128,8 +129,8 @@ export default function VerifyReuest() {
                     <TableCell>
                       <Badge
                         className={`w-22 ${user.isAccountVerified
-                            ? "bg-green-500 text-white"
-                            : "bg-red-500 text-white"
+                          ? "bg-green-500 text-white"
+                          : "bg-red-500 text-white"
                           } p-2`}
                       >
                         {user.isAccountVerified ? "Verified" : "Not Verified"}
@@ -157,6 +158,16 @@ export default function VerifyReuest() {
             </TableBody>
           </Table>
         </div>
+        {/* Pagination */}
+        {meta && meta.totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={meta.totalPages}
+            onPageChange={setCurrentPage}
+            total={meta.total}
+            limit={limit}
+          />
+        )}
       </div>
     </>
   );
